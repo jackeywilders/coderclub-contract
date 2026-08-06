@@ -1,8 +1,38 @@
 {
   "role": "backend",
-  "state": "not-started",
+  "state": "contract-baseline-published",
   "projectPath": "G:/Dev/backend/Club/CoderClub",
-  "lastCommit": null,
-  "lastHandoff": null,
-  "openItems": []
+  "branch": "main",
+  "lastCommit": "085fe08dd74481415a9b0e4abe97aeb3c672353b",
+  "baseline": {
+    "name": "C0",
+    "commit": "7e3f77b49627dab501c45c0548f08d5334f3ed48"
+  },
+  "api": {
+    "sourcePath": "docs/api/coderclub-openapi.json",
+    "handoffPath": "api/coderclub-openapi.json",
+    "openapi": "3.0.3",
+    "documentVersion": "1.0.0",
+    "pathCount": 45,
+    "operationCount": 47,
+    "sourceSha256": "44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a",
+    "handoffSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
+    "sanitizedExamples": true
+  },
+  "lastHandoff": "handoff/backend-to-frontend/2026-08-07-api-contract-handoff.md",
+  "designBaseline": "designs/backend/2026-08-07-api-contract-baseline.md",
+  "openItems": [
+    {
+      "id": "M4-SUBJECT-PAGE-TOTAL-LIST",
+      "severity": "medium",
+      "description": "subject/getSubjectPage 在部分过滤条件下可能存在 total 与 list 口径不一致，移交 M4 继续核验。"
+    }
+  ],
+  "validation": {
+    "jsonParse": true,
+    "openapiIs303": true,
+    "credentialsRemoved": true,
+    "localAbsolutePathsRemoved": true,
+    "syncManifestModified": false
+  }
 }
