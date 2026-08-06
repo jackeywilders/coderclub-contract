@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "releaseStatus": "not-published",
+  "finalReleaseStatus": "not-published",
+  "backendCommit": null,
+  "frontendCommit": null,
+  "apiContractCommit": null,
+  "lastSyncedAt": null,
+  "notes": "No OpenAPI file is copied into this repository."
+}

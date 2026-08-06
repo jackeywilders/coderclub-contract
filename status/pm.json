@@ -1,0 +1,10 @@
+{
+  "role": "pm",
+  "state": "active",
+  "repository": "coderclub-contract",
+  "branch": "codex/pm-coordination",
+  "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
+  "baselineCommit": "c8b92b1",
+  "remotePushAuthorized": false,
+  "lastAction": "establish handoff governance"
+}
