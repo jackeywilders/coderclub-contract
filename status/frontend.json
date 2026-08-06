@@ -1,8 +1,51 @@
 {
   "role": "frontend",
-  "state": "not-started",
+  "state": "design-ready-pending-contract-reconciliation",
   "projectPath": "G:/Dev/backend/Club/CoderClubFront",
+  "worktree": "G:/Dev/backend/Club/coderclub-contract-codex-frontend",
+  "branch": "codex/frontend-design",
+  "contract": {
+    "name": "C1",
+    "commit": "3161c41e70fb1d8c1a976ed4fd862fe04ce344a1",
+    "expectedSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
+    "configuredPath": "G:/Dev/backend/Club/coderclub-contract/api/coderclub-openapi.json",
+    "actualSha256": "87e122b545ed529edc167b80279869205440be84e12c4407850dfa1d4ff2166b",
+    "openapi": "3.0.3",
+    "pathCount": 45,
+    "operationCount": 47
+  },
   "lastCommit": null,
-  "lastHandoff": null,
-  "openItems": []
+  "lastHandoff": "handoff/frontend-to-backend/2026-08-07-frontend-api-questions.md",
+  "design": "designs/frontend/2026-08-07-api-integration-impact.md",
+  "validation": {
+    "npmRunApiCheck": {
+      "status": "blocked",
+      "exitCode": 1,
+      "error": "nvm-desktop: The default Node version is not set"
+    },
+    "npmTest": {
+      "status": "blocked",
+      "exitCode": 1,
+      "error": "nvm-desktop: The default Node version is not set"
+    },
+    "directNodeApiCheck": "passed; no API contract changes detected",
+    "directNodeContractTests": "passed; 2 tests"
+  },
+  "openItems": [
+    {
+      "id": "CONTRACT-HASH-MISMATCH",
+      "severity": "high",
+      "description": "C1 worktree file hash does not match the declared SHA-256; PM/Backend must confirm the unique baseline."
+    },
+    {
+      "id": "DUPLICATE-SUBJECT-METHODS",
+      "severity": "medium",
+      "description": "Category and label operations contain duplicate path definitions with different HTTP methods; production methods and auth roles need confirmation."
+    },
+    {
+      "id": "SUBJECT-PAGE-TOTAL-LIST",
+      "severity": "medium",
+      "description": "subject/getSubjectPage may return a total inconsistent with the current list; reproduction and remediation plan are required."
+    }
+  ]
 }
