@@ -3,7 +3,7 @@
   "state": "contract-baseline-published",
   "projectPath": "G:/Dev/backend/Club/CoderClub",
   "branch": "main",
-  "lastCommit": "085fe08dd74481415a9b0e4abe97aeb3c672353b",
+  "lastCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
   "baseline": {
     "name": "C0",
     "commit": "7e3f77b49627dab501c45c0548f08d5334f3ed48"
@@ -21,6 +21,25 @@
   },
   "lastHandoff": "handoff/backend-to-frontend/2026-08-07-api-contract-handoff.md",
   "designBaseline": "designs/backend/2026-08-07-api-contract-baseline.md",
+  "documentationBaseline": {
+    "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
+    "roadmaps": [
+      "designs/backend/roadmap/2026-07-28-deep-dev-roadmap.md",
+      "designs/backend/roadmap/2026-07-31-后端开发计划.md",
+      "designs/backend/roadmap/CoderClub-后端开发推进计划-2025-07-30.md"
+    ],
+    "acceptanceReports": [
+      "acceptance/backend/reviews/2026-08-02-M2代码审查与完工验收报告.md",
+      "acceptance/backend/reviews/2026-08-03-API运行时契约修复验收报告.md",
+      "acceptance/backend/reviews/2026-08-03-M3代码审查与完工验收报告.md",
+      "acceptance/backend/milestones/M1/2026-07-31-m1-rework-verification.md",
+      "acceptance/backend/milestones/M1/2026-07-31-M1收口报告.md",
+      "acceptance/backend/milestones/M1/2026-07-31-M1完工报告.md",
+      "acceptance/backend/milestones/M2/2026-07-31-M2完工报告.md",
+      "acceptance/backend/milestones/M3/2026-08-02-M3联调记录.md",
+      "acceptance/backend/milestones/M3/2026-08-02-M3完工报告.md"
+    ]
+  },
   "openItems": [
     {
       "id": "M4-SUBJECT-PAGE-TOTAL-LIST",
