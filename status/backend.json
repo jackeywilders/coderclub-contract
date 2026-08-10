@@ -1,9 +1,9 @@
 {
   "role": "backend",
-  "state": "contract-baseline-published",
+  "state": "gate0-1-backend-evidence-ready",
   "projectPath": "G:/Dev/backend/Club/CoderClub",
   "branch": "main",
-  "lastCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
+  "lastCommit": "08cd88c8935371e0bfd07689ed6a9c0ae549a2a1",
   "baseline": {
     "name": "C0",
     "commit": "7e3f77b49627dab501c45c0548f08d5334f3ed48"
@@ -19,8 +19,8 @@
     "handoffSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
     "sanitizedExamples": true
   },
-  "lastHandoff": "handoff/backend-to-frontend/2026-08-07-api-contract-handoff.md",
-  "designBaseline": "designs/backend/2026-08-07-api-contract-baseline.md",
+  "lastHandoff": "handoff/backend-to-frontend/2026-08-10-gate1-backend-receipt.md",
+  "designBaseline": "designs/backend/2026-08-10-gate0-1-backend-baseline.md",
   "documentationBaseline": {
     "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
     "roadmaps": [
@@ -42,9 +42,14 @@
   },
   "openItems": [
     {
-      "id": "M4-SUBJECT-PAGE-TOTAL-LIST",
+      "id": "G1-03-POST-COMPATIBILITY-POLICY",
       "severity": "medium",
-      "description": "subject/getSubjectPage 在部分过滤条件下可能存在 total 与 list 口径不一致，移交 M4 继续核验。"
+      "description": "分类/标签正式 PUT/DELETE 已确认，历史 POST 仍保留；兼容截止版本/日期和移除条件待 PM 决策。"
+    },
+    {
+      "id": "G1-02-FINE-GRAINED-PERMISSION",
+      "severity": "medium",
+      "description": "Auth 管理用户已覆盖 admin_user 角色和 403 回归；Auth Role/Permission 与 Subject 尚未配置细粒度角色/权限矩阵，移交 M4。"
     }
   ],
   "validation": {
@@ -52,6 +57,11 @@
     "openapiIs303": true,
     "credentialsRemoved": true,
     "localAbsolutePathsRemoved": true,
-    "syncManifestModified": false
+    "syncManifestModified": false,
+    "gate0SourceReceipt": true,
+    "gate0SanitizedMapping": true,
+    "authMatrix47": true,
+    "auth401403BackendEvidence": true,
+    "paginationRegression": true
   }
 }
