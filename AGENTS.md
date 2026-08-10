@@ -9,7 +9,7 @@
 - 交接仓库：`G:/Dev/backend/Club/coderclub-contract`
 - 当前 PM 工作目录：`G:/Dev/backend/Club/coderclub-contract-codex-pm`
 
-## 三个 Codex 角色
+## 协调角色与实际执行角色
 
 ### PM / 跨项目协调 Codex
 
@@ -21,19 +21,35 @@
 
 ### Backend Codex
 
-职责：在后端项目实现后端业务代码和测试，识别接口影响，提交后端到前端的交接信息，并响应前端反馈。
+职责：分析后端接口影响，编写 `proposals/backend/` 契约提案，审查 Claude Code 后端的实现提交，提交后端到前端的交接信息，执行复验并响应前端反馈。
 
-允许写入：`G:/Dev/backend/Club/CoderClub/**`；交接仓库内仅允许写入 `designs/backend/**`、`handoff/backend-to-frontend/**`、`proposals/backend/**`、`acceptance/backend/**` 和 `status/backend.json`。
+允许写入：交接仓库内仅允许写入 `designs/backend/**`、`handoff/backend-to-frontend/**`、`proposals/backend/**`、`acceptance/backend/**` 和 `status/backend.json`。
 
-禁止写入：前端项目、交接仓库的权威治理文件、`api/`、`sync-manifest.json` 及对方角色的目录。契约变更必须先写入 `proposals/backend/`，等待协调和授权。
+禁止写入：后端项目、前端项目、交接仓库的权威治理文件、`api/`、`sync-manifest.json` 及对方角色的目录。不得代替 Claude Code 后端修改 Java、测试或后端运行时 API 源。契约变更必须先写入 `proposals/backend/`，等待 PM 确认。
+
+### Claude Code 后端
+
+职责：在后端项目实现已获 PM 确认的业务代码、测试和必要的本地验证；按照批准的契约提案同步后端运行时 API 源，并提交完整实现证据。
+
+允许写入：`G:/Dev/backend/Club/CoderClub/**`；其中 `docs/api/coderclub-openapi.json` 只有在对应 `proposals/backend/` 已获 PM 确认后，才允许作为实现的一部分更新。
+
+禁止写入：前端项目、交接仓库的治理文件、交接仓库 `api/` 快照、`status/sync-manifest.json`、对方角色目录及未经批准的契约变更。不得自行决定接口路径、方法、字段、鉴权、错误码或兼容性策略。
 
 ### Frontend Codex
 
-职责：在前端项目实现前端业务代码和测试，消费已确认的接口契约，提交前端到后端的交接信息，并报告接口阻塞。
+职责：审查 Claude Code 前端的实现提交，复验已确认的接口契约消费，提交前端到后端的交接信息，执行验收并报告接口阻塞。
 
-允许写入：`G:/Dev/backend/Club/CoderClubFront/**`；交接仓库内仅允许写入 `designs/frontend/**`、`handoff/frontend-to-backend/**`、`proposals/frontend/**`、`acceptance/frontend/**` 和 `status/frontend.json`。
+允许写入：交接仓库内仅允许写入 `designs/frontend/**`、`handoff/frontend-to-backend/**`、`proposals/frontend/**`、`acceptance/frontend/**` 和 `status/frontend.json`。
 
-禁止写入：后端项目、交接仓库的权威治理文件、`api/`、`sync-manifest.json` 及对方角色的目录。契约变更必须先写入 `proposals/frontend/`，等待协调和授权。
+禁止写入：前端项目、交接仓库的权威治理文件、`api/`、`sync-manifest.json` 及对方角色的目录。不得代替 Claude Code 前端修改 `src/`、前端测试或项目基线。契约变更必须先写入 `proposals/frontend/`，等待 PM 确认。
+
+### Claude Code 前端
+
+职责：在前端项目实现已确认的业务代码、测试和必要的项目基线更新，并提交前端实现证据。
+
+允许写入：`G:/Dev/backend/Club/CoderClubFront/**`；消费已确认的交接仓库契约快照和 PM 批准的前端提案。
+
+禁止写入：后端项目、交接仓库治理文件、交接仓库 `api/` 快照、`status/sync-manifest.json` 及未经确认的契约变更。发现契约问题时必须先写入 `proposals/frontend/`，不得通过修改基线绕过评审。
 
 ## 协作规则
 

@@ -7,12 +7,12 @@ Claude Code 在 CoderClub 项目中只能实现已经确认的业务代码、业
 - 后端发现接口问题或需要接口变更时，写入交接仓库的 `proposals/backend/`。
 - 前端发现接口问题或需要接口变更时，写入交接仓库的 `proposals/frontend/`。
 - 提案应说明现状、问题、建议方案、兼容性影响、来源提交哈希和验证方式。
-- Claude Code 不能直接修改后端运行时权威 API 或 PM 批准的 `api/` 开发契约快照，也不能通过修改 `api/` 或 `status/sync-manifest.json` 绕过提案、评审和授权流程。
+- Claude Code 后端在对应提案获得 PM 确认后，可以修改后端项目的运行时权威 API 源 `G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json`，并在实现提交中记录提案、源 SHA-256、验证结果和语义差异；不得修改 PM 批准的交接仓库 `api/` 开发契约快照。
 - 未获确认的契约提案不得作为前端或后端的既定接口实现。
 
 ## 写入边界
 
-在后端工作时，只修改 `G:/Dev/backend/Club/CoderClub/**` 中的业务代码和测试；在前端工作时，只修改 `G:/Dev/backend/Club/CoderClubFront/**` 中的业务代码和测试，并按 `AGENTS.md` 约定写入对应的提案、交接或验收记录。
+在后端工作时，Claude Code 后端只修改 `G:/Dev/backend/Club/CoderClub/**` 中的业务代码、测试和已获 PM 确认的运行时 API 源；在前端工作时，Claude Code 前端只修改 `G:/Dev/backend/Club/CoderClubFront/**` 中的业务代码、测试和已确认的前端基线。Backend/Frontend Codex 按交接仓库 `AGENTS.md` 约定写入对应的提案、交接或验收记录。
 
 Claude Code 不得修改另一项目，不得复制 OpenAPI 文件到交接仓库，不得修改交接仓库治理文件，不得推送远端。需要跨项目决策时，将信息交给 PM Codex 协调。
 
