@@ -1,51 +1,53 @@
 {
   "role": "frontend",
-  "state": "design-ready-pending-contract-reconciliation",
+  "state": "blocked",
   "projectPath": "G:/Dev/backend/Club/CoderClubFront",
   "worktree": "G:/Dev/backend/Club/coderclub-contract-codex-frontend",
   "branch": "codex/frontend-design",
+  "sourceCommit": "cb62823f5944d4f544a3f11da8685900a5d8cfb4",
   "contract": {
-    "name": "C1",
-    "commit": "3161c41e70fb1d8c1a976ed4fd862fe04ce344a1",
-    "expectedSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
-    "configuredPath": "G:/Dev/backend/Club/coderclub-contract/api/coderclub-openapi.json",
-    "actualSha256": "87e122b545ed529edc167b80279869205440be84e12c4407850dfa1d4ff2166b",
+    "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
+    "sourcePath": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
+    "sourceSha256": "44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a",
+    "handoffReference": "handoff/backend-to-frontend/2026-08-10-gate0-backend-receipt.md",
+    "handoffDeclaredSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
+    "handoffObservedSha256": "87e122b545ed529edc167b80279869205440be84e12c4407850dfa1d4ff2166b",
+    "configuredPath": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
+    "consumedSha256": "44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a",
     "openapi": "3.0.3",
     "pathCount": 45,
     "operationCount": 47
   },
-  "lastCommit": null,
-  "lastHandoff": "handoff/frontend-to-backend/2026-08-07-frontend-api-questions.md",
+  "lastCommit": "cb62823f5944d4f544a3f11da8685900a5d8cfb4",
+  "lastHandoff": "handoff/frontend-to-backend/2026-08-10-gate0-1-frontend-receipt.md",
   "design": "designs/frontend/2026-08-07-api-integration-impact.md",
   "validation": {
-    "npmRunApiCheck": {
-      "status": "blocked",
-      "exitCode": 1,
-      "error": "nvm-desktop: The default Node version is not set"
-    },
-    "npmTest": {
-      "status": "blocked",
-      "exitCode": 1,
-      "error": "nvm-desktop: The default Node version is not set"
-    },
-    "directNodeApiCheck": "passed; no API contract changes detected",
-    "directNodeContractTests": "passed; 2 tests"
+    "node": "22.14.0",
+    "npm": "10.9.2",
+    "npmRunApiCheck": "passed with temporary PATH override; source SHA-256 44cbe7...; no API contract changes detected",
+    "npmTest": "passed with temporary PATH override; 2 tests",
+    "defaultNpmEntry": "blocked; nvm-desktop default Node version is not set"
+  },
+  "acceptance": {
+    "G0-04": "accepted: frontend consumes backend authoritative source and hash 44cbe7...",
+    "G1-02": "blocked: interceptor lacks business response code 401/403 handling and runtime tests",
+    "G1-05": "partial: npm commands pass with temporary PATH override; default Node selector remains unconfigured"
   },
   "openItems": [
     {
-      "id": "CONTRACT-HASH-MISMATCH",
+      "id": "HANDOFF-HASH-MISMATCH",
       "severity": "high",
-      "description": "C1 worktree file hash does not match the declared SHA-256; PM/Backend must confirm the unique baseline."
+      "description": "Backend receipt declares handoff SHA 0057e69..., but the tracked handoff copy observed in main is 87e122...; PM must reconcile the mapping."
     },
     {
-      "id": "DUPLICATE-SUBJECT-METHODS",
-      "severity": "medium",
-      "description": "Category and label operations contain duplicate path definitions with different HTTP methods; production methods and auth roles need confirmation."
+      "id": "FRONTEND-BUSINESS-401-403",
+      "severity": "high",
+      "description": "src/api/index.ts handles HTTP status 401/403 but not response body code 401/403; runtime interceptor tests are absent."
     },
     {
-      "id": "SUBJECT-PAGE-TOTAL-LIST",
+      "id": "FRONTEND-NODE-DEFAULT",
       "severity": "medium",
-      "description": "subject/getSubjectPage may return a total inconsistent with the current list; reproduction and remediation plan are required."
+      "description": "The default nvm-desktop shim still has no Node version; checks require a temporary PATH override."
     }
   ]
 }

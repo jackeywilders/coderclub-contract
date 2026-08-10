@@ -71,3 +71,17 @@ HTTP 401 与业务 `code === 401` 都要触发登出流程；403 显示无权限
 
 本轮不修改 `src/`、构建配置或权威 API 文件。契约哈希、重复 HTTP 方法定义以及题目分页口径确认后，
 再由 Claude Code 按本设计实施；任何契约变更先进入 `proposals/frontend/` 或 `proposals/backend/`。
+
+## 7. 2026-08-10 Gate 0/1 补充
+
+Backend 已确认后端项目 `main@e80aaf697fecd350ad478d8fed67eb81fdf45325` 的
+`docs/api/coderclub-openapi.json` 是权威源，SHA-256 为
+`44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a`。前端的被忽略路径配置已指向
+该源文件；此前交接副本 `87e122...` 不再作为消费输入。Backend 回执声明的脱敏副本 `0057e69...`
+与当前主线可观察文件仍不一致，需由 PM 完成唯一映射后才能关闭 Gate 0。
+
+Backend 已提供 47 个操作的运行时矩阵、401/403 语义、正式 PUT/DELETE 方法和分页修复证据。前端
+验收确认分类/标签更新和删除已使用正式 PUT/DELETE；但当前 `src/api/index.ts` 只按 HTTP 状态处理
+401/403，没有处理成功 HTTP 响应中的业务 `code=401/403`，且缺少拦截器测试，因此 G1-02 前端部分
+保持阻塞。Node 22.14.0/npm 10.9.2 下，使用临时 PATH 覆盖执行的 `npm run api:check` 和 `npm test`
+均通过；默认 `nvm-desktop` 入口仍未配置，不视为永久环境恢复。
