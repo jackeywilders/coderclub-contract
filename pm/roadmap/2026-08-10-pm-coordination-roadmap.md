@@ -12,18 +12,18 @@
 
 ## Gate 0：证据与基线归一化
 
-**状态：阻塞。**
+**状态：开发契约快照已验收；发布仍受 Gate 1 阻塞。**
 
 | 事项 | Owner | 交付物 | 关闭条件 |
 | --- | --- | --- | --- |
 | 唯一 API 文件身份 | PM + Backend | 契约基线提案 | 源路径、源提交、源 SHA-256、交接文件、交接 SHA-256 一一对应 |
 | C0/C1 版本关系 | PM + Frontend | C0/C1 回执 | 解释 `7e3f77...`、`3161c41...` 和当前主线提交的关系 |
-| API 副本治理 | PM | 治理决策 | 明确是否允许受控副本；在决策前不把副本标为发布契约 |
-| 状态文件一致性 | PM | `status/pm.json`、`status/backend.json`、`status/frontend.json`、`status/sync-manifest.json` 的审计记录 | 三方状态不再互相矛盾；`finalReleaseStatus` 仍为未发布 |
+| API 副本治理 | PM | ADR-0001 和 `api/coderclub-openapi.json` 快照元数据 | 已批准受控开发快照；后端源仍为运行时权威，快照不等于发布契约 |
+| 状态文件一致性 | PM | `status/pm.json`、`status/backend.json`、`status/frontend.json`、`status/sync-manifest.json` 的审计记录 | 开发快照映射可复核；`releaseStatus` 与 `finalReleaseStatus` 仍为未发布 |
 
 ## Gate 1：契约消费阻塞项
 
-**状态：未开始，依赖 Gate 0。**
+**状态：PM 部分验收，Gate 0 开发快照依赖已解除。**
 
 | 事项 | Owner | 验收证据 |
 | --- | --- | --- |
@@ -33,7 +33,7 @@
 | 登录、密码和 Token 语义 | Backend | `/auth/login`、`/auth/user/info`、`/auth/user/password` 的请求和响应样例 |
 | 分页一致性 | Backend | `subjectType=99` 等无结果、单页、多页复现和修复测试 |
 
-Gate 1 关闭前，Frontend 只能做不依赖具体契约文件的页面设计和状态建模，不能生成正式 API 客户端或修改业务调用。
+Gate 1 关闭前，Frontend 可以基于 PM 批准的快照推进已确认范围的开发，但不能依赖未确认的方法、鉴权语义或分页行为进行正式联调。当前 Backend 的鉴权矩阵和分页代码级证据已通过 PM 核验，但 Frontend 业务 401/403 处理、默认 Node 环境和 POST 兼容期限仍未关闭。
 
 ## Gate 2：M4 后端安全与质量收口
 
@@ -52,11 +52,11 @@ Gate 2 的每一项必须有后端提交哈希、测试命令、结果和已知�
 
 ## Gate 3：Frontend 首轮消费与验收
 
-**状态：等待 Gate 0/1。**
+**状态：开发快照已就绪，等待 Gate 1 遗留项。**
 
 Frontend 依次执行：
 
-1. 导入已确认的 API 文件，验证 SHA-256 和 `npm run api:check`。
+1. 固定 `apiContractCommit=1a2aff823b3b941b6d9c0ccd8a29f40545d3eb17` 和 SHA-256 `87e122...`，验证 `npm run api:check`。
 2. 完成认证、用户信息和登出状态流转。
 3. 完成角色/权限树、动态路由和 401/403 处理。
 4. 完成分类、标签、题目分页、详情、四种题型和 OSS 上传。

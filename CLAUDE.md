@@ -7,7 +7,7 @@ Claude Code 在 CoderClub 项目中只能实现已经确认的业务代码、业
 - 后端发现接口问题或需要接口变更时，写入交接仓库的 `proposals/backend/`。
 - 前端发现接口问题或需要接口变更时，写入交接仓库的 `proposals/frontend/`。
 - 提案应说明现状、问题、建议方案、兼容性影响、来源提交哈希和验证方式。
-- Claude Code 不能直接修改权威 API，也不能通过修改 `api/` 或 `status/sync-manifest.json` 绕过提案、评审和授权流程。
+- Claude Code 不能直接修改后端运行时权威 API 或 PM 批准的 `api/` 开发契约快照，也不能通过修改 `api/` 或 `status/sync-manifest.json` 绕过提案、评审和授权流程。
 - 未获确认的契约提案不得作为前端或后端的既定接口实现。
 
 ## 写入边界
