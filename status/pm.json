@@ -1,10 +1,28 @@
 {
   "role": "pm",
-  "state": "active",
+  "state": "audit-complete-reconciliation-blocked",
   "repository": "coderclub-contract",
   "branch": "codex/pm-coordination",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
-  "baselineCommit": "c8b92b1",
+  "reviewedRef": "origin/main",
+  "reviewedCommit": "ae0c8ad960d7bab4e931b69cf65bfd261d989b53",
+  "reviewedRange": "bfc9460d156ecee078b804c0d13c7e65b7753163..ae0c8ad960d7bab4e931b69cf65bfd261d989b53",
+  "trackedFileCount": 37,
+  "releaseReady": false,
   "remotePushAuthorized": false,
-  "lastAction": "establish handoff governance"
+  "openFindings": [
+    "PM-001",
+    "PM-002",
+    "PM-003",
+    "PM-004",
+    "PM-005",
+    "PM-006",
+    "PM-007",
+    "PM-008",
+    "PM-009"
+  ],
+  "lastAction": "pm main audit and cross-project reconciliation",
+  "auditReport": "pm/reports/2026-08-10-pm-main-audit-summary.md",
+  "reviewReport": "pm/reviews/2026-08-10-pm-main-review.md",
+  "coordinationRoadmap": "pm/roadmap/2026-08-10-pm-coordination-roadmap.md"
 }

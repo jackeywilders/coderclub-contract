@@ -15,3 +15,13 @@ Claude Code 在 CoderClub 项目中只能实现已经确认的业务代码、业
 在后端工作时，只修改 `G:/Dev/backend/Club/CoderClub/**` 中的业务代码和测试；在前端工作时，只修改 `G:/Dev/backend/Club/CoderClubFront/**` 中的业务代码和测试，并按 `AGENTS.md` 约定写入对应的提案、交接或验收记录。
 
 Claude Code 不得修改另一项目，不得复制 OpenAPI 文件到交接仓库，不得修改交接仓库治理文件，不得推送远端。需要跨项目决策时，将信息交给 PM Codex 协调。
+
+## Agent skills
+
+本仓库使用以下工程技能配置：
+
+- **Issue 跟踪：** 使用本地 Markdown，规则见 `docs/agents/issue-tracker.md`，Issue 放在 `.scratch/<feature>/`。
+- **领域上下文：** 单上下文布局，先读取根目录 `CONTEXT.md`；架构决策记录位于 `docs/adr/`，规则见 `docs/agents/domain.md`。
+- **分类标签：** `triage` 使用的标准标签见 `docs/agents/triage-labels.md`。
+
+开始任务前先读取 `CONTEXT.md`、本文件和 `AGENTS.md`；涉及架构决策、契约变更或跨项目影响时，再读取相关 ADR、提案和交接记录。
