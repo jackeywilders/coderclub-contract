@@ -1,28 +1,36 @@
 {
   "role": "pm",
-  "state": "audit-complete-reconciliation-blocked",
+  "state": "gate0-development-contract-accepted-gate1-partial-blocked",
   "repository": "coderclub-contract",
   "branch": "codex/pm-coordination",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
   "reviewedRef": "origin/main",
-  "reviewedCommit": "ae0c8ad960d7bab4e931b69cf65bfd261d989b53",
-  "reviewedRange": "bfc9460d156ecee078b804c0d13c7e65b7753163..ae0c8ad960d7bab4e931b69cf65bfd261d989b53",
-  "trackedFileCount": 37,
+  "reviewedCommit": "4551f0fd016b7363738d3571d5a76e261701b547",
+  "reviewedRange": "6bab9f6d19a2e8bd87b241f737275100f8f8cf14..4551f0fd016b7363738d3571d5a76e261701b547",
+  "trackedFileCount": 53,
   "releaseReady": false,
   "remotePushAuthorized": false,
   "openFindings": [
-    "PM-001",
-    "PM-002",
-    "PM-003",
-    "PM-004",
-    "PM-005",
-    "PM-006",
-    "PM-007",
-    "PM-008",
-    "PM-009"
+    "G1-02-FRONTEND-BUSINESS-401-403",
+    "G1-03-POST-COMPATIBILITY-POLICY",
+    "G1-04-REAL-DB-PAGINATION-RECHECK",
+    "G1-05-FRONTEND-NODE-DEFAULT"
   ],
-  "lastAction": "pm main audit and cross-project reconciliation",
+  "contractSnapshot": {
+    "status": "accepted-for-development",
+    "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
+    "sourceSha256": "44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a",
+    "snapshotCommit": "1a2aff823b3b941b6d9c0ccd8a29f40545d3eb17",
+    "snapshotPath": "api/coderclub-openapi.json",
+    "snapshotSha256": "87e122b545ed529edc167b80279869205440be84e12c4407850dfa1d4ff2166b",
+    "semanticDifferenceCount": 14,
+    "semanticDifferenceSummary": "Only password and Token example values are redacted; no path, method, field, schema, or security structure differences.",
+    "runtimeAuthority": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
+    "releaseAuthority": "PM release gate; finalReleaseStatus remains not-published"
+  },
+  "lastAction": "pm approved API snapshot for development; Gate 0 closed for development, Gate 1 remains partial and release blocked",
   "auditReport": "pm/reports/2026-08-10-pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10-pm-main-review.md",
-  "coordinationRoadmap": "pm/roadmap/2026-08-10-pm-coordination-roadmap.md"
+  "coordinationRoadmap": "pm/roadmap/2026-08-10-pm-coordination-roadmap.md",
+  "acceptanceReport": "pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md"
 }

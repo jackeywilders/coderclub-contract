@@ -1,12 +1,12 @@
 # CoderClub 交接索引
 
-本目录是 CoderClub 后端、前端与 PM 的跨项目交接入口。交接仓库保存决策和可追溯的引用，不复制 OpenAPI 文件；后端项目中的 API 定义和实现仍是权威来源。
+本目录是 CoderClub 后端、前端与 PM 的跨项目交接入口。后端项目中的 API 定义和实现是运行时权威来源；经 PM 批准的 `api/coderclub-openapi.json` 是后续跨项目开发的权威契约快照，不等同于发布契约。
 
 ## 目录用途
 
 | 路径 | 用途 |
 | --- | --- |
-| `api/` | API 契约索引、版本引用和变更说明，不存放 OpenAPI 副本 |
+| `api/` | PM 批准的开发契约快照；必须同步来源提交、源 SHA-256、快照提交、快照 SHA-256 和语义差异 |
 | `designs/backend/` | 后端设计、接口影响分析和实现约束 |
 | `designs/frontend/` | 前端设计、接口消费约束和交互影响分析 |
 | `handoff/backend-to-frontend/` | 后端交给前端的版本、字段、行为和验证信息 |
@@ -28,11 +28,11 @@
 - `status/frontend.json`：前端项目状态、最近交接提交和待处理事项。
 - `status/sync-manifest.json`：后端与前端的同步关系、契约引用和发布状态。`finalReleaseStatus` 只能在 PM 明确授权后更新；未授权时不得改写。
 
-状态文件只描述可追溯元数据，不替代业务代码、测试或权威 API。提交哈希为空时表示该角色尚未提供可交接提交。
+状态文件只描述可追溯元数据，不替代业务代码、测试或运行时权威 API。`apiContractCommit` 指向开发契约快照提交；`finalReleaseStatus` 仍独立受 PM 控制。提交哈希为空时表示该角色尚未提供可交接提交。
 
 ## 提交哈希交接方式
 
-每次交接都记录来源仓库、分支、完整提交哈希、目标路径、变更摘要和验证命令。接收方先在对应项目运行 `git show <commit-hash>`，再检查 `git diff <parent>..<commit-hash>` 和验证结果；不要依赖文件复制或口头描述。
+每次交接都记录来源仓库、分支、完整提交哈希、目标路径、变更摘要和验证命令。开发契约快照还必须记录源 SHA-256、快照 SHA-256 和语义差异。接收方先在对应项目运行 `git show <commit-hash>`，再检查 `git diff <parent>..<commit-hash>` 和验证结果。
 
 PM 合并跨项目结论时，在 `handoff/` 或 `acceptance/` 记录双方提交哈希，并同步更新相关 `status/*.json`。交接仓库本身的治理提交也使用 Git 提交哈希追踪，远端推送需要单独授权。
 
@@ -41,6 +41,6 @@ PM 合并跨项目结论时，在 `handoff/` 或 `acceptance/` 记录双方提�
 1. 回到本目录，先读取 `AGENTS.md`、`CLAUDE.md` 和本索引。
 2. 执行 `git status --short`、`git log -5 --oneline --decorate`，确认当前工作区和基线提交。
 3. 读取 `status/pm.json`、`status/backend.json`、`status/frontend.json` 和 `status/sync-manifest.json`。
-4. 按状态文件中的来源项目、分支和提交哈希，用 `git show` 核对交接内容。
+4. 按状态文件中的来源项目、分支和提交哈希，用 `git show` 核对交接内容，并核对开发契约快照的源/快照哈希。
 5. 检查 `proposals/`、`handoff/`、`acceptance/` 和 `pm/reviews/` 中尚未关闭的事项，再继续工作。
 6. 继续前确认写入范围；不得因上下文压缩而直接修改权威 API、另一项目或发布状态。

@@ -6,6 +6,8 @@
 >
 > **状态说明：** 本文件记录当前主线的审查发现和责任分配，不直接修复问题。
 
+> **后续决策说明：** 本文件记录的是 ADR-0001 之前的审查状态。关于 `api/coderclub-openapi.json` 副本治理、契约映射和同步清单的旧阻塞，已由 `docs/adr/0001-development-contract-snapshot.md` 和 `pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md` 取代；Gate 1 和 M4 遗留项仍然有效。
+
 ## 严重级别
 
 - **P0：** 阻断契约消费、发布或治理有效性，必须先处理。

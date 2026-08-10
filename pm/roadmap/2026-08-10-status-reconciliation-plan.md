@@ -6,6 +6,8 @@
 >
 > **当前状态：** 文档治理已进入主线；契约对账尚未关闭；发布状态保持未发布。
 
+> **后续决策说明：** 本计划记录 ADR-0001 之前的对账步骤。开发契约快照已由 PM 批准，当前映射和状态以 `status/sync-manifest.json`、`docs/adr/0001-development-contract-snapshot.md` 和最新 PM 验收记录为准；本计划中关于“不得将副本认定为权威”的开发范围结论已被取代，发布状态和 Gate 1 遗留项仍未关闭。
+
 ## 目标
 
 把 `status/pm.json`、`status/backend.json`、`status/frontend.json` 和 `status/sync-manifest.json` 从“各自记录”收敛为可由提交哈希、文件哈希和验证命令复核的协作事实源。状态文件只记录元数据，不替代源代码、权威 API、运行时证据或测试报告。
