@@ -4,7 +4,7 @@
 >
 > **日期：** 2026-08-11
 >
-> **当前 PM 主线：** `origin/main@d627c3e64b24add05cb958fc7990208f62d9807d`
+> **当前 PM 主线：** `origin/main@b3d9fbebb29f8ce79fab44bfcee097a43803239a`
 
 ## Gate 0
 
@@ -21,9 +21,9 @@ G0-01 至 G0-06 已全部通过开发范围验收。`api/coderclub-openapi.json`
 | --- | --- | --- |
 | G1-01 | accepted | 47 个操作鉴权矩阵及运行时依据已复核 |
 | G1-02 | accepted | 后端 401/403 证据、前端业务 code 处理和回归测试已完成 |
-| G1-03 | open | 正式 PUT/DELETE 已确定，POST 兼容截止版本/日期仍待 PM 决策 |
+| G1-03 | partial | 后端已移除四个旧 POST 并通过 45 项 Controller 契约测试；前端基线/API 校验及 PM 开发快照、同步清单更新仍待完成 |
 | G1-04 | partial | 代码级分页修复和测试已通过，真实数据库复核仍待完成 |
 | G1-05 | accepted | 用户已确认默认 Node/npm 入口，前端验证证据已完成 |
 
-Gate 1 当前保持 partial，不批准发布或正式联调。后端细粒度权限矩阵属于 M4 后续范围，
-不重新打开已关闭的 G1-02。
+Gate 1 当前保持 partial，不批准发布或正式联调。G1-03 的旧 POST 兼容策略已由 PM 明确拒绝，
+后端实现已完成；后端细粒度权限矩阵属于 M4 后续范围，不重新打开已关闭的 G1-02。

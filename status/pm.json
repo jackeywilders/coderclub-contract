@@ -5,13 +5,13 @@
   "branch": "codex/pm-coordination",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
   "reviewedRef": "origin/main",
-  "reviewedCommit": "145aae8fe39e56a44321853b56cad9d716e02361",
-  "reviewedRange": "be399d3516087c87d538299c907e6eb432521359..145aae8fe39e56a44321853b56cad9d716e02361",
-  "trackedFileCount": 65,
+  "reviewedCommit": "b3d9fbebb29f8ce79fab44bfcee097a43803239a",
+  "reviewedRange": "145aae8fe39e56a44321853b56cad9d716e02361..b3d9fbebb29f8ce79fab44bfcee097a43803239a",
+  "trackedFileCount": 73,
   "releaseReady": false,
   "remotePushAuthorized": false,
   "openFindings": [
-    "G1-03-CLAUDE-CODE-IMPLEMENTATION",
+    "G1-03-FRONTEND-BASELINE-AND-PM-SNAPSHOT-SYNC",
     "G1-04-REAL-DB-PAGINATION-RECHECK"
   ],
   "contractSnapshot": {
@@ -26,9 +26,10 @@
     "runtimeAuthority": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
     "releaseAuthority": "PM release gate; finalReleaseStatus remains not-published"
   },
-  "lastAction": "PM synchronized origin/main@145aae8, confirmed G1-03 immediate removal of four legacy POST mappings before formal integration, and authorized Claude Code backend implementation; G1-04 real DB recheck remains open",
+  "lastAction": "PM accepted G1-03 backend implementation from origin/main@b3d9fbe: commit 6c1a95b removed four legacy POST mappings, ControllerContractTest passed 45/45, and runtime OpenAPI is 43 paths / 43 operations; G1-03 remains open pending frontend baseline validation and PM development snapshot/sync update",
   "auditReport": "pm/reports/2026-08-10-pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10-pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10-pm-coordination-roadmap.md",
-  "acceptanceReport": "pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md"
+  "acceptanceReport": "pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md",
+  "g1-03BackendAcceptanceReport": "pm/reviews/2026-08-11-g1-03-backend-task-acceptance.md"
 }
