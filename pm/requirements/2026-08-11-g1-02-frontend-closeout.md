@@ -28,8 +28,8 @@ G1-02 的前端业务实现和整改已经完成：
 - 将 `lastCommit` 更新为完整提交哈希 `386dd53b936cd3b06ec8a3e29a13989ff15a6463`。
 - 将 `lastHandoff` 更新为 `handoff/frontend-to-backend/2026-08-11-g1-02-review-remediation-report.md`。
 - 移除 `FRONTEND-BUSINESS-401-403`。
-- 保留 `HANDOFF-HASH-MISMATCH`，除非另有证据完成后端快照映射修复。
-- 保留前端整体 `state: blocked`，因为其他项目级阻塞项仍存在。
+- `HANDOFF-HASH-MISMATCH` 已由 PM 按 `pm/reviews/2026-08-11-handoff-hash-reconciliation.md` 完成映射修复。
+- 前端整体状态已更新为 `gate0-1-frontend-evidence-ready`；Gate 1 的 G1-03/G1-04 仍独立开放。
 
 ### 2. 补充 G1-02 收口证据
 
@@ -69,7 +69,7 @@ Frontend Codex 完成上述回执后，PM 再执行：
 
 - 从 `status/pm.json.openFindings` 移除 `G1-02-FRONTEND-BUSINESS-401-403`。
 - 更新 PM 审核提交和 `reviewedCommit`，使其对应当前同步的 `origin/main`。
-- 维持 `G1-03`、`G1-04` 以及 `HANDOFF-HASH-MISMATCH` 的独立状态。
+- 维持 `G1-03`、`G1-04` 的独立状态；`HANDOFF-HASH-MISMATCH` 已关闭。
 
 PM 不要求 Frontend Codex 修改 `status/sync-manifest.json`、API 快照或发布状态。
 

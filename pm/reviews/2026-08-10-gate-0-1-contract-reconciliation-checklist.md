@@ -43,10 +43,10 @@
 | 编号 | 验收项 | Owner | 必需证据 | 状态 |
 | --- | --- | --- | --- | --- |
 | G1-01 | 完成 47 个操作的鉴权矩阵 | Backend | 每个操作的 anonymous/login/role-permission 结论和运行时依据 | PM 已验收 |
-| G1-02 | 统一 401/403 语义 | Backend + Frontend | HTTP 状态、业务 code、响应结构、前端处理方式和测试 | 部分通过：后端通过，前端业务 code 处理阻塞 |
+| G1-02 | 统一 401/403 语义 | Backend + Frontend | HTTP 状态、业务 code、响应结构、前端处理方式和测试 | 已通过：后端与前端证据均完成，PM 已正式关闭；细粒度权限矩阵另列 M4 |
 | G1-03 | 固化正式 HTTP 方法 | PM + Backend | PUT/DELETE 正式方法、POST 兼容期限、角色和移除条件 | 部分通过：正式方法通过，兼容期限待定 |
 | G1-04 | 修复分页口径 | Backend | 无结果、单页、多页复现和回归测试 | PM 已验收代码级证据，真实 DB 待复核 |
-| G1-05 | 恢复 Frontend 验证门禁 | Frontend | Node/npm 环境、API 哈希校验和 `npm run api:check` 结果 | 部分通过：临时 PATH 通过，默认 Node 仍阻塞 |
+| G1-05 | 恢复 Frontend 验证门禁 | Frontend | Node/npm 环境、API 哈希校验和 `npm run api:check` 结果 | 已通过：用户确认默认 Node/npm 入口，前端验证证据完整 |
 
 ### Gate 1 关闭条件
 
@@ -56,7 +56,7 @@
 - `total`、`list` 和 `totalPages` 在无结果、单页、多页场景下保持一致。
 - Frontend 的 Node/npm 验证命令可以真实执行并记录结果。
 
-**本次 PM 判定：** G1-01、G1-04 的提交和测试证据已通过；G1-02、G1-03、G1-05 仍有未关闭项，因此 Gate 1 不关闭。
+**本次 PM 判定：** G1-01、G1-02、G1-04 的代码级证据和 G1-05 已通过；仅 G1-03 与 G1-04 真实数据库复核仍有未关闭项，因此 Gate 1 不关闭。
 
 ## 统一回执要求
 

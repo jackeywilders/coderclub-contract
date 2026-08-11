@@ -16,7 +16,9 @@
     "pathCount": 45,
     "operationCount": 47,
     "sourceSha256": "44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a",
-    "handoffSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
+    "handoffSha256": "87e122b545ed529edc167b80279869205440be84e12c4407850dfa1d4ff2166b",
+    "historicalDeclaredSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
+    "historicalDeclaredSha256Status": "superseded-by-observed-snapshot",
     "sanitizedExamples": true
   },
   "lastHandoff": "handoff/backend-to-frontend/2026-08-10-gate1-backend-receipt.md",
