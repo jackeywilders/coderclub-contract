@@ -26,7 +26,7 @@
   "validation": {
     "node": "22.14.0",
     "npm": "10.9.2",
-    "npmRunApiCheck": "passed with temporary PATH override; source SHA-256 44cbe7...; no API contract changes detected",
+    "npmRunApiCheck": "passed with temporary PATH override; source SHA-256 44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a; no API contract changes detected",
     "npmTest": "passed with bundled Node v24.14.0; 10 tests, 0 failures, 0 skipped",
     "defaultNpmEntry": "accepted by user confirmation from local CMD; node and npm default entry verified"
   },
