@@ -35,19 +35,19 @@ PM 已从后端运行时源 `87d2b724f7981f4796b3f5ae71470fa18f393661` 生成并
 
 | 检查项 | 结果 |
 | --- | --- |
-| 快照提交 | `73cc5b00189ac9fd28d957c19d95c0005425f02d` |
+| 快照提交 | `99367ea81f17a39874f7516ea919298b323c594e` |
 | 源 SHA-256 | `7576e28a346dcf60b304bdd405f0bb82b72252df37e96013509ece00c6a14a2e` |
-| 快照 SHA-256 | `5a8919e790cbaf02170cc5c3d93194925e92f9ab5641ea6efdb47ed6e6b3c1b4` |
+| 快照 SHA-256 | `9a97c055186883adb6c45304f66417c27c4da7b632375cd70a02c44a652db26a` |
 | OpenAPI 结构 | `3.0.3`，43 paths，43 operations |
 | 路径和方法集合 | 与后端源一致，无缺失或额外操作 |
-| 结构化差异 | 恰 14 处，均为 password/Token 示例值脱敏；无路径、方法、字段、Schema 或安全结构差异 |
+| 结构化差异 | 恰 14 处，均为 password/Token 示例值脱敏；无路径、方法、字段、Schema、安全结构或数组类型差异 |
 
-后端已在提交 `87d2b72` 中将 `info.description` 的统计修正为“43 个路径 43 个操作”。快照已同步该文本；PM 未引入额外语义差异。
+后端已在提交 `87d2b72` 中将 `info.description` 的统计修正为“43 个路径 43 个操作”。在前端提案复核中，PM 确认先前快照 `21f6f64`、`73cc5b0` 将 104 处单元素数组折叠为标量或对象，其中 8 处 `parameters` 会直接阻断前端读取。PM 已在 `99367ea` 基于后端源完整重建快照；Node 类型感知比较确认仅保留 14 处批准脱敏，不再引入结构差异。
 
 ## G1-03 关闭条件复核
 
 G1-03 的后端证据和 PM 开发契约快照均已满足，但全量关闭条件尚缺一项：
 
-1. 前端 API 基线仍记录四个旧 POST。直接运行前端 API 检查脚本已检测到四个已移除端点，并以退出码 1 结束；`src/api/subject.ts` 已使用正式 PUT/DELETE，下一步由 Claude Code 前端以本快照为输入更新基线并运行 `npm run api:check`、`npm test`。
+1. 前端 API 基线仍记录四个旧 POST。PM 已用前端 API 检查脚本成功解析修复后的快照；脚本仅报告这四个预期的旧 POST 移除。下一步由 Claude Code 前端以本快照为输入更新基线并运行 `npm run api:check -- --update-baseline`、`npm test`，再提交消费验证回执。
 
 因此，`G1-03-CLAUDE-CODE-IMPLEMENTATION` 与 `G1-03-PM-SNAPSHOT-SYNC` 已完成；在前端基线回执和消费验证完成前，不关闭 G1-03 总项，也不改变 `releaseStatus` 或 `finalReleaseStatus`。

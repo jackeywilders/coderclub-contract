@@ -22,9 +22,11 @@
       "description": "OSS 文件存储服务"
     }
   ],
-  "security": {
-    "Authorization": null
-  },
+  "security": [
+    {
+      "Authorization": []
+    }
+  ],
   "tags": [
     {
       "name": "认证",
@@ -62,10 +64,12 @@
   "paths": {
     "/auth/register": {
       "post": {
-        "tags": "认证",
+        "tags": [
+          "认证"
+        ],
         "summary": "用户注册",
         "description": "使用用户名、密码和昵称注册新账号。",
-        "security": null,
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -109,7 +113,9 @@
                   "success": false,
                   "code": 400,
                   "message": "参数校验失败",
-                  "data": "userName 不能为空"
+                  "data": [
+                    "userName 不能为空"
+                  ]
                 }
               }
             }
@@ -119,10 +125,12 @@
     },
     "/auth/login": {
       "post": {
-        "tags": "认证",
+        "tags": [
+          "认证"
+        ],
         "summary": "账号密码登录",
         "description": "使用用户名和密码登录，返回 token 和用户信息。",
-        "security": null,
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -182,7 +190,9 @@
                   "success": false,
                   "code": 400,
                   "message": "参数校验失败",
-                  "data": "password 不能为空"
+                  "data": [
+                    "password 不能为空"
+                  ]
                 }
               }
             }
@@ -192,10 +202,12 @@
     },
     "/auth/wx-login": {
       "post": {
-        "tags": "认证",
+        "tags": [
+          "认证"
+        ],
         "summary": "微信登录",
         "description": "使用微信授权 code 登录，首次自动注册。",
-        "security": null,
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -248,10 +260,12 @@
     },
     "/auth/bind-account": {
       "post": {
-        "tags": "认证",
+        "tags": [
+          "认证"
+        ],
         "summary": "微信账号绑定",
         "description": "将微信 openId 绑定到已有账号并更新密码。",
-        "security": null,
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -295,7 +309,9 @@
                   "success": false,
                   "code": 400,
                   "message": "参数校验失败",
-                  "data": "wxOpenId 不能为空"
+                  "data": [
+                    "wxOpenId 不能为空"
+                  ]
                 }
               }
             }
@@ -305,12 +321,16 @@
     },
     "/auth/logout": {
       "post": {
-        "tags": "认证",
+        "tags": [
+          "认证"
+        ],
         "summary": "退出登录",
         "description": "使当前 token 失效，退出登录。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "退出成功",
@@ -333,12 +353,16 @@
     },
     "/auth/user/info": {
       "get": {
-        "tags": "用户管理",
+        "tags": [
+          "用户管理"
+        ],
         "summary": "获取当前用户信息",
         "description": "根据当前登录 token 返回用户信息聚合（userInfo + roles + permissions），供前端做权限控制。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "用户信息聚合",
@@ -361,7 +385,9 @@
                       "status": 0,
                       "createTime": "2026-01-01 10:00:00"
                     },
-                    "roles": "admin_user",
+                    "roles": [
+                      "admin_user"
+                    ],
                     "permissions": [
                       "1",
                       "2"
@@ -376,12 +402,16 @@
     },
     "/auth/user/update": {
       "put": {
-        "tags": "用户管理",
+        "tags": [
+          "用户管理"
+        ],
         "summary": "更新用户信息",
         "description": "更新当前登录用户的个人资料，所有字段可选。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -422,12 +452,16 @@
     },
     "/auth/user/password": {
       "put": {
-        "tags": "用户管理",
+        "tags": [
+          "用户管理"
+        ],
         "summary": "修改密码",
         "description": "修改当前登录用户的密码。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -463,12 +497,16 @@
     },
     "/auth/admin/user/page": {
       "post": {
-        "tags": "用户管理",
+        "tags": [
+          "用户管理"
+        ],
         "summary": "分页查询用户",
         "description": "按页查询后台用户，仅管理员角色可访问。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -502,17 +540,19 @@
                     "pageSize": 10,
                     "total": 1,
                     "totalPages": 1,
-                    "list": {
-                      "id": 1,
-                      "userName": "zhangsan",
-                      "nickName": "张三",
-                      "email": "zhangsan@example.com",
-                      "phone": "13800138000",
-                      "avatar": "https://cdn.example.com/avatar/1.png",
-                      "sex": 1,
-                      "status": 0,
-                      "introduce": "热爱编程的小张"
-                    }
+                    "list": [
+                      {
+                        "id": 1,
+                        "userName": "zhangsan",
+                        "nickName": "张三",
+                        "email": "zhangsan@example.com",
+                        "phone": "13800138000",
+                        "avatar": "https://cdn.example.com/avatar/1.png",
+                        "sex": 1,
+                        "status": 0,
+                        "introduce": "热爱编程的小张"
+                      }
+                    ]
                   }
                 }
               }
@@ -529,7 +569,9 @@
                   "success": false,
                   "code": 400,
                   "message": "参数校验失败",
-                  "data": "分页参数错误"
+                  "data": [
+                    "分页参数错误"
+                  ]
                 }
               }
             }
@@ -555,23 +597,29 @@
     },
     "/auth/admin/user/{id}": {
       "get": {
-        "tags": "用户管理",
+        "tags": [
+          "用户管理"
+        ],
         "summary": "查询用户详情",
         "description": "按用户 ID 查询后台用户详情，仅管理员角色可访问。",
-        "security": {
-          "Authorization": null
-        },
-        "parameters": {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "用户 ID",
-          "schema": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "example": 1
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "用户 ID",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "用户详情",
@@ -610,7 +658,9 @@
                   "success": false,
                   "code": 400,
                   "message": "参数校验失败",
-                  "data": "id 格式错误"
+                  "data": [
+                    "id 格式错误"
+                  ]
                 }
               }
             }
@@ -636,12 +686,16 @@
     },
     "/auth/admin/user/status": {
       "put": {
-        "tags": "用户管理",
+        "tags": [
+          "用户管理"
+        ],
         "summary": "更新用户状态",
         "description": "更新用户启用/禁用状态，仅管理员角色可访问。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -684,7 +738,9 @@
                   "success": false,
                   "code": 400,
                   "message": "参数校验失败",
-                  "data": "userId 不能为空"
+                  "data": [
+                    "userId 不能为空"
+                  ]
                 }
               }
             }
@@ -710,12 +766,16 @@
     },
     "/auth/admin/user/assign-role": {
       "post": {
-        "tags": "用户管理",
+        "tags": [
+          "用户管理"
+        ],
         "summary": "为用户分配角色",
         "description": "为用户分配角色并重新加载其权限，仅管理员角色可访问。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -761,7 +821,9 @@
                   "success": false,
                   "code": 400,
                   "message": "参数校验失败",
-                  "data": "roleIds 不能为空"
+                  "data": [
+                    "roleIds 不能为空"
+                  ]
                 }
               }
             }
@@ -787,11 +849,15 @@
     },
     "/auth/role/add": {
       "post": {
-        "tags": "角色管理",
+        "tags": [
+          "角色管理"
+        ],
         "summary": "添加角色",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -828,22 +894,28 @@
     },
     "/auth/role/delete/{id}": {
       "delete": {
-        "tags": "角色管理",
+        "tags": [
+          "角色管理"
+        ],
         "summary": "删除角色",
-        "security": {
-          "Authorization": null
-        },
-        "parameters": {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "角色 ID",
-          "schema": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "example": 1
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "角色 ID",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "删除成功",
@@ -866,11 +938,15 @@
     },
     "/auth/role/update": {
       "put": {
-        "tags": "角色管理",
+        "tags": [
+          "角色管理"
+        ],
         "summary": "更新角色",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -882,7 +958,9 @@
                   },
                   {
                     "type": "object",
-                    "required": "id",
+                    "required": [
+                      "id"
+                    ],
                     "properties": {
                       "id": {
                         "type": "integer",
@@ -922,11 +1000,15 @@
     },
     "/auth/role/list": {
       "get": {
-        "tags": "角色管理",
+        "tags": [
+          "角色管理"
+        ],
         "summary": "查询所有角色",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "角色列表",
@@ -997,12 +1079,16 @@
     },
     "/auth/role/assign-permission": {
       "post": {
-        "tags": "角色管理",
+        "tags": [
+          "角色管理"
+        ],
         "summary": "为角色分配权限",
         "description": "将一组权限 ID 分配给指定角色。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1044,11 +1130,15 @@
     },
     "/auth/permission/add": {
       "post": {
-        "tags": "权限管理",
+        "tags": [
+          "权限管理"
+        ],
         "summary": "添加权限",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1091,22 +1181,28 @@
     },
     "/auth/permission/delete/{id}": {
       "delete": {
-        "tags": "权限管理",
+        "tags": [
+          "权限管理"
+        ],
         "summary": "删除权限",
-        "security": {
-          "Authorization": null
-        },
-        "parameters": {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "权限 ID",
-          "schema": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "example": 5
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "权限 ID",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 5
+          }
+        ],
         "responses": {
           "200": {
             "description": "删除成功",
@@ -1129,11 +1225,15 @@
     },
     "/auth/permission/update": {
       "put": {
-        "tags": "权限管理",
+        "tags": [
+          "权限管理"
+        ],
         "summary": "更新权限",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1145,7 +1245,9 @@
                   },
                   {
                     "type": "object",
-                    "required": "id",
+                    "required": [
+                      "id"
+                    ],
                     "properties": {
                       "id": {
                         "type": "integer",
@@ -1191,12 +1293,16 @@
     },
     "/auth/permission/tree": {
       "get": {
-        "tags": "权限管理",
+        "tags": [
+          "权限管理"
+        ],
         "summary": "查询权限树",
         "description": "返回嵌套的权限树结构，每个节点包含 children 子节点。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "权限树",
@@ -1236,43 +1342,45 @@
                   "success": true,
                   "code": 200,
                   "message": "操作成功",
-                  "data": {
-                    "id": 1,
-                    "name": "系统管理",
-                    "parentId": 0,
-                    "type": 0,
-                    "menuUrl": "/system",
-                    "status": 0,
-                    "show": 0,
-                    "icon": "settings",
-                    "permissionKey": "system",
-                    "children": [
-                      {
-                        "id": 2,
-                        "name": "用户管理",
-                        "parentId": 1,
-                        "type": 0,
-                        "menuUrl": "/system/user",
-                        "status": 0,
-                        "show": 0,
-                        "icon": "user",
-                        "permissionKey": "system:user:list",
-                        "children": null
-                      },
-                      {
-                        "id": 3,
-                        "name": "角色管理",
-                        "parentId": 1,
-                        "type": 0,
-                        "menuUrl": "/system/role",
-                        "status": 0,
-                        "show": 0,
-                        "icon": "role",
-                        "permissionKey": "system:role:list",
-                        "children": null
-                      }
-                    ]
-                  }
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "系统管理",
+                      "parentId": 0,
+                      "type": 0,
+                      "menuUrl": "/system",
+                      "status": 0,
+                      "show": 0,
+                      "icon": "settings",
+                      "permissionKey": "system",
+                      "children": [
+                        {
+                          "id": 2,
+                          "name": "用户管理",
+                          "parentId": 1,
+                          "type": 0,
+                          "menuUrl": "/system/user",
+                          "status": 0,
+                          "show": 0,
+                          "icon": "user",
+                          "permissionKey": "system:user:list",
+                          "children": []
+                        },
+                        {
+                          "id": 3,
+                          "name": "角色管理",
+                          "parentId": 1,
+                          "type": 0,
+                          "menuUrl": "/system/role",
+                          "status": 0,
+                          "show": 0,
+                          "icon": "role",
+                          "permissionKey": "system:role:list",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
                 }
               }
             }
@@ -1282,12 +1390,16 @@
     },
     "/auth/permission/assign-role": {
       "post": {
-        "tags": "权限管理",
+        "tags": [
+          "权限管理"
+        ],
         "summary": "为权限分配角色",
         "description": "将一组角色 ID 分配给指定权限。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1327,7 +1439,9 @@
     },
     "/subject/category/add": {
       "post": {
-        "tags": "分类管理",
+        "tags": [
+          "分类管理"
+        ],
         "summary": "添加分类",
         "description": "需登录（基础登录校验）。",
         "requestBody": {
@@ -1400,7 +1514,9 @@
                   "success": false,
                   "code": 400,
                   "message": "参数校验失败",
-                  "data": "分类名称不能为空"
+                  "data": [
+                    "分类名称不能为空"
+                  ]
                 }
               }
             }
@@ -1410,12 +1526,16 @@
     },
     "/subject/category/tree": {
       "get": {
-        "tags": "分类管理",
+        "tags": [
+          "分类管理"
+        ],
         "summary": "查询分类树",
         "description": "正式端点。返回完整分类树，节点含 children 子分类（递归结构），前端一次获取全部层级。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "分类树",
@@ -1435,14 +1555,16 @@
                       "categoryType": 1,
                       "imageUrl": "https://cdn.example.com/icons/java.png",
                       "parentId": 0,
-                      "children": {
-                        "id": 3,
-                        "categoryName": "Java基础",
-                        "categoryType": 1,
-                        "imageUrl": "https://cdn.example.com/icons/java-basic.png",
-                        "parentId": 1,
-                        "children": null
-                      }
+                      "children": [
+                        {
+                          "id": 3,
+                          "categoryName": "Java基础",
+                          "categoryType": 1,
+                          "imageUrl": "https://cdn.example.com/icons/java-basic.png",
+                          "parentId": 1,
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "id": 2,
@@ -1450,7 +1572,7 @@
                       "categoryType": 1,
                       "imageUrl": "https://cdn.example.com/icons/python.png",
                       "parentId": 0,
-                      "children": null
+                      "children": []
                     }
                   ]
                 }
@@ -1462,7 +1584,9 @@
     },
     "/subject/category/queryPrimaryCategory": {
       "post": {
-        "tags": "分类管理",
+        "tags": [
+          "分类管理"
+        ],
         "summary": "查询一级分类",
         "description": "兼容入口（迁移/回滚，非首选）。按分类类型查询顶级分类列表；正式端点请使用 GET /subject/category/tree。需登录（基础登录校验）。",
         "requestBody": {
@@ -1471,7 +1595,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": "categoryType",
+                "required": [
+                  "categoryType"
+                ],
                 "properties": {
                   "categoryType": {
                     "type": "integer",
@@ -1523,7 +1649,9 @@
     },
     "/subject/category/queryCategoryByPrimary": {
       "post": {
-        "tags": "分类管理",
+        "tags": [
+          "分类管理"
+        ],
         "summary": "查询子分类",
         "description": "兼容入口（迁移/回滚，非首选）。按父级 ID 和分类类型查询子分类列表；正式端点请使用 GET /subject/category/tree。需登录（基础登录校验）。",
         "requestBody": {
@@ -1593,19 +1721,25 @@
     },
     "/subject/category/update": {
       "put": {
-        "tags": "分类管理",
+        "tags": [
+          "分类管理"
+        ],
         "summary": "更新分类",
         "description": "正式端点。更新分类。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": "id",
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "type": "integer",
@@ -1664,23 +1798,29 @@
     },
     "/subject/category/delete/{id}": {
       "delete": {
-        "tags": "分类管理",
+        "tags": [
+          "分类管理"
+        ],
         "summary": "删除分类",
         "description": "正式端点。按路径参数 id 删除分类（逻辑删除）。",
-        "security": {
-          "Authorization": null
-        },
-        "parameters": {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "分类 ID",
-          "schema": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "example": 5
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "分类 ID",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 5
+          }
+        ],
         "responses": {
           "200": {
             "description": "删除成功",
@@ -1703,7 +1843,9 @@
     },
     "/subject/label/queryLabelByCategoryId": {
       "post": {
-        "tags": "标签管理",
+        "tags": [
+          "标签管理"
+        ],
         "summary": "按分类 ID 查询标签",
         "description": "兼容入口（迁移/回滚，非首选）。按分类 ID 查询标签列表；正式端点请使用 GET /subject/label/list。需登录（基础登录校验）。",
         "requestBody": {
@@ -1712,7 +1854,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": "categoryId",
+                "required": [
+                  "categoryId"
+                ],
                 "properties": {
                   "categoryId": {
                     "type": "integer",
@@ -1768,7 +1912,9 @@
     },
     "/subject/label/add": {
       "post": {
-        "tags": "标签管理",
+        "tags": [
+          "标签管理"
+        ],
         "summary": "添加标签",
         "description": "需登录（基础登录校验）。",
         "requestBody": {
@@ -1829,23 +1975,29 @@
     },
     "/subject/label/list": {
       "get": {
-        "tags": "标签管理",
+        "tags": [
+          "标签管理"
+        ],
         "summary": "按分类查询标签列表",
         "description": "正式端点。返回标签列表，可选 query 参数 categoryId 按分类过滤；不传则返回全部。",
-        "security": {
-          "Authorization": null
-        },
-        "parameters": {
-          "name": "categoryId",
-          "in": "query",
-          "required": false,
-          "description": "分类 ID（可选）",
-          "schema": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "example": 1
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "description": "分类 ID（可选）",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "标签列表",
@@ -1881,19 +2033,25 @@
     },
     "/subject/label/update": {
       "put": {
-        "tags": "标签管理",
+        "tags": [
+          "标签管理"
+        ],
         "summary": "更新标签",
         "description": "正式端点。更新标签。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": "id",
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "type": "integer",
@@ -1947,23 +2105,29 @@
     },
     "/subject/label/delete/{id}": {
       "delete": {
-        "tags": "标签管理",
+        "tags": [
+          "标签管理"
+        ],
         "summary": "删除标签",
         "description": "正式端点。按路径参数 id 删除标签（逻辑删除）。",
-        "security": {
-          "Authorization": null
-        },
-        "parameters": {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "标签 ID",
-          "schema": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "example": 3
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "标签 ID",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 3
+          }
+        ],
         "responses": {
           "200": {
             "description": "删除成功",
@@ -1986,7 +2150,9 @@
     },
     "/subject/add": {
       "post": {
-        "tags": "题目管理",
+        "tags": [
+          "题目管理"
+        ],
         "summary": "添加题目",
         "description": "添加一道题目，包含选项、分类和标签绑定。subjectType: 1=单选, 2=多选, 3=判断, 4=简答。需登录（基础登录校验）。",
         "requestBody": {
@@ -2060,20 +2226,24 @@
     },
     "/subject/remove/{id}": {
       "delete": {
-        "tags": "题目管理",
+        "tags": [
+          "题目管理"
+        ],
         "summary": "删除题目",
         "description": "需登录（基础登录校验）。",
-        "parameters": {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "题目 ID",
-          "schema": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "example": 10
-        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "题目 ID",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 10
+          }
+        ],
         "responses": {
           "200": {
             "description": "删除结果，true=成功",
@@ -2096,7 +2266,9 @@
     },
     "/subject/update": {
       "put": {
-        "tags": "题目管理",
+        "tags": [
+          "题目管理"
+        ],
         "summary": "更新题目",
         "description": "仅更新 subject_info 主表基本信息。不会更新答案、选项或分类标签映射；需登录（基础登录校验）。",
         "requestBody": {
@@ -2105,7 +2277,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": "id",
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "type": "integer",
@@ -2175,7 +2349,9 @@
     },
     "/subject/list": {
       "get": {
-        "tags": "题目管理",
+        "tags": [
+          "题目管理"
+        ],
         "summary": "查询所有题目",
         "description": "查询全部题目列表（不含分页）。需登录（基础登录校验）。",
         "responses": {
@@ -2224,8 +2400,10 @@
                       "subjectType": 1,
                       "subjectScore": 5,
                       "subjectParse": "GIL即全局解释器锁...",
-                      "labelName": "Python",
-                      "optionList": null
+                      "labelName": [
+                        "Python"
+                      ],
+                      "optionList": []
                     }
                   ]
                 }
@@ -2237,7 +2415,9 @@
     },
     "/subject/querySubjectInfo": {
       "post": {
-        "tags": "题目管理",
+        "tags": [
+          "题目管理"
+        ],
         "summary": "查询题目详情",
         "description": "兼容入口（迁移/回滚，非首选）。根据 ID 查询题目完整信息；正式端点请使用 GET /subject/querySubjectInfo/{id}。需登录（基础登录校验）。",
         "requestBody": {
@@ -2246,7 +2426,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": "id",
+                "required": [
+                  "id"
+                ],
                 "properties": {
                   "id": {
                     "type": "integer",
@@ -2317,23 +2499,29 @@
     },
     "/subject/querySubjectInfo/{id}": {
       "get": {
-        "tags": "题目管理",
+        "tags": [
+          "题目管理"
+        ],
         "summary": "查询题目详情",
         "description": "正式端点。按路径参数 id 查询题目完整信息，包含选项列表。当前响应不含分类/标签关联字段（categoryIds/labelIds/categoryId/labelId 为 null），需用分类树 + 标签接口自行关联；subjectAnswer 仅简答题（题型 4）返回。",
-        "security": {
-          "Authorization": null
-        },
-        "parameters": {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "题目 ID",
-          "schema": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "example": 1
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "题目 ID",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "题目详情（当前响应不含分类/标签关联字段，需用分类树 + 标签接口自行关联）",
@@ -2390,12 +2578,16 @@
     },
     "/subject/getSubjectPage": {
       "post": {
-        "tags": "题目管理",
+        "tags": [
+          "题目管理"
+        ],
         "summary": "分页查询题目",
         "description": "按难度、分类、标签组合条件分页查询题目列表。",
-        "security": {
-          "Authorization": null
-        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -2512,10 +2704,12 @@
     },
     "/oss/getUrl": {
       "get": {
-        "tags": "文件存储",
+        "tags": [
+          "文件存储"
+        ],
         "summary": "获取文件访问 URL",
         "description": "正式端点。根据 bucket 名称和 object 名称返回文件访问地址。本服务暂未启用登录校验，全部端点匿名访问。",
-        "security": null,
+        "security": [],
         "parameters": [
           {
             "name": "bucketName",
@@ -2560,10 +2754,12 @@
     },
     "/oss/upload": {
       "post": {
-        "tags": "文件存储",
+        "tags": [
+          "文件存储"
+        ],
         "summary": "上传文件",
         "description": "正式端点。以 multipart/form-data 上传文件到 OSS，参数为 uploadFile/bucket/objectName。本服务暂未启用登录校验，全部端点匿名访问。",
-        "security": null,
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -2616,10 +2812,12 @@
     },
     "/oss/testGetAllBuckets": {
       "get": {
-        "tags": "文件存储",
+        "tags": [
+          "文件存储"
+        ],
         "summary": "测试：获取第一个 Bucket 名称",
         "description": "返回第一个 Bucket 名称（调试用）。本服务暂未启用登录校验，全部端点匿名访问。",
-        "security": null,
+        "security": [],
         "responses": {
           "200": {
             "description": "第一个 Bucket 名称",
@@ -2692,7 +2890,9 @@
       },
       "WxLoginDTO": {
         "type": "object",
-        "required": "code",
+        "required": [
+          "code"
+        ],
         "properties": {
           "code": {
             "type": "string",
@@ -2765,7 +2965,9 @@
       },
       "PasswordUpdateDTO": {
         "type": "object",
-        "required": "newPassword",
+        "required": [
+          "newPassword"
+        ],
         "properties": {
           "newPassword": {
             "type": "string",
@@ -2906,7 +3108,9 @@
       },
       "AuthPermissionDTO": {
         "type": "object",
-        "required": "name",
+        "required": [
+          "name"
+        ],
         "properties": {
           "id": {
             "type": "integer",
@@ -3378,7 +3582,9 @@
                   "type": "string"
                 },
                 "description": "角色编码列表",
-                "example": "admin_user"
+                "example": [
+                  "admin_user"
+                ]
               },
               "permissions": {
                 "type": "array",
