@@ -13,8 +13,7 @@
   "openFindings": [
     "G1-02-FRONTEND-BUSINESS-401-403",
     "G1-03-POST-COMPATIBILITY-POLICY",
-    "G1-04-REAL-DB-PAGINATION-RECHECK",
-    "G1-05-FRONTEND-NODE-DEFAULT"
+    "G1-04-REAL-DB-PAGINATION-RECHECK"
   ],
   "contractSnapshot": {
     "status": "accepted-for-development",
@@ -28,7 +27,7 @@
     "runtimeAuthority": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
     "releaseAuthority": "PM release gate; finalReleaseStatus remains not-published"
   },
-  "lastAction": "pm approved API snapshot for development; Gate 0 closed for development, Gate 1 remains partial and release blocked",
+  "lastAction": "PM formally closed G1-05 based on user local CMD verification; Gate 0 remains closed for development, Gate 1 remains partial and release blocked",
   "auditReport": "pm/reports/2026-08-10-pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10-pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10-pm-coordination-roadmap.md",

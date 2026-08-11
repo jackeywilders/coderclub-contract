@@ -26,12 +26,12 @@
     "npm": "10.9.2",
     "npmRunApiCheck": "passed with temporary PATH override; source SHA-256 44cbe7...; no API contract changes detected",
     "npmTest": "passed with temporary PATH override; 2 tests",
-    "defaultNpmEntry": "blocked; nvm-desktop default Node version is not set"
+    "defaultNpmEntry": "accepted by user confirmation from local CMD; node and npm default entry verified"
   },
   "acceptance": {
     "G0-04": "accepted: frontend consumes backend authoritative source and hash 44cbe7...",
     "G1-02": "blocked: interceptor lacks business response code 401/403 handling and runtime tests",
-    "G1-05": "partial: npm commands pass with temporary PATH override; default Node selector remains unconfigured"
+    "G1-05": "accepted: user verified default node and npm entry from local CMD"
   },
   "openItems": [
     {
@@ -43,11 +43,6 @@
       "id": "FRONTEND-BUSINESS-401-403",
       "severity": "high",
       "description": "src/api/index.ts handles HTTP status 401/403 but not response body code 401/403; runtime interceptor tests are absent."
-    },
-    {
-      "id": "FRONTEND-NODE-DEFAULT",
-      "severity": "medium",
-      "description": "The default nvm-desktop shim still has no Node version; checks require a temporary PATH override."
     }
   ]
 }
