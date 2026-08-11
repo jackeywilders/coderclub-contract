@@ -10,9 +10,9 @@
 
 G0-01 至 G0-06 已全部通过开发范围验收。G1-03 同步后的 `api/coderclub-openapi.json` 当前批准映射为：
 
-`6c1a95b → cf6998... → 21f6f64/api/coderclub-openapi.json → 007ca1...`
+`87d2b72 → 7576e2... → 73cc5b0/api/coderclub-openapi.json → 5a8919...`
 
-历史 `e80aaf6 → 44cbe7... → 1a2aff8 → 87e122...` 与 `0057e...` 声明已不再作为当前快照依据。Gate 0 关闭不等同于发布，
+历史 `6c1a95b → cf6998... → 21f6f64 → 007ca1...`、`e80aaf6 → 44cbe7... → 1a2aff8 → 87e122...` 与 `0057e...` 声明已不再作为当前快照依据。Gate 0 关闭不等同于发布，
 `releaseStatus` 和 `finalReleaseStatus` 继续为 `not-published`。
 
 ## Gate 1
