@@ -1,9 +1,9 @@
 {
   "role": "backend",
-  "state": "gate0-1-backend-evidence-ready",
+  "state": "g1-03-backend-evidence-ready",
   "projectPath": "G:/Dev/backend/Club/CoderClub",
   "branch": "main",
-  "lastCommit": "08cd88c8935371e0bfd07689ed6a9c0ae549a2a1",
+  "lastCommit": "6c1a95bb679b65191488531537b79aa6948a4399",
   "baseline": {
     "name": "C0",
     "commit": "7e3f77b49627dab501c45c0548f08d5334f3ed48"
@@ -13,15 +13,15 @@
     "handoffPath": "api/coderclub-openapi.json",
     "openapi": "3.0.3",
     "documentVersion": "1.0.0",
-    "pathCount": 45,
-    "operationCount": 47,
-    "sourceSha256": "44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a",
+    "pathCount": 43,
+    "operationCount": 43,
+    "sourceSha256": "cf6998f73480cd27f23fcacbc7b662f49ce33d281da82a855e4d0ea5172852f6",
     "handoffSha256": "87e122b545ed529edc167b80279869205440be84e12c4407850dfa1d4ff2166b",
     "historicalDeclaredSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
     "historicalDeclaredSha256Status": "superseded-by-observed-snapshot",
     "sanitizedExamples": true
   },
-  "lastHandoff": "handoff/backend-to-frontend/2026-08-10-gate1-backend-receipt.md",
+  "lastHandoff": "handoff/backend-to-frontend/2026-08-11-g1-03-claude-code-backend-execution-report.md",
   "designBaseline": "designs/backend/2026-08-10-gate0-1-backend-baseline.md",
   "documentationBaseline": {
     "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
@@ -44,11 +44,6 @@
   },
   "openItems": [
     {
-      "id": "G1-03-POST-COMPATIBILITY-POLICY",
-      "severity": "medium",
-      "description": "分类/标签正式 PUT/DELETE 已确认，历史 POST 仍保留；兼容截止版本/日期和移除条件待 PM 决策。"
-    },
-    {
       "id": "G1-02-FINE-GRAINED-PERMISSION",
       "severity": "medium",
       "description": "Auth 管理用户已覆盖 admin_user 角色和 403 回归；Auth Role/Permission 与 Subject 尚未配置细粒度角色/权限矩阵，移交 M4。"
@@ -64,6 +59,11 @@
     "gate0SanitizedMapping": true,
     "authMatrix47": true,
     "auth401403BackendEvidence": true,
-    "paginationRegression": true
+    "paginationRegression": true,
+    "g1-03ControllerContract45": true,
+    "g1-03OpenApi43": true,
+    "g1-03OldPostRemoved": true,
+    "apiSourceJwtOrAbsolutePathValues": false,
+    "apiSourceContainsSyntheticCredentialExamples": true
   }
 }
