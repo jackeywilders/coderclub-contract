@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "CoderClub API",
-    "description": "CoderClub 刷题平台后端接口文档，覆盖认证、用户、角色、权限、分类、标签、题目、文件存储 8 大模块共 45 个路径 47 个操作。统一响应权威目标契约：所有 ResponseResult 均必须包含 success、code、message、data 四字段；无业务载荷时 data 为 null，数组接口无结果时 data 为 []，分页接口无结果时 data.list 为 []。该规则为前后端权威目标契约，不因当前服务序列化配置而放宽。",
+    "description": "CoderClub 刷题平台后端接口文档，覆盖认证、用户、角色、权限、分类、标签、题目、文件存储 8 大模块共 43 个路径 43 个操作。统一响应权威目标契约：所有 ResponseResult 均必须包含 success、code、message、data 四字段；无业务载荷时 data 为 null，数组接口无结果时 data 为 []，分页接口无结果时 data.list 为 []。该规则为前后端权威目标契约，不因当前服务序列化配置而放宽。",
     "version": "1.0.0",
     "contact": {
       "name": "CoderClub Team"
