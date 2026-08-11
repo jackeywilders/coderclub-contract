@@ -18,19 +18,19 @@
     "pathCount": 45,
     "operationCount": 47
   },
-  "lastCommit": "cb62823f5944d4f544a3f11da8685900a5d8cfb4",
-  "lastHandoff": "handoff/frontend-to-backend/2026-08-10-gate0-1-frontend-receipt.md",
+  "lastCommit": "386dd53b936cd3b06ec8a3e29a13989ff15a6463",
+  "lastHandoff": "handoff/frontend-to-backend/2026-08-11-g1-02-review-remediation-report.md",
   "design": "designs/frontend/2026-08-07-api-integration-impact.md",
   "validation": {
     "node": "22.14.0",
     "npm": "10.9.2",
-    "npmRunApiCheck": "passed with temporary PATH override; source SHA-256 44cbe7...; no API contract changes detected",
-    "npmTest": "passed with temporary PATH override; 2 tests",
+    "npmRunApiCheck": "passed with temporary PATH override; source SHA-256 44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a; no API contract changes detected",
+    "npmTest": "passed with temporary PATH override; 10/10 tests, 0 failures, 0 skipped",
     "defaultNpmEntry": "accepted by user confirmation from local CMD; node and npm default entry verified"
   },
   "acceptance": {
     "G0-04": "accepted: frontend consumes backend authoritative source and hash 44cbe7...",
-    "G1-02": "blocked: interceptor lacks business response code 401/403 handling and runtime tests",
+    "G1-02": "accepted: implementation and remediation reviewed; business and HTTP 401/403 handling covered by runtime tests",
     "G1-05": "accepted: user verified default node and npm entry from local CMD"
   },
   "openItems": [
@@ -39,10 +39,5 @@
       "severity": "high",
       "description": "Backend receipt declares handoff SHA 0057e69..., but the tracked handoff copy observed in main is 87e122...; PM must reconcile the mapping."
     },
-    {
-      "id": "FRONTEND-BUSINESS-401-403",
-      "severity": "high",
-      "description": "src/api/index.ts handles HTTP status 401/403 but not response body code 401/403; runtime interceptor tests are absent."
-    }
   ]
 }
