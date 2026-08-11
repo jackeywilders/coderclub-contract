@@ -3,7 +3,7 @@
   "state": "gate0-1-backend-evidence-ready",
   "projectPath": "G:/Dev/backend/Club/CoderClub",
   "branch": "main",
-  "lastCommit": "08cd88c8935371e0bfd07689ed6a9c0ae549a2a1",
+  "lastCommit": "7c82cbec5433a2e7aa44582e3c0ddba459c4c886",
   "baseline": {
     "name": "C0",
     "commit": "7e3f77b49627dab501c45c0548f08d5334f3ed48"
@@ -44,9 +44,9 @@
   },
   "openItems": [
     {
-      "id": "G1-03-POST-COMPATIBILITY-POLICY",
+      "id": "G1-03-CLAUDE-CODE-IMPLEMENTATION",
       "severity": "medium",
-      "description": "分类/标签正式 PUT/DELETE 已确认，历史 POST 仍保留；兼容截止版本/日期和移除条件待 PM 决策。"
+      "description": "PM 已确认立即移除分类/标签四个旧 POST 映射；等待 Claude Code 后端完成 Controller、契约测试和运行时 OpenAPI 实现并由 Backend Codex 复验。"
     },
     {
       "id": "G1-02-FINE-GRAINED-PERMISSION",

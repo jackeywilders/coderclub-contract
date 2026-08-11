@@ -5,13 +5,13 @@
   "branch": "codex/pm-coordination",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
   "reviewedRef": "origin/main",
-  "reviewedCommit": "d627c3e64b24add05cb958fc7990208f62d9807d",
-  "reviewedRange": "be399d3516087c87d538299c907e6eb432521359..d627c3e64b24add05cb958fc7990208f62d9807d",
+  "reviewedCommit": "145aae8fe39e56a44321853b56cad9d716e02361",
+  "reviewedRange": "be399d3516087c87d538299c907e6eb432521359..145aae8fe39e56a44321853b56cad9d716e02361",
   "trackedFileCount": 65,
   "releaseReady": false,
   "remotePushAuthorized": false,
   "openFindings": [
-    "G1-03-POST-COMPATIBILITY-POLICY",
+    "G1-03-CLAUDE-CODE-IMPLEMENTATION",
     "G1-04-REAL-DB-PAGINATION-RECHECK"
   ],
   "contractSnapshot": {
@@ -26,7 +26,7 @@
     "runtimeAuthority": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
     "releaseAuthority": "PM release gate; finalReleaseStatus remains not-published"
   },
-  "lastAction": "PM updated G0/G1 acceptance against origin/main@d627c3e; G0 is closed for development, G1-01/G1-02/G1-04 code evidence/G1-05 are accepted, and only G1-03 plus G1-04 real DB recheck remain open",
+  "lastAction": "PM synchronized origin/main@145aae8, confirmed G1-03 immediate removal of four legacy POST mappings before formal integration, and authorized Claude Code backend implementation; G1-04 real DB recheck remains open",
   "auditReport": "pm/reports/2026-08-10-pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10-pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10-pm-coordination-roadmap.md",
