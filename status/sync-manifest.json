@@ -3,9 +3,9 @@
   "releaseStatus": "not-published",
   "finalReleaseStatus": "not-published",
   "backendCommit": "87d2b724f7981f4796b3f5ae71470fa18f393661",
-  "frontendCommit": "cb62823f5944d4f544a3f11da8685900a5d8cfb4",
+  "frontendCommit": "afba2bee2665b576c2fc18aabc54759e0cda6513",
   "apiContractCommit": "99367ea81f17a39874f7516ea919298b323c594e",
-  "lastSyncedAt": "2026-08-11T21:37:59+08:00",
+  "lastSyncedAt": "2026-08-12T00:00:00+08:00",
   "contractSnapshot": {
     "status": "accepted-for-development",
     "sourceRepository": "G:/Dev/backend/Club/CoderClub",
@@ -27,9 +27,15 @@
   },
   "frontendConsumption": {
     "projectPath": "G:/Dev/backend/Club/CoderClubFront",
-    "sourceCommit": "cb62823f5944d4f544a3f11da8685900a5d8cfb4",
+    "sourceCommit": "afba2bee2665b576c2fc18aabc54759e0cda6513",
+    "sourceRemoteCommit": "fa908a1d44c3a9300717f8ff475406144774a666",
+    "sourceRemoteMerge": "b85c5f56f63897ea3e9913b5a2ec1662d2b53455",
     "configuredPath": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
-    "consumedSha256": "44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a"
+    "consumedSha256": "9a97c055186883adb6c45304f66417c27c4da7b632375cd70a02c44a652db26a",
+    "consumedSha256DiskCrlf": "414211bfa997081c9a07049d2d6da7a048591d054a068cd87f96390ba7a4a8e8",
+    "baselinePath": "docs/frontend/handoff/api-docs-baseline.json",
+    "baselineEndpointCount": 43,
+    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-11-g1-03-frontend-consumption-receipt.md"
   },
-  "notes": "The PM-approved handoff snapshot is authoritative for subsequent cross-project development. The backend source and runtime implementation remain runtime authority. This approval does not publish the contract; Gate 1, M4, and PM release acceptance remain required."
+  "notes": "The PM-approved handoff snapshot is authoritative for subsequent cross-project development. The backend source and runtime implementation remain runtime authority. G1-03 was formally closed on 2026-08-12 after frontend baseline update (afba2be/fa908a1, 43 endpoints) and consumption validation; G1-04-REAL-DB-PAGINATION-RECHECK remains open. This closure does not publish the contract; Gate 1 remains partial and M4/PM release acceptance remain required."
 }
