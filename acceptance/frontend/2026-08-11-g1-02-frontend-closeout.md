@@ -2,7 +2,7 @@
 
 > **验收角色：** Frontend Codex
 > **验收日期：** 2026-08-11
-> **任务来源：** `pm/requirements/2026-08-11-g1-02-frontend-closeout.md`
+> **任务来源：** `pm/requirements/2026-08-11/g1-02-frontend-closeout.md`
 > **交接仓库基线：** `origin/main@d627c3e`
 
 ## 1. 验收结论

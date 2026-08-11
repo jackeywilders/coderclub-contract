@@ -6,7 +6,7 @@
 >
 > **提出日期：** 2026-08-11
 >
-> **关联需求：** `pm/requirements/2026-08-11-g1-03-formal-http-method-migration.md`
+> **关联需求：** `pm/requirements/2026-08-11/g1-03-formal-http-method-migration.md`
 
 ## 1. 提案摘要
 
