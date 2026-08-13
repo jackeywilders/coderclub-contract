@@ -14,7 +14,7 @@
 | 来源分支 | `main` |
 | 死代码清理提交 | `fad2312`（refactor(subject): 移除无调用者的 SubjectInfoService.page 死代码） |
 | 启动脚本修复提交 | `7c3ac66`（fix(scripts): 启动脚本先安装再运行，避免引用过期 m2 jar） |
-| 本回执提交哈希 | （Backend Codex 签署时填写） |
+| 本回执提交哈希 | `75835f51ee15e1b1192ca349a01eafbb68900415`（Backend Codex 签署提交） |
 | 服务地址 | Auth `http://localhost:3100`、Subject `http://localhost:3000` |
 | 运行环境 | Nacos `<nacos-dev-addr>:<nacos-port>`（namespace `<dev-namespace>`）；Redis `<redis-mysql-addr>:<redis-port>`；MySQL 以 Nacos 拉取值为准 |
 
