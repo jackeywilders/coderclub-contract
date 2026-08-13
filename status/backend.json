@@ -1,9 +1,9 @@
 {
   "role": "backend",
-  "state": "g1-04-backend-evidence-verified",
+  "state": "m4-01-02-03-backend-evidence-signed",
   "projectPath": "G:/Dev/backend/Club/CoderClub",
   "branch": "main",
-  "lastCommit": "7c3ac66dc7f2c3deaaf18f178104d02d12751e3a",
+  "lastCommit": "c24dd1f13242b162bc06335b38240be3d0407cfd",
   "baseline": {
     "name": "C0",
     "commit": "7e3f77b49627dab501c45c0548f08d5334f3ed48"
@@ -21,7 +21,7 @@
     "historicalDeclaredSha256Status": "superseded-by-observed-snapshot",
     "sanitizedExamples": true
   },
-  "lastHandoff": "handoff/backend-to-frontend/2026-08-12/g1-04-claude-code-backend-execution-report.md",
+  "lastHandoff": "handoff/backend-to-frontend/2026-08-13/m4-03-credential-hardening-report.md",
   "designBaseline": "designs/backend/2026-08-10/gate0-1-backend-baseline.md",
   "documentationBaseline": {
     "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
@@ -42,13 +42,7 @@
       "acceptance/backend/milestones/M3/2026-08-02/M3完工报告.md"
     ]
   },
-  "openItems": [
-    {
-      "id": "G1-02-FINE-GRAINED-PERMISSION",
-      "severity": "medium",
-      "description": "Auth 管理用户已覆盖 admin_user 角色和 403 回归；Auth Role/Permission 与 Subject 尚未配置细粒度角色/权限矩阵，移交 M4。"
-    }
-  ],
+  "openItems": [],
   "validation": {
     "jsonParse": true,
     "openapiIs303": true,
@@ -68,6 +62,11 @@
     "g1-04NineScenariosVerified": true,
     "g1-04ContractFieldsVerified": true,
     "g1-04ReceiptSigned": true,
+    "m4-01PermissionMatrixVerified": true,
+    "m4-01ThreeStateAuthVerified": true,
+    "m4-02OssAccessPolicyVerified": true,
+    "m4-03CredentialGrepClean": true,
+    "m4-01-02-03ReceiptsSigned": true,
     "apiSourceJwtOrAbsolutePathValues": false,
     "apiSourceContainsSyntheticCredentialExamples": true
   }

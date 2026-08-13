@@ -17,7 +17,7 @@
 | 文档提交 | `e6eec67`（docs(backend): M4-03 配置优先级与端口策略文档） |
 | 文档提交 | `8d596ad`（docs(backend): M4-03 三服务 Nacos 配置上收参考文档） |
 | 文档提交 | `d4192cf`（docs(backend): M4-03 文档聚焦敏感配置上收 Nacos） |
-| 回执提交哈希 | （Backend Codex 签署时填写） |
+| 回执提交哈希 | `5b89a2450cf956c02dbef36fcce72ef59c659f7a`（Backend Codex 签署提交） |
 
 ## 2. grep 核验命令与原始输出
 
@@ -74,3 +74,14 @@
 - 未修改交接仓库 `api/coderclub-openapi.json` 快照与 `status/sync-manifest.json`。
 - 未修改前端项目；未代为执行或伪造凭据轮换（轮换由用户执行并提供完成记录）。
 - 所有 grep 核验输出与提交为真实结果，未伪造。
+
+## 7. Backend Codex 复核签署（2026-08-13）
+
+- [x] 代码级复核：三启动脚本 Nacos 用户名/密码环境变量化 + 缺失校验、已知 5 个历史凭据全库 grep 零命中（独立复验）、种子密码为 BCrypt 哈希、配置优先级/端口策略/Nacos 上收文档齐全 — **通过**
+- [x] 独立重跑：`SubjectContractTest` 49/49 + `AuthContractTest` 8/8 + `FileControllerTest` 11/11，BUILD SUCCESS — **通过**
+- [x] OpenAPI SHA-256 未变（`7576e28a…`，43/43）— **通过**
+- [x] 凭据轮换完成记录（用户 2026-08-13 提供）引用核验 — **通过**
+- [x] M4-03 关闭条件 1-4 满足；签署本回执
+- [问题] 回执 §3.1 备注「Subject/OSS 在 Nacos 新配置下的启动验证见后端侧未决项」：OSS 已由 M4-02 §8 真实复核覆盖；**Subject 在轮换后 Nacos 配置下的独立启动验证未见明确记录**，建议在 M4 后续验证中补记（不阻塞本任务签署）
+
+**复核签署**：Backend Codex，2026-08-13（工作底稿：`designs/backend/2026-08-13/m4-03-credential-hardening-review-workpaper.md`）
