@@ -13,6 +13,9 @@
 | 来源项目 | `G:/Dev/backend/Club/CoderClub` |
 | 来源分支 | `main` |
 | 实施提交哈希 | `fbac8a8`（feat(auth/subject): 细粒度角色/权限矩阵鉴权（M4-01）） |
+| 种子数据提交 | `8ee6919`（docs(database): 新增重新设计版种子数据） |
+| 复核修复提交 | `eb17d57`（fix(auth): 无权限用户登录时避免空集合查询权限键） |
+| 类型统一提交 | `a67e274`（docs(database): subject_label.category_id 统一为 bigint） |
 | 回执提交哈希 | （Backend Codex 签署时填写） |
 
 ## 2. 权限矩阵文档路径
@@ -87,3 +90,34 @@ mvn -f coder-club-dependencies/pom.xml test
 - 未修改交接仓库 `api/coderclub-openapi.json` 快照与 `status/sync-manifest.json`。
 - 未修改前端项目；未执行运维侧凭据/数据变更（运行库权限数据未擅自写入）。
 - 所有测试命令与输出为真实执行结果，未伪造。
+
+## 8. 真实 DB 复核与后续修复（2026-08-13 补充）
+
+种子数据文件 `coderclub-seed-data-2026-08-13.sql`（`8ee6919`）已由用户应用于远程 MySQL（含 admin/admin123 管理员、user/user123 普通用户、9 个写权限、normal_user 零权限）。据此对 M4-01 执行**真实 DB 三态复核**，发现并修复如下问题：
+
+### 8.1 复核发现的缺陷（已修复 `eb17d57`）
+
+- **现象**：`user/user123` 登录返回 **500**（admin 登录正常）。
+- **根因**：`loadRoleAndPermission` 对**无权限用户**（normal_user 零权限）调用 `listByIds(空集合)` → MyBatis-Flex 抛 `primaryValues 数组不能为 null 或空元素`。旧运行库 normal_user 持有 `subject:add`（集合非空）故此前未暴露；新库按矩阵给普通用户零权限后触发。
+- **修复**：空权限集合守卫（`if (!permissionIdSet.isEmpty())`），新增回归测试「无权限角色不触发权限键查询」（TDD 红→绿）。提交 `eb17d57`。
+
+### 8.2 修复后真实 DB 三态验证（全过）
+
+| 场景 | 端点 | 结果 |
+| --- | --- | --- |
+| 匿名 | `DELETE /subject/category/delete/99999` | HTTP 401 `未登录或Token已过期` ✅ |
+| 普通用户（user） | 同上 | HTTP 403 `无权限访问` ✅ |
+| 管理员（admin） | 同上 | HTTP 200（权限放行；业务「删除失败」因 id 不存在）✅ |
+| 普通用户（user） | `GET /subject/category/tree` | HTTP 200（读端点登录即可；含新增数据库/算法分类）✅ |
+
+### 8.3 全量回归（含新增测试）
+
+`mvn -f coder-club-dependencies/pom.xml test` → **103/103 通过，BUILD SUCCESS**。
+
+### 8.4 类型统一（`a67e274`）
+
+种子文件 `subject_label.category_id` 由 `varchar(50)` 统一为 `bigint(20)`，与代码实体 `Long` 及 canonical `init.sql` 对齐。**注意**：已按旧 seed 建库的运行库需 `ALTER TABLE subject_label MODIFY category_id bigint(20)` 或重新应用新 seed 生效。
+
+### 8.5 补充结论
+
+真实 DB 复核确认 M4-01 权限矩阵在运行库语义正确（匿名 401 / 普通用户 403 / 管理员 200）；种子数据未破坏既有业务，反而暴露并修复了无权限用户登录缺陷。
