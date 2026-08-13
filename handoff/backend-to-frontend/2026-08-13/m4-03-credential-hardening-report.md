@@ -17,7 +17,7 @@
 | 文档提交 | `e6eec67`（docs(backend): M4-03 配置优先级与端口策略文档） |
 | 文档提交 | `8d596ad`（docs(backend): M4-03 三服务 Nacos 配置上收参考文档） |
 | 文档提交 | `d4192cf`（docs(backend): M4-03 文档聚焦敏感配置上收 Nacos） |
-| 回执提交哈希 | （Backend Codex 签署时填写） |
+| 回执提交哈希 | `5b89a2450cf956c02dbef36fcce72ef59c659f7a`（Backend Codex 签署提交） |
 
 ## 2. grep 核验命令与原始输出
 

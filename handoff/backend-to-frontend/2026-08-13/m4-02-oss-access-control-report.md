@@ -13,7 +13,7 @@
 | 来源项目 | `G:/Dev/backend/Club/CoderClub` |
 | 来源分支 | `main` |
 | 实施提交哈希 | `baa0975`（feat(oss): OSS 端点访问控制与调试开关（M4-02）） |
-| 回执提交哈希 | （Backend Codex 签署时填写） |
+| 回执提交哈希 | `5b89a2450cf956c02dbef36fcce72ef59c659f7a`（Backend Codex 签署提交） |
 
 ## 2. OSS 端点策略文档与端点清单
 

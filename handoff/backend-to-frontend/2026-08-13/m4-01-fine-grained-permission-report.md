@@ -16,7 +16,7 @@
 | 种子数据提交 | `8ee6919`（docs(database): 新增重新设计版种子数据） |
 | 复核修复提交 | `eb17d57`（fix(auth): 无权限用户登录时避免空集合查询权限键） |
 | 类型统一提交 | `a67e274`（docs(database): subject_label.category_id 统一为 bigint） |
-| 回执提交哈希 | （Backend Codex 签署时填写） |
+| 回执提交哈希 | `5b89a2450cf956c02dbef36fcce72ef59c659f7a`（Backend Codex 签署提交） |
 
 ## 2. 权限矩阵文档路径
 
