@@ -238,9 +238,14 @@
 - 本报告所有请求、响应与测试输出均为真实执行结果，未伪造。
 - 首轮因引用过期 m2 jar 产生的错误数据已作废并在第 3 节说明，未作为本报告证据。
 
-## 8. 待 Backend Codex 复核项
+## 8. Backend Codex 复核结论（2026-08-13）
 
-- [ ] 独立复验死代码清理提交 `fad2312`（范围、import、无 `page(` 残留）
-- [ ] 独立复验启动脚本修复提交 `7c3ac66`
-- [ ] 核对九场景原始请求/响应与第 5 节结论
-- [ ] 填写本报告第 1 节「本回执提交哈希」并签署
+- [x] 独立复验死代码清理提交 `fad2312`：范围仅 infra 2 个源文件（接口 −3、实现 −20），`git show --check` 通过，import 清理符合基线（`Page`/`ObjectUtils` 已删；`QueryMethods`/`QueryWrapper`/`SelectKey` 保留），无 `page(` 残留 — **通过**
+- [x] 独立复验启动脚本修复提交 `7c3ac66`：3 个 ps1 各加 `mvn install -DskipTests -q -pl <starter> -am` 前置，`--check` 通过 — **通过**
+- [x] 独立重跑测试：`SubjectInfoServiceImplTest` 3/3 + `SubjectInfoDomainServiceImplTest` 3/3（BUILD SUCCESS）；`SubjectContractTest` 45/45（BUILD SUCCESS）— **通过**
+- [x] 核对九场景原始请求/响应（程序化解析全部 9 条 JSON）：`total`/`list.length`/`totalPages` 全部与预期一致，`totalPages=ceil(total/pageSize)`，type=4 三页间 id 无重复，场景 6b 全量 22 条且 22 个不同 id — **通过**
+- [x] 契约字段核验：`ResponseResultPageSubjectInfo` 四字段 + `PageResultSubjectInfo` 五字段与快照一致 — **通过**
+- [x] 回执必含项齐全，Token 已脱敏，无伪造声明，已知限制（type=4 实测 14、105 双映射、装饰字段）属实 — **通过**
+- [x] G1-04 关闭条件 1、2 满足；签署本回执（关闭条件 3）
+
+**复核签署**：Backend Codex，2026-08-13
