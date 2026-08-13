@@ -62,7 +62,7 @@ git add -A && git commit -m "merge(main): sync before M4 execution" || echo "not
   1. 盘点 Subject/Auth 管理端点清单（写/读/管理），输出权限矩阵文档（端点 × 角色 × 匿名/登录/角色/权限）
   2. 配置角色/权限数据并实施鉴权（`@SaCheckPermission` 类策略或等价），补齐管理端点 403 断言
   3. 测试命令：`mvn -pl coder-club-subject/coder-club-subject-app/coder-club-subject-app-controller -am '-Dtest=SubjectContractTest' '-Dsurefire.failIfNoSpecifiedTests=false' test`（预期全绿）及 Auth 侧等价命令
-- 回执路径：`handoff/backend-to-frontend/2026-08-13/m4-01-fine-grained-permission-report.md`（或实际日期目录）
+- 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-01-fine-grained-permission-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
 - 关闭条件（全部满足 PM 复核关闭）：① 权限矩阵文档 + 实施提交存在；② 三态（匿名/普通/管理员）401/403 测试通过；③ 回执含原始命令输出与提交哈希，Backend Codex 签署
 - 禁止事项：不得修改交接仓库 `api/` 快照与 `status/sync-manifest.json`；契约字段/路径/方法变更必须先提案
 
@@ -88,7 +88,7 @@ git commit -m "docs(pm): create M4-01 fine-grained permission task"
 按任务 1 相同结构，内容取自设计规格 §3 M4-02。必须包含：
 - 前置事实：M3 已实现 OSS 真实上传与统一 400（`acceptance/backend/milestones/M3/2026-08-02/M3联调记录.md`）；「接口可用但默认匿名」不确定性待去除
 - 执行步骤：盘点 OSS 端点（上传/URL 查询/调试）→ 输出策略文档（每端点明确匿名/登录/角色）→ 实施鉴权 → 鉴权测试（未登录/登录态/越权三态）
-- 回执路径：`handoff/backend-to-frontend/2026-08-13/m4-02-oss-access-control-report.md`
+- 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-02-oss-access-control-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
 - 关闭条件：① 策略文档 + 实施提交；② 三态测试通过；③ Backend Codex 签署回执
 - 明确：OpenAPI 与运行时差异须先提案（`proposals/backend/`），不得静默改契约
 
@@ -113,7 +113,7 @@ git commit -m "docs(pm): create M4-02 OSS access control task"
   2. 统一配置读取优先级（Nacos → 环境变量 → 本地默认）并文档化
   3. 输出端口策略文档（<subject-port>/<subject-alt-port>、<mysql-probe-port>/<mysql-port> 标准用途）
 - **运维侧**（用户/运维职责，任务书仅要求记录）：历史暴露凭据轮换完成记录（由用户提供，Backend Codex 在回执中引用）
-- 回执路径：`handoff/backend-to-frontend/2026-08-13/m4-03-credential-hardening-report.md`
+- 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-03-credential-hardening-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
 - 关闭条件：① 无明文凭据（grep 核验 + 提交哈希）；② 配置优先级与端口策略文档；③ 轮换记录引用（或 PM 书面例外）；④ Backend Codex 签署
 
 - [ ] **步骤 2：Commit**
@@ -137,7 +137,7 @@ git commit -m "docs(pm): create M4-03 credential hardening task"
   2. 按设计规格约定目标值（不低于实测基线且不少于 60%，以任务书约定为准）写入任务书
   3. 输出集成测试方案文档（场景/命令/环境，参考 M3 联调记录）
   4. 输出 CI/CD 执行命令与失败处理文档；无外部 CI 时以「本地可重复命令 + 文档化」为最小验收
-- 回执路径：`handoff/backend-to-frontend/2026-08-13/m4-04-test-quality-gate-report.md`
+- 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-04-test-quality-gate-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
 - 关闭条件：① 覆盖率报告达基线；② 集成测试方案文档；③ CI/CD 文档；④ Backend Codex 签署
 
 - [ ] **步骤 2：Commit**
@@ -159,7 +159,7 @@ git commit -m "docs(pm): create M4-04 test quality gate task"
   1. 构造非法 UTF-8/畸形 JSON 请求（真实 HTTP 调用，记录原始请求与响应）
   2. 确认归类 400（HTTP 400 + 业务 code + 统一响应体，对齐 G1-02 语义）
   3. 补齐全局异常映射测试（异常处理器覆盖非法请求体）
-- 回执路径：`handoff/backend-to-frontend/2026-08-13/m4-05-invalid-request-body-report.md`
+- 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-05-invalid-request-body-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
 - 关闭条件：① 实测 400（原始请求/响应）；② 异常映射测试通过；③ 既有测试全绿；④ Backend Codex 签署
 
 - [ ] **步骤 2：Commit**
@@ -179,11 +179,11 @@ git commit -m "docs(pm): create M4-05 invalid request body task"
 内容取自设计规格 §3 M4-06。必须包含：
 - 前置事实：G1-04 遗留记录（`pm/reviews/2026-08-13/g1-04-close-acceptance.md` 记录事项 3）；`SubjectInfoDTO` 实测含 `pageNo`/`pageSize` 装饰字段，快照未声明
 - 流程（必须先提案后实施）：
-  1. **Backend Codex/Claude Code 后端**写提案 `proposals/backend/2026-08-13/m4-06-decorative-fields-<方案>.md`：评估「声明进契约」vs「运行时移除」两案（兼容性影响、前端消费影响）
+  1. **Backend Codex** 撰写提案 `proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（Claude Code 后端提供运行时实现事实与影响评估输入；选定方案记录在提案文内或 PM 决策中）：评估「声明进契约」vs「运行时移除」两案（兼容性影响、前端消费影响）
   2. PM 确认方案（在提案上记录决策）
   3. Claude Code 后端实施 + 测试（含 `SubjectContractTest` 45/45 回归）
   4. 如涉契约声明：按 `AGENTS.md` 规则 1 同步 `api/` 快照（源提交/SHA-256/快照提交/SHA-256/语义差异全链）
-- 回执路径：`handoff/backend-to-frontend/2026-08-13/m4-06-decorative-fields-report.md`
+- 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-06-decorative-fields-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
 - 关闭条件：① 提案获 PM 批准（含选定方案）；② 实施提交 + 测试全绿；③ 快照/基线一致（如涉）；④ Backend Codex 签署
 - 禁止事项：未经 PM 确认方案前不得实施；不得直接修改 `api/` 快照
 
@@ -292,7 +292,7 @@ git commit -m "docs(pm): mark M4 (Gate 2) fully accepted"
 node -e "JSON.parse(require('fs').readFileSync('status/sync-manifest.json','utf8'))"
 ```
 编辑 `status/sync-manifest.json`：`releaseStatus` → `published`（如授权开发契约发布）；`finalReleaseStatus` → `published`（如授权最终发布）。
-编辑 `status/pm.json`：`releaseReady` → `true`；`lastAction` 记录授权人/日期/证据。
+编辑 `status/pm.json`：`releaseReady` → `true`（`state` 维持 `gate0-1-m4-accepted-gate4-pending` 不变是有意为之，发布状态以 `status/sync-manifest.json` 为准）；`lastAction` 记录授权人/日期/证据。
 编辑 `pm/roadmap/2026-08-10/pm-coordination-roadmap.md`：Gate 4 状态 → 已放行。
 
 - [ ] **步骤 6：Commit**

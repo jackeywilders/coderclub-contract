@@ -12,7 +12,7 @@
 
 ## 1. 任务摘要
 
-收敛 `SubjectInfoDTO` 列表项携带的装饰性 `pageNo`/`pageSize` 字段（G1-04 遗留，快照未声明），消除快照与运行时响应差异。**本任务必须先提案后实施**：先评估「声明进契约」与「运行时移除」两案并提交 PM 确认，再实施 + 测试；如涉契约声明，按 `AGENTS.md` 规则 1 同步 `api/` 快照全链。
+收敛 `SubjectInfoDTO` 列表项携带的装饰性 `pageNo`/`pageSize` 字段（G1-04 遗留，快照未声明），消除快照与运行时响应差异。**本任务必须先提案后实施**：先评估「声明进契约」与「运行时移除」两案并提交 PM 确认，再实施 + 测试；如涉契约声明，由 PM 按 `AGENTS.md` 规则 1 同步 `api/` 快照全链（执行者提供源侧事实与哈希）。
 
 ## 2. 前置事实（PM 已核验）
 
@@ -39,7 +39,7 @@
 
 ### 步骤 1：撰写提案（必须先提案后实施）
 
-- Backend Codex 负责撰写提案并写入 `proposals/backend/2026-08-13/m4-06-decorative-fields-<方案>.md`（Claude Code 后端提供运行时实现事实与影响评估输入；提案写入遵循 `AGENTS.md` 角色边界）。
+- Backend Codex 负责撰写提案并写入 `proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（Claude Code 后端提供运行时实现事实与影响评估输入；提案写入遵循 `AGENTS.md` 角色边界；选定方案记录在提案文内或 PM 决策中）。
 - 提案必须评估两案并给出推荐方案：
 
   1. **声明进契约**：将 `pageNo`/`pageSize` 声明进 OpenAPI，运行时保持现状。
@@ -66,12 +66,12 @@
 
 ### 步骤 4：同步 `api/` 快照（如涉契约声明）
 
-- 若 PM 确认「声明进契约」：按 `AGENTS.md` 规则 1 同步 `api/coderclub-openapi.json` 快照，快照必须记录全链：**源提交、源 SHA-256、快照提交、快照 SHA-256、语义差异**。
+- 若 PM 确认「声明进契约」：**由 PM 负责同步** `api/coderclub-openapi.json` 快照（执行者提供源侧事实与源提交/SHA-256 等哈希输入），按 `AGENTS.md` 规则 1 执行，快照必须记录全链：**源提交、源 SHA-256、快照提交、快照 SHA-256、语义差异**；回执记录全链哈希。
 - 若 PM 确认「运行时移除」：快照不变化，无需本步骤（仍需在回执中核验快照与运行时一致性）。
 
 ### 步骤 5：提交回执（执行后由 Backend Codex 复核签署）
 
-回执文件：`handoff/backend-to-frontend/2026-08-13/m4-06-decorative-fields-report.md`，必须包含：
+回执文件：`handoff/backend-to-frontend/<执行日期>/m4-06-decorative-fields-report.md`（回执目录按回执实际创建日期落位，即执行者写回执当天，AGENTS.md 第 6 条），必须包含：
 
 1. 来源项目、分支、实施提交哈希与回执提交哈希。
 2. 提案编号与 PM 确认记录（提案路径、选定方案、PM 决策记录位置）。
@@ -93,7 +93,7 @@
 ## 5. 禁止事项
 
 - 未经 PM 确认方案前不得实施（必须先提案后实施）。
-- 不得直接修改交接仓库 `api/coderclub-openapi.json` 快照（快照同步仅能在提案获 PM 确认后，按 `AGENTS.md` 规则 1 执行）与 `status/sync-manifest.json`。
+- 不得直接修改交接仓库 `api/coderclub-openapi.json` 快照（快照同步由 **PM 执行**，且仅能在提案获 PM 确认后按 `AGENTS.md` 规则 1 进行）与 `status/sync-manifest.json`。
 - 不得自行决定「声明进契约」或「运行时移除」方案及契约字段/路径/方法变更。
 - 不得在回执中伪造请求、响应或测试输出。
 

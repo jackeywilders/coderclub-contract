@@ -37,7 +37,7 @@
 
 ### 2.4 G1-02 统一语义（已关闭，本任务沿用）
 
-- 统一语义：HTTP 状态 + 业务 code + 统一响应体（见 `pm/reviews/2026-08-10/gate-0-1-contract-reconciliation-checklist.md` G1-02 行）。
+- 统一语义：HTTP 状态、业务 code、响应结构、前端处理方式和测试（见 `pm/reviews/2026-08-10/gate-0-1-contract-reconciliation-checklist.md` G1-02 行）。
 - 本任务将非法请求体归类 400 并对齐该语义，与 §2.3 既有 400 结构保持一致。
 
 ## 3. 执行步骤（按顺序执行）
@@ -62,7 +62,7 @@
 
 ### 步骤 5：提交回执（执行后由 Backend Codex 复核签署）
 
-回执文件：`handoff/backend-to-frontend/2026-08-13/m4-05-invalid-request-body-report.md`，必须包含：
+回执文件：`handoff/backend-to-frontend/<执行日期>/m4-05-invalid-request-body-report.md`（回执目录按回执实际创建日期落位，即执行者写回执当天，AGENTS.md 第 6 条），必须包含：
 
 1. 来源项目、分支、实施提交哈希与回执提交哈希。
 2. 实测请求/响应记录：非法 UTF-8 与畸形 JSON 各一组的原始请求与原始响应（HTTP 状态、业务 code、响应体）。

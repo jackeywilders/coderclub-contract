@@ -61,7 +61,7 @@
 
 ### 步骤 5：提交回执（执行后由 Backend Codex 复核签署）
 
-回执文件：`handoff/backend-to-frontend/2026-08-13/m4-02-oss-access-control-report.md`，必须包含：
+回执文件：`handoff/backend-to-frontend/<执行日期>/m4-02-oss-access-control-report.md`（回执目录按回执实际创建日期落位，即执行者写回执当天，AGENTS.md 第 6 条），必须包含：
 
 1. 来源项目、分支、实施提交哈希与回执提交哈希。
 2. OSS 端点策略文档路径与端点清单。

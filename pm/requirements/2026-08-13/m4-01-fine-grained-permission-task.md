@@ -35,7 +35,7 @@
 
 ### 2.4 G1-02 统一 401/403 语义（已关闭，本任务沿用）
 
-- 401（未认证）/ 403（无权限）统一语义：HTTP 状态 + 业务 code + 统一响应体（见 `pm/reviews/2026-08-10/gate-0-1-contract-reconciliation-checklist.md` G1-02 行）。
+- 401（未认证）/ 403（无权限）统一语义：HTTP 状态、业务 code、响应结构、前端处理方式和测试（见 `pm/reviews/2026-08-10/gate-0-1-contract-reconciliation-checklist.md` G1-02 行）。
 
 ## 3. 执行步骤（按顺序执行）
 
@@ -63,9 +63,9 @@
 - Auth 侧：等价命令（覆盖 Auth 管理端点鉴权回归，含三态 401/403 断言）。
 - 既有测试全绿（infra / domain / controller 契约测试）。
 
-### 步骤 4：提交回执（Backend Codex 复核后写入）
+### 步骤 4：提交回执（执行后由 Backend Codex 复核签署）
 
-回执文件：`handoff/backend-to-frontend/2026-08-13/m4-01-fine-grained-permission-report.md`，必须包含：
+回执文件：`handoff/backend-to-frontend/<执行日期>/m4-01-fine-grained-permission-report.md`（回执目录按回执实际创建日期落位，即执行者写回执当天，AGENTS.md 第 6 条），必须包含：
 
 1. 来源项目、分支、实施提交哈希与回执提交哈希。
 2. 权限矩阵文档路径。

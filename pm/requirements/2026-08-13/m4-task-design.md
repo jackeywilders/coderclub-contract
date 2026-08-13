@@ -94,7 +94,7 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 - **背景**：`SubjectInfoDTO` 列表项携带快照未声明的装饰性 `pageNo`/`pageSize` 字段（见 `pm/reviews/2026-08-13/g1-04-close-acceptance.md` 记录事项 3）。
 - **目标**：收敛装饰字段，消除快照与运行时响应差异。
 - **流程**（必须先提案后实施）：
-  1. `proposals/backend/<日期>/m4-06-decorative-fields-<方案>.md`：评估「声明进契约」或「从运行时移除」两案，含兼容性影响
+  1. `proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（固定文件名，选定方案记录在文内或 PM 决策中）：评估「声明进契约」或「从运行时移除」两案，含兼容性影响
   2. PM 确认方案
   3. Claude Code 后端实施 + 测试
   4. 如涉及契约声明：同步快照（源 SHA-256/快照 SHA-256 全链更新）
@@ -128,7 +128,7 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 
 | # | 检查项 | 证据 |
 | --- | --- | --- |
-| 1 | Gate 0/1 关闭记录 | `pm/reviews/2026-08-12/g1-03-close-acceptance.md`、`pm/reviews/2026-08-13/g1-04-close-acceptance.md` |
+| 1 | Gate 0/1 关闭记录 | `pm/reviews/2026-08-10/gate-0-1-pm-acceptance.md`（G0）、`pm/reviews/2026-08-10/gate-0-1-contract-reconciliation-checklist.md`（G1-01/02/05）、`pm/reviews/2026-08-12/g1-03-close-acceptance.md`、`pm/reviews/2026-08-13/g1-04-close-acceptance.md` |
 | 2 | M4 六项验收记录 | `pm/reviews/<日期>/m4-0X-close-acceptance.md` ×6 |
 | 3 | 前端联调回执（Gate 3） | `handoff/frontend-to-backend/<日期>/...-consumption-receipt.md` |
 | 4 | 安全项齐备 | 权限矩阵（M4-01）、OSS 策略（M4-02）、凭据轮换完成记录（M4-03） |
@@ -161,7 +161,7 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 | 复核工作底稿 | `designs/backend/<日期>/m4-0X-...-review-workpaper.md` |
 | PM 关闭验收 ×6 | `pm/reviews/<日期>/m4-0X-close-acceptance.md` |
 | 发布验收记录 | `pm/reviews/<日期>/release-acceptance.md` |
-| 装饰字段提案 | `proposals/backend/<日期>/m4-06-decorative-fields-<方案>.md` |
+| 装饰字段提案 | `proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（固定文件名，选定方案记录在文内或 PM 决策中） |
 | 状态更新 | `status/pm.json`、`status/backend.json`（如涉）、`status/sync-manifest.json`、`pm/roadmap` |
 
 ## 7. 风险与已知限制
@@ -173,5 +173,5 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 
 ## 8. 设计批准记录
 
-- 2026-08-13：用户分节确认设计（第 1-2 节「符合预期」；第 3-4 节「符合预期」；方案 A 获选）。
+- 2026-08-13：用户分节确认设计（第 1-2 节「符合预期」；第 3-4 节「符合预期」；方案 A（单一设计文档方案，相对方案 B 两份文档 / 方案 C 直接写任务书）获选）。
 - 设计状态：**已批准，待实施计划**（实施计划由 writing-plans 生成）。
