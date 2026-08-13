@@ -10,7 +10,7 @@
 
 用户已在本机 CMD 终端确认默认 `node` 和 `npm` 入口均可正常使用。该确认解决了 Frontend Codex 报告中因受限终端映射导致的默认 Node shim 无法验证问题。
 
-本记录不补写用户未提供的 Node/npm 版本、命令输出或日志；此前使用实际 Node 路径完成的 `npm test` 和 `npm run api:check` 结果仍以 [G1-05 前端验证门禁复核报告](../acceptance/frontend/2026-08-11-g1-05-verification.md) 为准。
+本记录不补写用户未提供的 Node/npm 版本、命令输出或日志；此前使用实际 Node 路径完成的 `npm test` 和 `npm run api:check` 结果仍以 [G1-05 前端验证门禁复核报告](../acceptance/frontend/2026-08-11/g1-05-verification.md) 为准。
 
 ## PM 判定
 

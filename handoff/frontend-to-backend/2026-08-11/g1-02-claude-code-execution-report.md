@@ -3,8 +3,8 @@
 > **执行角色：** Claude Code（前端业务仓库编码）
 > **复验角色：** Frontend Codex（前端设计与验收）
 > **日期：** 2026-08-11
-> **执行方案：** [2026-08-11-g1-02-claude-code-execution-plan.md](../designs/frontend/2026-08-11-g1-02-claude-code-execution-plan.md)
-> **适用基线：** PM 验收记录 `pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md`
+> **执行方案：** [2026-08-11-g1-02-claude-code-execution-plan.md](../designs/frontend/2026-08-11/g1-02-claude-code-execution-plan.md)
+> **适用基线：** PM 验收记录 `pm/reviews/2026-08-10/gate-0-1-pm-acceptance.md`
 
 ---
 

@@ -6,7 +6,7 @@
 >
 > **状态说明：** 本文件记录当前主线的审查发现和责任分配，不直接修复问题。
 
-> **后续决策说明：** 本文件记录的是 ADR-0001 之前的审查状态。关于 `api/coderclub-openapi.json` 副本治理、契约映射和同步清单的旧阻塞，已由 `docs/adr/0001-development-contract-snapshot.md` 和 `pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md` 取代；Gate 1 和 M4 遗留项仍然有效。
+> **后续决策说明：** 本文件记录的是 ADR-0001 之前的审查状态。关于 `api/coderclub-openapi.json` 副本治理、契约映射和同步清单的旧阻塞，已由 `docs/adr/0001-development-contract-snapshot.md` 和 `pm/reviews/2026-08-10/gate-0-1-pm-acceptance.md` 取代；Gate 1 和 M4 遗留项仍然有效。
 
 ## 严重级别
 
@@ -26,7 +26,7 @@
 
 ### PM-002：契约身份存在多条互相冲突的链路
 
-- `designs/backend/2026-08-07-api-contract-baseline.md` 和 `handoff/backend-to-frontend/2026-08-07-api-contract-handoff.md` 声明源代码提交为 `085fe08...`、C0 为 `7e3f77...`、交接副本 SHA-256 为 `0057e69...`。
+- `designs/backend/2026-08-07/api-contract-baseline.md` 和 `handoff/backend-to-frontend/2026-08-07/api-contract-handoff.md` 声明源代码提交为 `085fe08...`、C0 为 `7e3f77...`、交接副本 SHA-256 为 `0057e69...`。
 - `status/backend.json` 把最近提交写为 `e80aaf...`，并把 `7e3f77...` 作为 C0 基线。
 - `status/frontend.json` 的 C1 提交为 `3161c41...`，但前端实际文件 SHA-256 为 `87e122...`，期望值为 `0057e69...`。
 - `status/sync-manifest.json` 的 `backendCommit`、`frontendCommit`、`apiContractCommit` 仍为空。
@@ -110,4 +110,4 @@
 
 ## PM 总体裁决
 
-当前不批准前端基于现有 C1 文件生成客户端，不批准将 `finalReleaseStatus` 改为已发布，也不批准删除兼容端点。先执行 `pm/roadmap/2026-08-10-pm-coordination-roadmap.md` 的 Gate 0 和 Gate 1，再决定 M4 与前端首轮联调的并行边界。
+当前不批准前端基于现有 C1 文件生成客户端，不批准将 `finalReleaseStatus` 改为已发布，也不批准删除兼容端点。先执行 `pm/roadmap/2026-08-10/pm-coordination-roadmap.md` 的 Gate 0 和 Gate 1，再决定 M4 与前端首轮联调的并行边界。

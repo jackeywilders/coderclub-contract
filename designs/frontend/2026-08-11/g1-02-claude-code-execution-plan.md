@@ -4,7 +4,7 @@
 >
 > **复验角色：** Frontend Codex（前端设计与验收）
 >
-> **适用基线：** PM 验收记录 `pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md`
+> **适用基线：** PM 验收记录 `pm/reviews/2026-08-10/gate-0-1-pm-acceptance.md`
 
 ## 1. 目标与边界
 

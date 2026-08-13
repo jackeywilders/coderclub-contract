@@ -8,7 +8,7 @@
 
 ## 一、关闭依据
 
-本关闭基于前一份 PM 验收文件 `pm/reviews/2026-08-11-g1-03-backend-task-acceptance.md` 中列出的剩余关闭条件，并由 Frontend Codex 提交消费回执后复核。后端实现与 PM 快照此前已通过验收，本次关闭补齐了最后一项前端消费验证。
+本关闭基于前一份 PM 验收文件 `pm/reviews/2026-08-11/g1-03-backend-task-acceptance.md` 中列出的剩余关闭条件，并由 Frontend Codex 提交消费回执后复核。后端实现与 PM 快照此前已通过验收，本次关闭补齐了最后一项前端消费验证。
 
 ## 二、本次核验的证据链
 
@@ -45,7 +45,7 @@
 
 ### 5. 消费回执
 
-`handoff/frontend-to-backend/2026-08-11-g1-03-frontend-consumption-receipt.md`（已合入交接仓库 main）：
+`handoff/frontend-to-backend/2026-08-11/g1-03-frontend-consumption-receipt.md`（已合入交接仓库 main）：
 
 | 验证命令 | 结果（回执声明） |
 | --- | --- |
@@ -61,7 +61,7 @@
 
 | 关闭条件 | 状态 | 证据 |
 | --- | --- | --- |
-| 后端四个旧 POST 映射移除 | 已完成（前次验收） | `pm/reviews/2026-08-11-g1-03-backend-task-acceptance.md` |
+| 后端四个旧 POST 映射移除 | 已完成（前次验收） | `pm/reviews/2026-08-11/g1-03-backend-task-acceptance.md` |
 | PM 开发契约快照修复并同步 | 已完成（前次验收） | 快照提交 `99367ea`，源 `87d2b72` |
 | 前端 API 基线不再含四个旧 POST | ✅ | 基线提交 `afba2be` / `fa908a1` |
 | 前端以当前快照执行 `api:check -- --update-baseline` | ✅ | 消费回执 |

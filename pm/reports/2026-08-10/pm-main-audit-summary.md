@@ -93,4 +93,4 @@
 4. 更新同步状态和回执，不直接修改 `finalReleaseStatus` 为已发布。
 5. 后端完成 M4 的角色权限、403、OSS 访问控制、凭据加固和测试门禁后，前端再进入首轮业务实现。
 
-本审查产出的详细问题编号见 `pm/reviews/2026-08-10-pm-main-review.md`，执行顺序见 `pm/roadmap/2026-08-10-pm-coordination-roadmap.md`。
+本审查产出的详细问题编号见 `pm/reviews/2026-08-10/pm-main-review.md`，执行顺序见 `pm/roadmap/2026-08-10/pm-coordination-roadmap.md`。

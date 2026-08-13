@@ -21,25 +21,25 @@
     "historicalDeclaredSha256Status": "superseded-by-observed-snapshot",
     "sanitizedExamples": true
   },
-  "lastHandoff": "handoff/backend-to-frontend/2026-08-11-g1-03-claude-code-backend-execution-report.md",
-  "designBaseline": "designs/backend/2026-08-10-gate0-1-backend-baseline.md",
+  "lastHandoff": "handoff/backend-to-frontend/2026-08-11/g1-03-claude-code-backend-execution-report.md",
+  "designBaseline": "designs/backend/2026-08-10/gate0-1-backend-baseline.md",
   "documentationBaseline": {
     "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
     "roadmaps": [
-      "designs/backend/roadmap/2026-07-28-deep-dev-roadmap.md",
-      "designs/backend/roadmap/2026-07-31-后端开发计划.md",
-      "designs/backend/roadmap/CoderClub-后端开发推进计划-2025-07-30.md"
+      "designs/backend/roadmap/2026-07-28/deep-dev-roadmap.md",
+      "designs/backend/roadmap/2026-07-31/后端开发计划.md",
+      "designs/backend/roadmap/2025-07-30/CoderClub-后端开发推进计划.md"
     ],
     "acceptanceReports": [
-      "acceptance/backend/reviews/2026-08-02-M2代码审查与完工验收报告.md",
-      "acceptance/backend/reviews/2026-08-03-API运行时契约修复验收报告.md",
-      "acceptance/backend/reviews/2026-08-03-M3代码审查与完工验收报告.md",
-      "acceptance/backend/milestones/M1/2026-07-31-m1-rework-verification.md",
-      "acceptance/backend/milestones/M1/2026-07-31-M1收口报告.md",
-      "acceptance/backend/milestones/M1/2026-07-31-M1完工报告.md",
-      "acceptance/backend/milestones/M2/2026-07-31-M2完工报告.md",
-      "acceptance/backend/milestones/M3/2026-08-02-M3联调记录.md",
-      "acceptance/backend/milestones/M3/2026-08-02-M3完工报告.md"
+      "acceptance/backend/reviews/2026-08-02/M2代码审查与完工验收报告.md",
+      "acceptance/backend/reviews/2026-08-03/API运行时契约修复验收报告.md",
+      "acceptance/backend/reviews/2026-08-03/M3代码审查与完工验收报告.md",
+      "acceptance/backend/milestones/M1/2026-07-31/m1-rework-verification.md",
+      "acceptance/backend/milestones/M1/2026-07-31/M1收口报告.md",
+      "acceptance/backend/milestones/M1/2026-07-31/M1完工报告.md",
+      "acceptance/backend/milestones/M2/2026-07-31/M2完工报告.md",
+      "acceptance/backend/milestones/M3/2026-08-02/M3联调记录.md",
+      "acceptance/backend/milestones/M3/2026-08-02/M3完工报告.md"
     ]
   },
   "openItems": [

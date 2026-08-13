@@ -15,7 +15,7 @@
 ## 复核范围
 
 按 `f76e651..386dd53` 检查 Claude Code 的整改提交，并核对交接报告
-`handoff/frontend-to-backend/2026-08-11-g1-02-review-remediation-report.md`。
+`handoff/frontend-to-backend/2026-08-11/g1-02-review-remediation-report.md`。
 整改涉及 8 个前端业务文件，未修改 OpenAPI 文件、交接仓库 `api/` 或
 `status/sync-manifest.json`。
 

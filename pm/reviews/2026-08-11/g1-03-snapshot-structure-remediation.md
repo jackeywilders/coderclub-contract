@@ -8,7 +8,7 @@
 
 ## 复核范围
 
-- 前端提案：`proposals/frontend/2026-08-11-g1-03-snapshot-parameters-structure-defect.md`（由 Claude Code 前端工作区提出）
+- 前端提案：`proposals/frontend/2026-08-11/g1-03-snapshot-parameters-structure-defect.md`（由 Claude Code 前端工作区提出）
 - 后端运行时源：`G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json@87d2b724f7981f4796b3f5ae71470fa18f393661`
 - 有缺陷快照：`73cc5b00189ac9fd28d957c19d95c0005425f02d`
 - 修复快照：`99367ea81f17a39874f7516ea919298b323c594e`

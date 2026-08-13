@@ -27,7 +27,7 @@
 | 当前 API 统计 | 45 paths / 47 operations |
 | 当前发布状态 | `releaseStatus=not-published`，`finalReleaseStatus=not-published` |
 
-当前运行时证据来自 Backend Codex G1 回执：`handoff/backend-to-frontend/2026-08-10-gate1-backend-receipt.md`。四组端点均使用 `@SaCheckLogin`，当前没有新增角色或细粒度权限要求。
+当前运行时证据来自 Backend Codex G1 回执：`handoff/backend-to-frontend/2026-08-10/gate1-backend-receipt.md`。四组端点均使用 `@SaCheckLogin`，当前没有新增角色或细粒度权限要求。
 
 ## 3. 旧端点与正式端点映射
 

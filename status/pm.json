@@ -26,10 +26,10 @@
     "releaseAuthority": "PM release gate; finalReleaseStatus remains not-published"
   },
   "lastAction": "PM closed G1-03 after verifying the frontend consumption receipt: frontend baseline commit afba2be (remote fa908a1 via PR #2, merged at b85c5f56) drops the four legacy POST endpoints, records 43 endpoints, and frontend source uses the formal PUT/DELETE methods; snapshot disk CRLF SHA 414211bf... matches the frontend baseline specSha256 and is content-equivalent to the LF 9a97c055...; only G1-04-REAL-DB-PAGINATION-RECHECK remains open",
-  "auditReport": "pm/reports/2026-08-10-pm-main-audit-summary.md",
-  "reviewReport": "pm/reviews/2026-08-10-pm-main-review.md",
-  "coordinationRoadmap": "pm/roadmap/2026-08-10-pm-coordination-roadmap.md",
-  "acceptanceReport": "pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md",
-  "g1-03BackendAcceptanceReport": "pm/reviews/2026-08-11-g1-03-backend-task-acceptance.md",
-  "g1-03CloseAcceptanceReport": "pm/reviews/2026-08-12-g1-03-close-acceptance.md"
+  "auditReport": "pm/reports/2026-08-10/pm-main-audit-summary.md",
+  "reviewReport": "pm/reviews/2026-08-10/pm-main-review.md",
+  "coordinationRoadmap": "pm/roadmap/2026-08-10/pm-coordination-roadmap.md",
+  "acceptanceReport": "pm/reviews/2026-08-10/gate-0-1-pm-acceptance.md",
+  "g1-03BackendAcceptanceReport": "pm/reviews/2026-08-11/g1-03-backend-task-acceptance.md",
+  "g1-03CloseAcceptanceReport": "pm/reviews/2026-08-12/g1-03-close-acceptance.md"
 }

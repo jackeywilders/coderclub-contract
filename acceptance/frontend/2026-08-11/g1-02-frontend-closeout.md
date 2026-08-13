@@ -40,7 +40,7 @@ git diff cb62823f5944d4f544a3f11da8685900a5d8cfb4..386dd53b936cd3b06ec8a3e29a139
 
 ## 4. 验证证据与边界
 
-既有整改复核报告 `acceptance/frontend/2026-08-11-g1-02-remediation-review.md` 记录：
+既有整改复核报告 `acceptance/frontend/2026-08-11/g1-02-remediation-review.md` 记录：
 
 - 等价 Node 验证下 `npm test` 为 10/10 通过，0 失败、0 跳过。
 - 等价 API 检查通过，47 个操作，无 API 契约变化，源 SHA-256 为 `44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a`。
@@ -50,7 +50,7 @@ git diff cb62823f5944d4f544a3f11da8685900a5d8cfb4..386dd53b936cd3b06ec8a3e29a139
 本次收口不重新声明未实际取得的日志或版本：
 
 - G1-02 整改复核中的测试、API 检查、lint 和构建结果来自既有复核报告。
-- G1-05 的临时 PATH 验证结果来自 Frontend Codex 报告；用户随后在本机 CMD 确认默认 `node` 和 `npm` 入口，PM 已在 `pm/reviews/2026-08-11-g1-05-pm-closure.md` 正式关闭该门禁。
+- G1-05 的临时 PATH 验证结果来自 Frontend Codex 报告；用户随后在本机 CMD 确认默认 `node` 和 `npm` 入口，PM 已在 `pm/reviews/2026-08-11/g1-05-pm-closure.md` 正式关闭该门禁。
 - 用户本机 CMD 的确认未由本次受限 Codex 终端重新取得，因此本记录不补写用户未提供的具体版本、输出或日志。
 
 ## 5. 工作树与写入边界

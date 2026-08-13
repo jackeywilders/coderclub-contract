@@ -14,7 +14,7 @@
 
 - 实现提交：`f76e6513164345250aca6b8d1e69984c5736059a`
 - 审核基线：`cb62823f5944d4f544a3f11da8685900a5d8cfb4`
-- 审核报告：[acceptance/frontend/2026-08-11-g1-02-implementation-review.md](../acceptance/frontend/2026-08-11-g1-02-implementation-review.md)
+- 审核报告：[acceptance/frontend/2026-08-11/g1-02-implementation-review.md](../acceptance/frontend/2026-08-11/g1-02-implementation-review.md)
 - 只处理审核报告中的 P1、P2、P3；不重新设计 API 错误语义。
 
 ## 文件变更清单
@@ -30,7 +30,7 @@
 
 **前端交接 worktree：**
 
-- 创建：`handoff/frontend-to-backend/2026-08-11-g1-02-review-remediation-report.md`，记录整改提交、实际命令输出和剩余问题。
+- 创建：`handoff/frontend-to-backend/2026-08-11/g1-02-review-remediation-report.md`，记录整改提交、实际命令输出和剩余问题。
 
 不要修改当前 Frontend Codex 的审核报告；该报告仍由 Frontend Codex 保留并由用户决定是否提交。
 
@@ -136,7 +136,7 @@ npm run build
 
 - [ ] 预期全部退出码为 0；构建允许保留既有依赖 chunk 大小 warning，但不允许有 TypeScript 或 ESLint error。
 - [ ] 用 `git diff --name-status cb62823f5944d4f544a3f11da8685900a5d8cfb4..HEAD` 核对修改范围只包含本方案列出的业务文件。
-- [ ] 更新或创建 `handoff/frontend-to-backend/2026-08-11-g1-02-review-remediation-report.md`，记录完整实现提交哈希、测试数量、每条命令的真实退出结果、lint 基线修复内容和已知 warning；禁止沿用之前无法复现的「lint 通过」表述。
+- [ ] 更新或创建 `handoff/frontend-to-backend/2026-08-11/g1-02-review-remediation-report.md`，记录完整实现提交哈希、测试数量、每条命令的真实退出结果、lint 基线修复内容和已知 warning；禁止沿用之前无法复现的「lint 通过」表述。
 - [ ] 提交信息使用：
 
 ```powershell

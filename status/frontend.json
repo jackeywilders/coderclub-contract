@@ -10,7 +10,7 @@
     "sourcePath": "api/coderclub-openapi.json",
     "sourceSha256": "9a97c055186883adb6c45304f66417c27c4da7b632375cd70a02c44a652db26a",
     "sourceSha256DiskCrlf": "414211bfa997081c9a07049d2d6da7a048591d054a068cd87f96390ba7a4a8e8",
-    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-11-g1-03-frontend-consumption-receipt.md",
+    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-11/g1-03-frontend-consumption-receipt.md",
     "consumedSha256": "9a97c055186883adb6c45304f66417c27c4da7b632375cd70a02c44a652db26a",
     "consumedSha256DiskCrlf": "414211bfa997081c9a07049d2d6da7a048591d054a068cd87f96390ba7a4a8e8",
     "historicalConsumedSha256": "44cbe709887e840174d1bdd02f32a423561013e0622b81e76c9346d2e87e265a",
@@ -21,8 +21,8 @@
     "baselineEndpointCount": 43
   },
   "lastCommit": "afba2bee2665b576c2fc18aabc54759e0cda6513",
-  "lastHandoff": "handoff/frontend-to-backend/2026-08-11-g1-03-frontend-consumption-receipt.md",
-  "design": "designs/frontend/2026-08-07-api-integration-impact.md",
+  "lastHandoff": "handoff/frontend-to-backend/2026-08-11/g1-03-frontend-consumption-receipt.md",
+  "design": "designs/frontend/2026-08-07/api-integration-impact.md",
   "validation": {
     "node": "22.14.0",
     "npm": "10.9.2",
@@ -35,7 +35,7 @@
   "acceptance": {
     "G0-04": "accepted: frontend consumes backend authoritative source and hash 44cbe7...",
     "G1-02": "accepted: PM formally closed after user confirmation; remote frontend main contains remediation commit 85320f1",
-    "G1-03": "accepted: PM formally closed 2026-08-12; frontend baseline updated to 43 endpoints and consumption verified; see pm/reviews/2026-08-12-g1-03-close-acceptance.md",
+    "G1-03": "accepted: PM formally closed 2026-08-12; frontend baseline updated to 43 endpoints and consumption verified; see pm/reviews/2026-08-12/g1-03-close-acceptance.md",
     "G1-05": "accepted: user verified default node and npm entry from local CMD"
   },
   "openItems": []

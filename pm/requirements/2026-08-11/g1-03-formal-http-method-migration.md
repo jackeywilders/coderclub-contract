@@ -34,8 +34,8 @@
 
 **文件：**
 
-- 创建：`proposals/backend/2026-08-11-g1-03-formal-http-method-migration.md`
-- 参考：`handoff/backend-to-frontend/2026-08-10-gate1-backend-receipt.md`
+- 创建：`proposals/backend/2026-08-11/g1-03-formal-http-method-migration.md`
+- 参考：`handoff/backend-to-frontend/2026-08-10/gate1-backend-receipt.md`
 - 参考：`G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json`
 
 - [ ] **步骤 1：** 在提案中记录 4 组旧/正式映射、当前 Controller 注解位置、请求体与路径参数差异、影响范围和回滚边界。
@@ -78,7 +78,7 @@ mvn -pl coder-club-subject/coder-club-subject-app/coder-club-subject-app-control
 
 - 修改：`G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json`
 
-执行前置条件：`proposals/backend/2026-08-11-g1-03-formal-http-method-migration.md` 已由 PM 明确确认。Claude Code 后端可以在后端实现提交中同步修改该运行时 API 源，但不得修改交接仓库 `api/` 快照或 `status/sync-manifest.json`。
+执行前置条件：`proposals/backend/2026-08-11/g1-03-formal-http-method-migration.md` 已由 PM 明确确认。Claude Code 后端可以在后端实现提交中同步修改该运行时 API 源，但不得修改交接仓库 `api/` 快照或 `status/sync-manifest.json`。
 
 - [ ] **步骤 1：** 从 `/subject/category/update` 仅保留 PUT 操作。
 - [ ] **步骤 2：** 从 `/subject/category/delete/{id}` 仅保留 DELETE 操作，并移除只承载旧 POST 的 `/subject/category/delete` 路径。
@@ -126,7 +126,7 @@ npm test
 - 修改：`G:/Dev/backend/Club/coderclub-contract-codex-pm/api/coderclub-openapi.json`
 - 修改：`G:/Dev/backend/Club/coderclub-contract-codex-pm/status/sync-manifest.json`
 - 修改：`G:/Dev/backend/Club/coderclub-contract-codex-pm/status/pm.json`
-- 修改：`G:/Dev/backend/Club/coderclub-contract-codex-pm/pm/reviews/2026-08-10-gate-0-1-pm-acceptance.md`
+- 修改：`G:/Dev/backend/Club/coderclub-contract-codex-pm/pm/reviews/2026-08-10/gate-0-1-pm-acceptance.md`
 
 - [ ] **步骤 1：** 用 Claude Code 后端提交的 OpenAPI 文件生成交接快照；仅对密码和 Token 示例做既定脱敏，不手工保留旧 POST 操作。
 - [ ] **步骤 2：** 结构化比较后端源和快照，记录新的源 SHA-256、快照 SHA-256、路径/操作数量和差异摘要。
