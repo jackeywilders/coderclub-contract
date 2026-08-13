@@ -17,6 +17,7 @@
 | 文档提交 | `e6eec67`（docs(backend): M4-03 配置优先级与端口策略文档） |
 | 文档提交 | `8d596ad`（docs(backend): M4-03 三服务 Nacos 配置上收参考文档） |
 | 文档提交 | `d4192cf`（docs(backend): M4-03 文档聚焦敏感配置上收 Nacos） |
+| 后续修复提交 | `45c209f`（fix(scripts): 移除 start-subject.ps1 的 REDIS_PASSWORD 强制校验，Redis 配置统一以 Nacos 为源） |
 | 回执提交哈希 | `5b89a2450cf956c02dbef36fcce72ef59c659f7a`（Backend Codex 签署提交） |
 
 ## 2. grep 核验命令与原始输出
@@ -65,7 +66,7 @@
 ## 5. 已知限制
 
 1. **Nacos 配置持有运行凭据**：MySQL/Redis/MinIO/Nacos 自身密码在 Nacos 配置文件中，凭据轮换需在 Nacos 控制台同步更新（不在仓库代码提交范围）。
-2. **启动依赖环境变量**：`start-*.ps1` 现要求 `NACOS_USERNAME`/`NACOS_PASSWORD` 环境变量（Subject 另需 `REDIS_PASSWORD`）；未设置会阻止启动并提示。
+2. **启动依赖环境变量**：`start-*.ps1` 现要求 `NACOS_USERNAME`/`NACOS_PASSWORD` 环境变量；未设置会阻止启动并提示。中间件（Redis 等）配置统一以 Nacos 为源，`start-subject.ps1` 原 `REDIS_PASSWORD` 强制校验已移除（后端提交 `45c209f`），避免旧环境变量覆盖 Nacos 轮换后新值。
 3. **API 快照脱敏**：`docs/api/coderclub-openapi.json` 示例密码/Token 已用占位符（既有状态，未改）。
 4. **历史暴露面**：本任务清理了仓库内明文凭据；历史交接文档/日志中若曾有暴露，由轮换动作兜底（已完成）。
 
