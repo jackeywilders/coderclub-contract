@@ -6,7 +6,7 @@
 >
 > 执行日期：2026-08-11
 >
-> 验收边界：补齐 PM 验收文件 `pm/reviews/2026-08-11-g1-03-backend-task-acceptance.md` 中 G1-03 关闭条件的最后一项——以修复后快照为输入更新前端 API 基线，并完成消费验证。
+> 验收边界：补齐 PM 验收文件 `pm/reviews/2026-08-11/g1-03-backend-task-acceptance.md` 中 G1-03 关闭条件的最后一项——以修复后快照为输入更新前端 API 基线，并完成消费验证。
 
 ## 1. 来源与提交
 
@@ -23,7 +23,7 @@
 
 ## 2. 快照结构缺陷复核结论
 
-前端在上一轮发现 PM 快照 `21f6f64`、`73cc5b0` 中 8 个操作的 `parameters` 被序列化为对象而非数组，导致 `npm run api:check` 报 `(operation.parameters ?? []) is not iterable`。该问题已记录于 `proposals/frontend/2026-08-11-g1-03-snapshot-parameters-structure-defect.md`。
+前端在上一轮发现 PM 快照 `21f6f64`、`73cc5b0` 中 8 个操作的 `parameters` 被序列化为对象而非数组，导致 `npm run api:check` 报 `(operation.parameters ?? []) is not iterable`。该问题已记录于 `proposals/frontend/2026-08-11/g1-03-snapshot-parameters-structure-defect.md`。
 
 PM 已在 `99367ea` 基于后端源完整重建快照。前端复核确认修复后的快照：
 

@@ -13,7 +13,7 @@ G1-02 的前端业务实现和整改已经完成：
 - 原始实现提交：`f76e6513164345250aca6b8d1e69984c5736059a`
 - 整改提交：`386dd53b936cd3b06ec8a3e29a13989ff15a6463`
 - 整改复核报告判定目标行为、测试、lint 和构建复核通过：
-  `acceptance/frontend/2026-08-11-g1-02-remediation-review.md`
+  `acceptance/frontend/2026-08-11/g1-02-remediation-review.md`
 - G1-05 默认 Node/npm 入口已由用户在本机 CMD 验证并由 PM 正式关闭。
 
 当前剩余工作主要是前端交接证据和状态回写，不要求再次修改业务代码。
@@ -26,9 +26,9 @@ G1-02 的前端业务实现和整改已经完成：
 
 - 将 `acceptance.G1-02` 更新为 `accepted`。
 - 将 `lastCommit` 更新为完整提交哈希 `386dd53b936cd3b06ec8a3e29a13989ff15a6463`。
-- 将 `lastHandoff` 更新为 `handoff/frontend-to-backend/2026-08-11-g1-02-review-remediation-report.md`。
+- 将 `lastHandoff` 更新为 `handoff/frontend-to-backend/2026-08-11/g1-02-review-remediation-report.md`。
 - 移除 `FRONTEND-BUSINESS-401-403`。
-- `HANDOFF-HASH-MISMATCH` 已由 PM 按 `pm/reviews/2026-08-11-handoff-hash-reconciliation.md` 完成映射修复。
+- `HANDOFF-HASH-MISMATCH` 已由 PM 按 `pm/reviews/2026-08-11/handoff-hash-reconciliation.md` 完成映射修复。
 - 前端整体状态已更新为 `gate0-1-frontend-evidence-ready`；Gate 1 的 G1-03/G1-04 仍独立开放。
 
 ### 2. 补充 G1-02 收口证据

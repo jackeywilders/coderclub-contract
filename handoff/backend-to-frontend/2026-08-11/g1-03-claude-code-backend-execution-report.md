@@ -16,7 +16,7 @@
 | 来源分支 | `main` |
 | 实现提交 | `6c1a95bb679b65191488531537b79aa6948a4399` |
 | 实现提交父提交 | `7c82cbec5433a2e7aa44582e3c0ddba459c4c886` |
-| 批准提案 | `proposals/backend/2026-08-11-g1-03-formal-http-method-migration.md` |
+| 批准提案 | `proposals/backend/2026-08-11/g1-03-formal-http-method-migration.md` |
 | 执行任务 | `pm/requirements/2026-08-11/g1-03-claude-code-backend-execution-task.md` |
 | 后端工作区状态 | `main`，干净；实现提交尚未推送 |
 

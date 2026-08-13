@@ -13,7 +13,7 @@
 | 交接仓库主线 | `origin/main@b3d9fbebb29f8ce79fab44bfcee097a43803239a` |
 | 后端实现提交 | `6c1a95bb679b65191488531537b79aa6948a4399` |
 | 后端实现父提交 | `7c82cbec5433a2e7aa44582e3c0ddba459c4c886` |
-| 后端回执 | `handoff/backend-to-frontend/2026-08-11-g1-03-claude-code-backend-execution-report.md` |
+| 后端回执 | `handoff/backend-to-frontend/2026-08-11/g1-03-claude-code-backend-execution-report.md` |
 | 批准任务 | `pm/requirements/2026-08-11/g1-03-claude-code-backend-execution-task.md` |
 
 ## 后端验收结果

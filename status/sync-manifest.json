@@ -35,7 +35,7 @@
     "consumedSha256DiskCrlf": "414211bfa997081c9a07049d2d6da7a048591d054a068cd87f96390ba7a4a8e8",
     "baselinePath": "docs/frontend/handoff/api-docs-baseline.json",
     "baselineEndpointCount": 43,
-    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-11-g1-03-frontend-consumption-receipt.md"
+    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-11/g1-03-frontend-consumption-receipt.md"
   },
   "notes": "The PM-approved handoff snapshot is authoritative for subsequent cross-project development. The backend source and runtime implementation remain runtime authority. G1-03 was formally closed on 2026-08-12 after frontend baseline update (afba2be/fa908a1, 43 endpoints) and consumption validation; G1-04-REAL-DB-PAGINATION-RECHECK remains open. This closure does not publish the contract; Gate 1 remains partial and M4/PM release acceptance remain required."
 }

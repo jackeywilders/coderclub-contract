@@ -3,8 +3,8 @@
 > **执行角色：** Claude Code（前端业务仓库编码）
 > **复验角色：** Frontend Codex（前端设计与验收）
 > **日期：** 2026-08-11
-> **整改方案：** [2026-08-11-g1-02-review-remediation-plan.md](../designs/frontend/2026-08-11-g1-02-review-remediation-plan.md)
-> **审核报告：** [2026-08-11-g1-02-implementation-review.md](../acceptance/frontend/2026-08-11-g1-02-implementation-review.md)
+> **整改方案：** [2026-08-11-g1-02-review-remediation-plan.md](../designs/frontend/2026-08-11/g1-02-review-remediation-plan.md)
+> **审核报告：** [2026-08-11-g1-02-implementation-review.md](../acceptance/frontend/2026-08-11/g1-02-implementation-review.md)
 
 ---
 

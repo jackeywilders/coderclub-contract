@@ -14,6 +14,8 @@ Claude Code 在 CoderClub 项目中只能实现已经确认的业务代码、业
 
 在后端工作时，Claude Code 后端只修改 `G:/Dev/backend/Club/CoderClub/**` 中的业务代码、测试和已获 PM 确认的运行时 API 源；在前端工作时，Claude Code 前端只修改 `G:/Dev/backend/Club/CoderClubFront/**` 中的业务代码、测试和已确认的前端基线。Backend/Frontend Codex 按交接仓库 `AGENTS.md` 约定写入对应的提案、交接或验收记录。
 
+在交接仓库新建提案、交接、验收等文档时，必须先建立 `YYYY-MM-DD/` 日期目录再写入，文件名不带日期前缀；约定见 `AGENTS.md` 协作规则第 6 条。
+
 Claude Code 不得修改另一项目，不得复制 OpenAPI 文件到交接仓库，不得修改交接仓库治理文件，不得推送远端。需要跨项目决策时，将信息交给 PM Codex 协调。
 
 ## Agent skills

@@ -8,7 +8,7 @@
 >
 > **实际代码 Owner：** Claude Code 后端
 >
-> **批准提案：** `proposals/backend/2026-08-11-g1-03-formal-http-method-migration.md`
+> **批准提案：** `proposals/backend/2026-08-11/g1-03-formal-http-method-migration.md`
 >
 > **批准依据：** PM 于 2026-08-11 明确确认旧 POST 不保留兼容路由，并在正式联调前立即移除
 

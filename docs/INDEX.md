@@ -21,6 +21,10 @@
 | `pm/reports/` | 阶段报告和交接摘要 |
 | `status/` | 各角色当前状态与同步清单 |
 
+## 文档日期目录约定
+
+所有角色在交接仓库新建文档时，必须先在其所属目录下建立 `YYYY-MM-DD/` 日期目录（以文档创建日期为准，Asia/Shanghai），再写入文档；文件名不再带日期前缀，例如 `pm/reviews/2026-08-12/g1-03-close-acceptance.md`。豁免固定路径文件：`AGENTS.md`、`CLAUDE.md`、`CONTEXT.md`、`docs/INDEX.md`、`docs/adr/**`、`docs/agents/**`、`api/**`、`status/*.json`、`_template-*` 模板与 `.gitkeep`。
+
 ## 状态文件
 
 - `status/pm.json`：PM 协调状态、当前分支、基线提交和远端推送授权状态。

@@ -86,7 +86,7 @@ POST {AUTH_SERVICE_URL}/auth/login
 
 ### 步骤 4：提交回执（Backend Codex 复核后写入）
 
-回执文件：`handoff/backend-to-frontend/2026-08-12-g1-04-claude-code-backend-execution-report.md`，必须包含：
+回执文件：`handoff/backend-to-frontend/2026-08-12/g1-04-claude-code-backend-execution-report.md`，必须包含：
 
 1. 来源项目、分支、**死代码清理提交哈希**与回执提交哈希。
 2. 每个场景的**原始请求与原始 JSON 响应**（不截断）。
