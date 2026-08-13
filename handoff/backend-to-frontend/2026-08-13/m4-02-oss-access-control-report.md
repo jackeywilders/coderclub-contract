@@ -80,3 +80,19 @@ mvn -f coder-club-dependencies/pom.xml test
 - 未修改交接仓库 `api/coderclub-openapi.json` 快照与 `status/sync-manifest.json`。
 - 未修改前端项目。
 - 所有测试命令与输出为真实执行结果，未伪造。
+
+## 8. 真实复核与补充提交（2026-08-13）
+
+Nacos `coder-club-oss-dev.properties` 已补充共享 Redis（`spring.data.redis.*`）与 sa-token 配置（与 Auth 一致）。据此启动 Auth + OSS 服务做真实复核：
+
+| 场景 | 端点 | 结果 |
+| --- | --- | --- |
+| 匿名 | `POST /oss/upload` | HTTP 401 `未登录或Token已过期` ✅ |
+| 登录用户（user） | `POST /oss/upload` | HTTP 200，MinIO 真实上传成功 ✅ |
+| 管理员（admin） | `POST /oss/upload` | HTTP 200 ✅ |
+| 匿名 | `GET /oss/getUrl` | HTTP 200 ✅ |
+| 匿名 | `GET /oss/testGetAllBuckets` | HTTP 200 + `code:404` `调试端点已关闭`（开关默认关）✅ |
+
+**补充提交 `5045953`**（fix(oss): 声明 spring-boot-maven-plugin 使 spring-boot:run 可解析）：复核启动时发现 OSS pom 未声明 `spring-boot-maven-plugin`，`mvn spring-boot:run -pl coder-club-oss` 前缀解析失败无法启动；与 auth/subject starter 对齐声明 4.0.0 插件（含 repackage）。
+
+**结论**：OSS 端点鉴权策略（上传需登录、getUrl 匿名、调试端点开关+角色）在真实运行环境生效；Nacos 配置正确。
