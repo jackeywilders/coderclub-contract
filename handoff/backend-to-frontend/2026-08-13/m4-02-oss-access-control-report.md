@@ -96,3 +96,13 @@ Nacos `coder-club-oss-dev.properties` 已补充共享 Redis（`spring.data.redis
 **补充提交 `5045953`**（fix(oss): 声明 spring-boot-maven-plugin 使 spring-boot:run 可解析）：复核启动时发现 OSS pom 未声明 `spring-boot-maven-plugin`，`mvn spring-boot:run -pl coder-club-oss` 前缀解析失败无法启动；与 auth/subject starter 对齐声明 4.0.0 插件（含 repackage）。
 
 **结论**：OSS 端点鉴权策略（上传需登录、getUrl 匿名、调试端点开关+角色）在真实运行环境生效；Nacos 配置正确。
+
+## 9. Backend Codex 复核签署（2026-08-13）
+
+- [x] 代码级复核：`/oss/upload` `@SaCheckLogin`、`/oss/getUrl` 匿名、调试端点开关+`admin_user` 角色（开关先于鉴权判断，关闭时信息不泄露）、OSS handler 401/403 齐全、sa-token 共享会话配置、pom 修复合理 — **通过**
+- [x] 独立重跑：`FileControllerTest` 11/11，BUILD SUCCESS — **通过**
+- [x] OpenAPI SHA-256 未变（`7576e28a…`，43/43）— **通过**
+- [x] 策略文档、已知限制核验 — **通过**
+- [x] M4-02 关闭条件 1、2 满足；签署本回执（关闭条件 3）
+
+**复核签署**：Backend Codex，2026-08-13（工作底稿：`designs/backend/2026-08-13/m4-02-oss-access-control-review-workpaper.md`）

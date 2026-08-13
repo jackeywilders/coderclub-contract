@@ -121,3 +121,13 @@ mvn -f coder-club-dependencies/pom.xml test
 ### 8.5 补充结论
 
 真实 DB 复核确认 M4-01 权限矩阵在运行库语义正确（匿名 401 / 普通用户 403 / 管理员 200）；种子数据未破坏既有业务，反而暴露并修复了无权限用户登录缺陷。
+
+## 9. Backend Codex 复核签署（2026-08-13）
+
+- [x] 代码级复核：9 写端点 `@SaCheckPermission` 齐全、Auth role/permission 收紧 `@SaCheckRole("admin_user")`、`permissionIds` 旧会话键无残留读取方、`eb17d57` 空集合守卫 + TDD 回归、三服务 401/403 handler 一致、`init.sql` 种子正确 — **通过**
+- [x] 独立重跑：`SubjectContractTest` 49/49、`AuthContractTest` 8/8，BUILD SUCCESS — **通过**
+- [x] OpenAPI SHA-256 未变（`7576e28a…`，43/43）— **通过**
+- [x] 权限矩阵文档、已知限制核验 — **通过**
+- [x] M4-01 关闭条件 1、2 满足；签署本回执（关闭条件 3）
+
+**复核签署**：Backend Codex，2026-08-13（工作底稿：`designs/backend/2026-08-13/m4-01-fine-grained-permission-review-workpaper.md`）
