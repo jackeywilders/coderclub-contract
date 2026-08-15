@@ -74,5 +74,13 @@
 - 未改变已批准契约的字段/路径/方法；新增内容均无契约影响。
 - 所有覆盖率数据、命令输出与提交哈希为真实结果，未伪造。
 
-## 7. 后端评审复核签署（待复核）
-- [ ] （待后端评审复核后签署）
+## 7. 后端评审复核签署（2026-08-16）
+
+- [x] 代码级复核：JaCoCo 0.8.12 配置（`prepare-agent`+`report`，excludes 与任务书口径 A 一致）；33 个测试类为真实断言（抽查 AuthUserDomainServiceImplAdditionalTest 17 例、GlobalExceptionHandlerTest 等）；外部依赖 mock — **通过**
+- [x] 独立重跑：全量 `mvn test` 19 模块 BUILD SUCCESS，无 Failures/Errors — **通过**
+- [x] 覆盖率独立比对：7 模块行覆盖率与回执声明逐值一致（common 74.7%、auth-domain 100.0%、auth-app-controller 99.2%、subject-infra 97.8%、subject-domain 97.7%、subject-app-controller 95.3%、oss 94.8%），均 ≥ 约定目标 — **通过**
+- [x] 交付文档核验：集成测试方案（13 场景）与 CI/CD 文档存在、脱敏合规（规则 8）、路径与回执一致 — **通过**
+- [x] OpenAPI SHA-256 未变（`7576e28a…`，43 路径 / 43 操作）— **通过**
+- [x] M4-04 关闭条件 1-4 满足；签署本回执
+
+**复核签署**：后端评审（B-Review），2026-08-16（工作底稿：`designs/backend/2026-08-16/m4-04-test-quality-gate-review-workpaper.md`）
