@@ -1,6 +1,6 @@
 # M4 任务设计与 Gate 4 发布门禁（设计规格）
 
-> **设计角色：** PM / 跨项目协调 Codex
+> **设计角色：** 协调 PM
 >
 > **设计日期：** 2026-08-13
 >
@@ -19,7 +19,7 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 | M4 边界 | **仅后端收口**（Gate 2）；前端正式联调为独立 Gate 3，在 M4 后启动 |
 | 优先级 | 6 项任务**全部必须**，均为发布前置硬性条件，无降级项 |
 | 发布验收 | 设计为正式 **Gate 4（发布门禁）** |
-| 执行模型 | **逐项独立**：每项任务书 → Claude Code 后端执行 → Backend Codex 复核 → PM 验收关闭 |
+| 执行模型 | **逐项独立**：每项任务书 → 后端实现执行 → 后端评审 复核 → PM 验收关闭 |
 | 装饰字段 | 纳入 M4 第 6 项（M4-06），先提案后实施 |
 
 不在本设计范围内：前端业务实现（Gate 3）、实际部署动作（由用户/运维执行）、`api/` 快照的未批准变更。
@@ -55,7 +55,7 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 - **背景**：历史文档与脚本可能存在明文凭据；启动脚本已由 `7c3ac66` 改为先安装再运行；Nacos/环境变量优先级与端口策略需统一记录。
 - **目标**：清理代码与脚本侧明文凭据，统一配置读取优先级，记录端口标准策略。
 - **范围**：
-  - 代码侧（Claude Code 后端职责）：启动脚本/配置文件明文密码清理、统一 Nacos/环境变量优先级、<subject-port>/<subject-alt-port> 与 <mysql-probe-port>/<mysql-port> 端口策略文档
+  - 代码侧（后端实现职责）：启动脚本/配置文件明文密码清理、统一 Nacos/环境变量优先级、<subject-port>/<subject-alt-port> 与 <mysql-probe-port>/<mysql-port> 端口策略文档
   - 运维侧（用户/运维职责，交接仓库只记录结果）：历史暴露凭据的轮换操作
 - **验收标准**：
   1. 脚本与配置无明文凭据（grep 核验 + 提交哈希）
@@ -96,7 +96,7 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 - **流程**（必须先提案后实施）：
   1. `proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（固定文件名，选定方案记录在文内或 PM 决策中）：评估「声明进契约」或「从运行时移除」两案，含兼容性影响
   2. PM 确认方案
-  3. Claude Code 后端实施 + 测试
+  3. 后端实现实施 + 测试
   4. 如涉及契约声明：同步快照（源 SHA-256/快照 SHA-256 全链更新）
 - **验收标准**：
   1. 提案获 PM 批准（含选定方案）
@@ -108,11 +108,11 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 ## 4. 执行与验收流程（沿用 G1-04 模型）
 
 1. **PM 任务书**：每项启动时写 `pm/requirements/<日期>/m4-0X-<名称>-task.md`，引用本设计文档对应章节，明确关闭条件。
-2. **Claude Code 后端执行**：实现 + 测试 + 回执 `handoff/backend-to-frontend/<日期>/m4-0X-...-report.md`（来源/分支/提交哈希、原始证据、已知限制、声明：未改 `api/` 快照与 `status/sync-manifest.json`、未伪造输出）。
-3. **Backend Codex 复核**：工作底稿 `designs/backend/<日期>/m4-0X-...-review-workpaper.md` + 独立复验 + 签署。
+2. **后端实现执行**：实现 + 测试 + 回执 `handoff/backend-to-frontend/<日期>/m4-0X-...-report.md`（来源/分支/提交哈希、原始证据、已知限制、声明：未改 `api/` 快照与 `status/sync-manifest.json`、未伪造输出）。
+3. **后端评审 复核**：工作底稿 `designs/backend/<日期>/m4-0X-...-review-workpaper.md` + 独立复验 + 签署。
 4. **PM 验收关闭**：`pm/reviews/<日期>/m4-0X-close-acceptance.md` + 更新 `status/backend.json`（如涉）与 `status/pm.json`。
 5. **执行边界**：
-   - M4-03 凭据轮换属运维动作：Claude Code 后端只做代码侧，轮换由用户/运维执行并提供完成记录。
+   - M4-03 凭据轮换属运维动作：后端实现只做代码侧，轮换由用户/运维执行并提供完成记录。
    - M4-04 无外部 CI 时不做硬性 CI 集成，以「本地可重复命令 + 文档化」验收。
 
 **建议执行顺序**：M4-01 → M4-02/M4-03（并行）→ M4-05 → M4-04（收尾）→ M4-06 全程独立并行。
@@ -140,8 +140,8 @@ Gate 0（G0-01~06）与 Gate 1（G1-01~05）已全部验收通过并正式关闭
 
 | 角色 | 权限 |
 | --- | --- |
-| Claude Code 后端/前端 | 不得修改 `releaseStatus` / `finalReleaseStatus` |
-| Backend/Frontend Codex | 不得修改（仅可记录建议） |
+| 后端实现/前端 | 不得修改 `releaseStatus` / `finalReleaseStatus` |
+| Backend/前端评审 | 不得修改（仅可记录建议） |
 | PM | 在**用户明确授权**后批准 `releaseStatus=published`（开发契约发布）与 `finalReleaseStatus=published`（最终发布）；两者分别记录授权人、日期、证据引用 |
 | 用户 | 唯一授权来源；部署动作由用户/运维执行（交接仓库不设计部署 SOP） |
 

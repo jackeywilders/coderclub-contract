@@ -1,10 +1,10 @@
 # M4 阶段分发交接摘要
 
-> **交接角色：** PM / 跨项目协调 Codex
+> **交接角色：** 协调 PM
 >
 > **交接日期：** 2026-08-13
 >
-> **接收角色：** Claude Code 后端（执行）、Backend Codex（复核签署 + M4-06 提案）
+> **接收角色：** 后端实现（执行）、后端评审（复核签署 + M4-06 提案）
 >
 > **用途：** 供接收方会话启动时读取本摘要与对应任务书，逐项执行 M4 任务并提交回执。
 
@@ -20,25 +20,25 @@
 
 | 顺序 | 任务书 | 执行角色 | 复核角色 | 回执路径（按回执实际创建日期落位） |
 | --- | --- | --- | --- | --- |
-| 1 | `pm/requirements/2026-08-13/m4-01-fine-grained-permission-task.md` | Claude Code 后端 | Backend Codex | `handoff/backend-to-frontend/<执行日期>/m4-01-fine-grained-permission-report.md` |
-| 2（并行） | `pm/requirements/2026-08-13/m4-02-oss-access-control-task.md` | Claude Code 后端 | Backend Codex | `handoff/backend-to-frontend/<执行日期>/m4-02-oss-access-control-report.md` |
-| 2（并行） | `pm/requirements/2026-08-13/m4-03-credential-hardening-task.md` | Claude Code 后端（代码侧）+ 用户/运维（凭据轮换） | Backend Codex | `handoff/backend-to-frontend/<执行日期>/m4-03-credential-hardening-report.md` |
-| 3 | `pm/requirements/2026-08-13/m4-05-invalid-request-body-task.md` | Claude Code 后端 | Backend Codex | `handoff/backend-to-frontend/<执行日期>/m4-05-invalid-request-body-report.md` |
-| 4（M4-01/02/05 完成后启动） | `pm/requirements/2026-08-13/m4-04-test-quality-gate-task.md` | Claude Code 后端 | Backend Codex | `handoff/backend-to-frontend/<执行日期>/m4-04-test-quality-gate-report.md` |
-| 全程独立并行 | `pm/requirements/2026-08-13/m4-06-decorative-fields-task.md` | **Backend Codex 先写提案** → Claude Code 后端实施 | Backend Codex 复核、PM 确认方案 | `handoff/backend-to-frontend/<执行日期>/m4-06-decorative-fields-report.md` |
+| 1 | `pm/requirements/2026-08-13/m4-01-fine-grained-permission-task.md` | 后端实现 | 后端评审 | `handoff/backend-to-frontend/<执行日期>/m4-01-fine-grained-permission-report.md` |
+| 2（并行） | `pm/requirements/2026-08-13/m4-02-oss-access-control-task.md` | 后端实现 | 后端评审 | `handoff/backend-to-frontend/<执行日期>/m4-02-oss-access-control-report.md` |
+| 2（并行） | `pm/requirements/2026-08-13/m4-03-credential-hardening-task.md` | 后端实现（代码侧）+ 用户/运维（凭据轮换） | 后端评审 | `handoff/backend-to-frontend/<执行日期>/m4-03-credential-hardening-report.md` |
+| 3 | `pm/requirements/2026-08-13/m4-05-invalid-request-body-task.md` | 后端实现 | 后端评审 | `handoff/backend-to-frontend/<执行日期>/m4-05-invalid-request-body-report.md` |
+| 4（M4-01/02/05 完成后启动） | `pm/requirements/2026-08-13/m4-04-test-quality-gate-task.md` | 后端实现 | 后端评审 | `handoff/backend-to-frontend/<执行日期>/m4-04-test-quality-gate-report.md` |
+| 全程独立并行 | `pm/requirements/2026-08-13/m4-06-decorative-fields-task.md` | **后端评审 先写提案** → 后端实现实施 | 后端评审 复核、PM 确认方案 | `handoff/backend-to-frontend/<执行日期>/m4-06-decorative-fields-report.md` |
 
 ## 3. 各角色职责与边界（AGENTS.md）
 
-### Claude Code 后端
+### 后端实现
 
 - 逐项实现 M4-01~06（M4-06 须等 PM 确认方案后才实施）
 - 每项完成后提交回执到 `handoff/backend-to-frontend/<执行日期>/m4-0X-<task>-report.md`，必含：来源项目/分支、提交哈希、原始命令与输出、已知限制、声明（未改 `api/` 快照、未改 `status/sync-manifest.json`、未伪造输出）
 - **禁止**：写入 `proposals/`、`api/`、`status/`；不得自行决定契约策略；不得执行运维侧凭据轮换（M4-03）
 
-### Backend Codex
+### 后端评审
 
 - 复核并签署每份回执（工作底稿 `designs/backend/<日期>/m4-0X-...-review-workpaper.md`）
-- 撰写 M4-06 提案：`proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（评估「声明进契约」vs「运行时移除」两案，含兼容性影响与前端消费影响；Claude Code 后端提供运行时事实输入）
+- 撰写 M4-06 提案：`proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（评估「声明进契约」vs「运行时移除」两案，含兼容性影响与前端消费影响；后端实现提供运行时事实输入）
 - **禁止**：写入 `api/` 快照与 `status/sync-manifest.json`；代替 PM 决策方案
 
 ### PM（本会话）
@@ -60,5 +60,5 @@
 - 每项回执到达并经 PM 验收后更新；M4 全部关闭 → `gate0-1-m4-accepted-gate4-pending`
 - 发布状态：`releaseStatus`/`finalReleaseStatus` = `not-published`，仅用户授权后由 PM 变更（Gate 4）
 
-- 交接角色：PM / 跨项目协调 Codex
+- 交接角色：协调 PM
 - 日期：2026-08-13
