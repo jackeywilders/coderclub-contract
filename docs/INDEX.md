@@ -38,7 +38,7 @@
 
 每次交接都记录来源仓库、分支、完整提交哈希、目标路径、变更摘要和验证命令。开发契约快照还必须记录源 SHA-256、快照 SHA-256 和语义差异。接收方先在对应项目运行 `git show <commit-hash>`，再检查 `git diff <parent>..<commit-hash>` 和验证结果。
 
-PM 合并跨项目结论时，在 `handoff/` 或 `acceptance/` 记录双方提交哈希，并同步更新相关 `status/*.json`。交接仓库本身的治理提交也使用 Git 提交哈希追踪，远端推送需要单独授权。
+PM 合并跨项目结论时，在 `handoff/` 或 `acceptance/` 记录双方提交哈希，并同步更新相关 `status/*.json`。交接仓库本身的治理提交也使用 Git 提交哈希追踪；角色分支 push 发起 PR 属日常协作，`main` 变更经 PR 自动合并（见 `AGENTS.md`"远端与合入流程"）。
 
 ## compact 后恢复步骤
 
