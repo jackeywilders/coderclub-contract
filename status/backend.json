@@ -1,9 +1,9 @@
 {
   "role": "backend",
-  "state": "m4-01-02-03-backend-evidence-signed",
+  "state": "m4-01-02-03-05-backend-evidence-signed",
   "projectPath": "G:/Dev/backend/Club/CoderClub",
   "branch": "main",
-  "lastCommit": "c24dd1f13242b162bc06335b38240be3d0407cfd",
+  "lastCommit": "371a3b152b536e068473c7b90096a5c06aa56065",
   "baseline": {
     "name": "C0",
     "commit": "7e3f77b49627dab501c45c0548f08d5334f3ed48"
@@ -21,7 +21,7 @@
     "historicalDeclaredSha256Status": "superseded-by-observed-snapshot",
     "sanitizedExamples": true
   },
-  "lastHandoff": "handoff/backend-to-frontend/2026-08-13/m4-03-credential-hardening-report.md",
+  "lastHandoff": "handoff/backend-to-frontend/2026-08-15/m4-05-invalid-request-body-report.md",
   "designBaseline": "designs/backend/2026-08-10/gate0-1-backend-baseline.md",
   "documentationBaseline": {
     "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
@@ -67,6 +67,8 @@
     "m4-02OssAccessPolicyVerified": true,
     "m4-03CredentialGrepClean": true,
     "m4-01-02-03ReceiptsSigned": true,
+    "m4-05InvalidRequestBodyVerified": true,
+    "m4-05ReceiptSigned": true,
     "apiSourceJwtOrAbsolutePathValues": false,
     "apiSourceContainsSyntheticCredentialExamples": true
   }
