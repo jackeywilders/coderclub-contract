@@ -6,7 +6,7 @@
   "lastCommit": "371a3b152b536e068473c7b90096a5c06aa56065",
   "baseline": {
     "name": "C0",
-    "commit": "7e3f77b49627dab501c45c0548f08d5334f3ed48"
+    "commit": "c0b01caaffa7b2fe0c927b2d19d028e6feb73e4d"
   },
   "api": {
     "sourcePath": "docs/api/coderclub-openapi.json",
