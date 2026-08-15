@@ -61,3 +61,4 @@
 4. `status/*.json` 记录当前状态，不以状态文件替代代码或契约本身。
 5. 提交前检查 `git diff --check` 和 `git status --short`；推送远端必须得到 PM 的明确授权。
 6. 交接仓库内新建的任何文档（提案、设计、交接、验收、评审、报告、路线图等），必须先在其所属目录下建立 `YYYY-MM-DD/` 日期目录（以文档创建日期为准，Asia/Shanghai），再写入该目录；文件名不再带日期前缀。豁免固定路径文件：`AGENTS.md`、`CLAUDE.md`、`CONTEXT.md`、`docs/INDEX.md`、`docs/adr/**`、`docs/agents/**`、`api/**` 契约快照、`status/*.json` 状态文件、`_template-*` 模板与 `.gitkeep`。存量文档的迁移也遵循同一布局。
+7. 本机全局已配置 `prepare-commit-msg` 钩子（`git config --global core.hooksPath`），自动剥离 AI 工具追加的 `Co-Authored-By: Claude ...` 提交署名行，对所有仓库与提交工具生效（2026-08-15 起）；约定细节、副作用与回退方式见 `docs/agents/git-commit-conventions.md`。历史提交保留原样。
