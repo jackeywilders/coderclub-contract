@@ -13,7 +13,7 @@
 | 来源项目 | `G:/Dev/backend/Club/CoderClub` |
 | 来源分支 | `main` |
 | 实施提交哈希 | `371a3b1`（feat(exception): M4-05 非法请求体统一归类 400） |
-| 回执提交哈希 | （待回填） |
+| 回执提交哈希 | `a453980`（docs(handoff): M4-05 非法请求体处理回执） |
 
 ## 2. 实测请求/响应记录（真实 HTTP，Nacos dev 环境）
 
