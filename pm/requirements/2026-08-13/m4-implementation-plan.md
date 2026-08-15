@@ -2,15 +2,15 @@
 
 > **面向 AI 代理的工作者：** 必需子技能：使用 superpowers:subagent-driven-development（推荐）或 superpowers:executing-plans 逐任务实现此计划。步骤使用复选框（`- [ ]`）语法来跟踪进度。
 >
-> **执行角色与边界：** 本计划由 **PM / 跨项目协调 Codex** 在交接仓库 `G:/Dev/backend/Club/coderclub-contract-codex-pm` 执行（分支 `codex/pm-coordination`）。后端业务实现由 **Claude Code 后端**在其项目 `G:/Dev/backend/Club/CoderClub` 执行、**Backend Codex** 复核签署；PM 不得代写后端代码。跨会话分发通过任务书文件路径与任务书内「回执路径」完成。
+> **执行角色与边界：** 本计划由 **协调 PM** 在交接仓库 `G:/Dev/backend/Club/coderclub-contract-codex-pm` 执行（分支 `codex/pm-coordination`）。后端业务实现由 **后端实现**在其项目 `G:/Dev/backend/Club/CoderClub` 执行、**后端评审** 复核签署；PM 不得代写后端代码。跨会话分发通过任务书文件路径与任务书内「回执路径」完成。
 >
 > **参考规格：** `pm/requirements/2026-08-13/m4-task-design.md`（已获用户批准）；任务书模板参考 `pm/requirements/2026-08-12/g1-04-claude-code-backend-task.md`。
 
 **目标：** 按设计规格逐项推进 M4 六项任务（M4-01~06）的任务书 → 分发 → 回执核验 → PM 验收关闭，并建立 Gate 4 发布门禁执行流程（发布状态仅在用户明确授权后变更）。
 
-**架构：** 沿用 G1-04 已验证的逐项独立流程：PM 产出任务书与验收记录，Claude Code 后端执行并提交回执，Backend Codex 复核签署；全部文档按日期目录规则归档（`<类别>/<YYYY-MM-DD>/<文件名>`，文件名无日期前缀）；状态以 `status/*.json` 追踪。
+**架构：** 沿用 G1-04 已验证的逐项独立流程：PM 产出任务书与验收记录，后端实现执行并提交回执，后端评审 复核签署；全部文档按日期目录规则归档（`<类别>/<YYYY-MM-DD>/<文件名>`，文件名无日期前缀）；状态以 `status/*.json` 追踪。
 
-**技术栈：** Git（交接仓库，Gitee 远端）、Markdown 治理文档、JSON 状态文件（node 解析验证）；后端侧由 Claude Code 后端使用 Maven/JUnit（本计划仅核验其结果，不执行）。
+**技术栈：** Git（交接仓库，Gitee 远端）、Markdown 治理文档、JSON 状态文件（node 解析验证）；后端侧由 后端实现使用 Maven/JUnit（本计划仅核验其结果，不执行）。
 
 ---
 
@@ -56,14 +56,14 @@ git add -A && git commit -m "merge(main): sync before M4 execution" || echo "not
 
 按 `g1-04-claude-code-backend-task.md` 的结构（任务摘要 / 前置事实 / 步骤 / 验收边界与关闭条件 / 禁止事项）编写，内容取自设计规格 §3 M4-01，必须包含：
 
-- 任务角色：Claude Code 后端；批准角色：PM；任务日期：2026-08-13；状态：待执行
+- 任务角色：后端实现；批准角色：PM；任务日期：2026-08-13；状态：待执行
 - 前置事实：`G1-02-FINE-GRAINED-PERMISSION` 来源（`status/backend.json` openItems）；Auth 已覆盖 `admin_user` 角色与 403 回归；`SubjectContractTest` 45/45 现状；G1-02 统一 401/403 语义（HTTP 状态 + 业务 code + 统一响应体）
 - 执行步骤：
   1. 盘点 Subject/Auth 管理端点清单（写/读/管理），输出权限矩阵文档（端点 × 角色 × 匿名/登录/角色/权限）
   2. 配置角色/权限数据并实施鉴权（`@SaCheckPermission` 类策略或等价），补齐管理端点 403 断言
   3. 测试命令：`mvn -pl coder-club-subject/coder-club-subject-app/coder-club-subject-app-controller -am '-Dtest=SubjectContractTest' '-Dsurefire.failIfNoSpecifiedTests=false' test`（预期全绿）及 Auth 侧等价命令
 - 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-01-fine-grained-permission-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
-- 关闭条件（全部满足 PM 复核关闭）：① 权限矩阵文档 + 实施提交存在；② 三态（匿名/普通/管理员）401/403 测试通过；③ 回执含原始命令输出与提交哈希，Backend Codex 签署
+- 关闭条件（全部满足 PM 复核关闭）：① 权限矩阵文档 + 实施提交存在；② 三态（匿名/普通/管理员）401/403 测试通过；③ 回执含原始命令输出与提交哈希，后端评审 签署
 - 禁止事项：不得修改交接仓库 `api/` 快照与 `status/sync-manifest.json`；契约字段/路径/方法变更必须先提案
 
 - [ ] **步骤 2：Commit**
@@ -89,7 +89,7 @@ git commit -m "docs(pm): create M4-01 fine-grained permission task"
 - 前置事实：M3 已实现 OSS 真实上传与统一 400（`acceptance/backend/milestones/M3/2026-08-02/M3联调记录.md`）；「接口可用但默认匿名」不确定性待去除
 - 执行步骤：盘点 OSS 端点（上传/URL 查询/调试）→ 输出策略文档（每端点明确匿名/登录/角色）→ 实施鉴权 → 鉴权测试（未登录/登录态/越权三态）
 - 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-02-oss-access-control-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
-- 关闭条件：① 策略文档 + 实施提交；② 三态测试通过；③ Backend Codex 签署回执
+- 关闭条件：① 策略文档 + 实施提交；② 三态测试通过；③ 后端评审 签署回执
 - 明确：OpenAPI 与运行时差异须先提案（`proposals/backend/`），不得静默改契约
 
 - [ ] **步骤 2：Commit**
@@ -108,13 +108,13 @@ git commit -m "docs(pm): create M4-02 OSS access control task"
 
 内容取自设计规格 §3 M4-03。必须包含：
 - 前置事实：启动脚本已改为先安装再运行（后端提交 `7c3ac66`）；`status/backend.json` 的 `apiSourceJwtOrAbsolutePathValues=false`
-- 执行步骤（**代码侧**，Claude Code 后端）：
+- 执行步骤（**代码侧**，后端实现）：
   1. grep 全模块明文凭据（密码/密钥/Token），清理脚本与配置文件
   2. 统一配置读取优先级（Nacos → 环境变量 → 本地默认）并文档化
   3. 输出端口策略文档（<subject-port>/<subject-alt-port>、<mysql-probe-port>/<mysql-port> 标准用途）
-- **运维侧**（用户/运维职责，任务书仅要求记录）：历史暴露凭据轮换完成记录（由用户提供，Backend Codex 在回执中引用）
+- **运维侧**（用户/运维职责，任务书仅要求记录）：历史暴露凭据轮换完成记录（由用户提供，后端评审 在回执中引用）
 - 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-03-credential-hardening-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
-- 关闭条件：① 无明文凭据（grep 核验 + 提交哈希）；② 配置优先级与端口策略文档；③ 轮换记录引用（或 PM 书面例外）；④ Backend Codex 签署
+- 关闭条件：① 无明文凭据（grep 核验 + 提交哈希）；② 配置优先级与端口策略文档；③ 轮换记录引用（或 PM 书面例外）；④ 后端评审 签署
 
 - [ ] **步骤 2：Commit**
 
@@ -138,7 +138,7 @@ git commit -m "docs(pm): create M4-03 credential hardening task"
   3. 输出集成测试方案文档（场景/命令/环境，参考 M3 联调记录）
   4. 输出 CI/CD 执行命令与失败处理文档；无外部 CI 时以「本地可重复命令 + 文档化」为最小验收
 - 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-04-test-quality-gate-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
-- 关闭条件：① 覆盖率报告达基线；② 集成测试方案文档；③ CI/CD 文档；④ Backend Codex 签署
+- 关闭条件：① 覆盖率报告达基线；② 集成测试方案文档；③ CI/CD 文档；④ 后端评审 签署
 
 - [ ] **步骤 2：Commit**
 
@@ -160,7 +160,7 @@ git commit -m "docs(pm): create M4-04 test quality gate task"
   2. 确认归类 400（HTTP 400 + 业务 code + 统一响应体，对齐 G1-02 语义）
   3. 补齐全局异常映射测试（异常处理器覆盖非法请求体）
 - 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-05-invalid-request-body-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
-- 关闭条件：① 实测 400（原始请求/响应）；② 异常映射测试通过；③ 既有测试全绿；④ Backend Codex 签署
+- 关闭条件：① 实测 400（原始请求/响应）；② 异常映射测试通过；③ 既有测试全绿；④ 后端评审 签署
 
 - [ ] **步骤 2：Commit**
 
@@ -179,12 +179,12 @@ git commit -m "docs(pm): create M4-05 invalid request body task"
 内容取自设计规格 §3 M4-06。必须包含：
 - 前置事实：G1-04 遗留记录（`pm/reviews/2026-08-13/g1-04-close-acceptance.md` 记录事项 3）；`SubjectInfoDTO` 实测含 `pageNo`/`pageSize` 装饰字段，快照未声明
 - 流程（必须先提案后实施）：
-  1. **Backend Codex** 撰写提案 `proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（Claude Code 后端提供运行时实现事实与影响评估输入；选定方案记录在提案文内或 PM 决策中）：评估「声明进契约」vs「运行时移除」两案（兼容性影响、前端消费影响）
+  1. **后端评审** 撰写提案 `proposals/backend/<日期>/m4-06-decorative-fields-proposal.md`（后端实现提供运行时实现事实与影响评估输入；选定方案记录在提案文内或 PM 决策中）：评估「声明进契约」vs「运行时移除」两案（兼容性影响、前端消费影响）
   2. PM 确认方案（在提案上记录决策）
-  3. Claude Code 后端实施 + 测试（含 `SubjectContractTest` 45/45 回归）
+  3. 后端实现实施 + 测试（含 `SubjectContractTest` 45/45 回归）
   4. 如涉契约声明：按 `AGENTS.md` 规则 1 同步 `api/` 快照（源提交/SHA-256/快照提交/SHA-256/语义差异全链）
 - 回执路径：`handoff/backend-to-frontend/<执行日期>/m4-06-decorative-fields-report.md`（回执目录按回执实际创建日期落位，AGENTS.md 第 6 条）
-- 关闭条件：① 提案获 PM 批准（含选定方案）；② 实施提交 + 测试全绿；③ 快照/基线一致（如涉）；④ Backend Codex 签署
+- 关闭条件：① 提案获 PM 批准（含选定方案）；② 实施提交 + 测试全绿；③ 快照/基线一致（如涉）；④ 后端评审 签署
 - 禁止事项：未经 PM 确认方案前不得实施；不得直接修改 `api/` 快照
 
 - [ ] **步骤 2：Commit**
@@ -211,10 +211,10 @@ git status --short
 
 - [ ] **步骤 2：按序分发（跨会话交接点）**
 
-按设计规格建议顺序 `M4-01 → M4-02/M4-03（并行）→ M4-05 → M4-04 → M4-06 独立并行`，在交接文档/会话说明中通知 **Claude Code 后端**与 **Backend Codex**：
-- 分发内容：6 份任务书路径 + 设计规格路径 + 回执路径约定 + 「回执须 Backend Codex 复核签署」
+按设计规格建议顺序 `M4-01 → M4-02/M4-03（并行）→ M4-05 → M4-04 → M4-06 独立并行`，在交接文档/会话说明中通知 **后端实现**与 **后端评审**：
+- 分发内容：6 份任务书路径 + 设计规格路径 + 回执路径约定 + 「回执须 后端评审 复核签署」
 - 记录分发日期与对象（在 `status/pm.json` 的 `lastAction` 或本计划的进度复选框）
-- 预期：Claude Code 后端逐项执行并提交回执到 `handoff/backend-to-frontend/<日期>/m4-0X-...-report.md`
+- 预期：后端实现逐项执行并提交回执到 `handoff/backend-to-frontend/<日期>/m4-0X-...-report.md`
 
 - [ ] **步骤 3：Commit（如分发说明写入了交接文档）**
 
@@ -227,7 +227,7 @@ git commit -m "docs(pm): dispatch M4 task books for execution" || echo "nothing 
 
 **文件：**
 - 创建：`pm/reviews/<回执日期>/m4-0X-close-acceptance.md`（每项一份）
-- 修改：`status/backend.json`（Backend Codex 会先更新，PM 复核后确认）、`status/pm.json`
+- 修改：`status/backend.json`（后端评审 会先更新，PM 复核后确认）、`status/pm.json`
 
 - [ ] **步骤 1：核验回执（对照任务书关闭条件）**
 
@@ -235,8 +235,8 @@ git commit -m "docs(pm): dispatch M4 task books for execution" || echo "nothing 
 1. 读回执 `handoff/backend-to-frontend/<日期>/m4-0X-...-report.md`，逐条对照任务书关闭条件
 2. 交叉核验后端提交存在性（只读）：`git -C "G:/Dev/backend/Club/CoderClub" show <commit> --stat`（如可访问）
 3. 核验契约未变：回执中 OpenAPI 源 SHA-256 与 `status/sync-manifest.json` 记录（`7576e28a...`）一致；若有差异须有已批准提案
-4. 核验 Backend Codex 签署存在（回执内签署节 + `status/backend.json` 状态）
-预期：全部关闭条件有证据支撑；任一不满足 → 返回 Backend Codex 补充，不关闭。
+4. 核验 后端评审 签署存在（回执内签署节 + `status/backend.json` 状态）
+预期：全部关闭条件有证据支撑；任一不满足 → 返回 后端评审 补充，不关闭。
 
 - [ ] **步骤 2：编写 PM 关闭验收**
 
@@ -247,7 +247,7 @@ git commit -m "docs(pm): dispatch M4 task books for execution" || echo "nothing 
 ```bash
 node -e "JSON.parse(require('fs').readFileSync('status/pm.json','utf8'))"
 ```
-编辑 `status/pm.json`：更新 `lastAction` 记录关闭项与证据；`state` 维持 `gate0-1-development-contract-accepted-release-pending` 直至 M4 全部关闭（M4 全部关闭后改为 `gate0-1-m4-accepted-gate4-pending`）。同步确认 `status/backend.json` 已由 Backend Codex 更新（PM 不代改）。
+编辑 `status/pm.json`：更新 `lastAction` 记录关闭项与证据；`state` 维持 `gate0-1-development-contract-accepted-release-pending` 直至 M4 全部关闭（M4 全部关闭后改为 `gate0-1-m4-accepted-gate4-pending`）。同步确认 `status/backend.json` 已由 后端评审 更新（PM 不代改）。
 
 - [ ] **步骤 4：Commit**
 
@@ -271,7 +271,7 @@ git commit -m "docs(pm): mark M4 (Gate 2) fully accepted"
 
 - [ ] **步骤 1：确认触发条件**
 
-核验：① M4 六项 `pm/reviews/<日期>/m4-0X-close-acceptance.md` 全部存在且结论 closed；② Gate 3 前端正式联调回执存在（`handoff/frontend-to-backend/<日期>/...`，由 Frontend Codex 提交）。
+核验：① M4 六项 `pm/reviews/<日期>/m4-0X-close-acceptance.md` 全部存在且结论 closed；② Gate 3 前端正式联调回执存在（`handoff/frontend-to-backend/<日期>/...`，由 前端评审 提交）。
 任一不满足 → 停止，不进入发布验收。
 
 - [ ] **步骤 2：逐项核对发布检查清单**
