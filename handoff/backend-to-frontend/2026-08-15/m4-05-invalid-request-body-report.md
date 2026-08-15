@@ -98,6 +98,12 @@ mvn test -pl coder-club-auth/coder-club-auth-app/coder-club-auth-app-controller,
 - 未改变已批准契约的字段/路径/方法；未写入任何凭据。
 - 所有实测请求/响应、测试输出与提交哈希为真实结果，未伪造。
 
-## 7. 后端评审复核签署（待复核）
+## 7. 后端评审复核签署（2026-08-15）
 
-- [ ] （待后端评审复核后签署）
+- [x] 代码级复核：三服务 `GlobalExceptionHandler` 新增 `HttpMessageNotReadableException` → HTTP 400 + 统一响应体（success=false/code=400/message=参数校验失败/data=null），映射优先级与响应结构核对通过 — **通过**
+- [x] 独立重跑：`GlobalExceptionMappingTest` 三模块各 2/2；全量回归 subject 53/53、oss 13/13、auth 11/11，BUILD SUCCESS — **通过**
+- [x] OpenAPI SHA-256 未变（`7576e28a…`，43 路径 / 43 操作）— **通过**
+- [x] 已知限制（OSS 无 JSON body 端点由单测覆盖、dev 测试用户未清理）核验 — **通过**
+- [x] M4-05 关闭条件满足；签署本回执
+
+**复核签署**：后端评审（B-Review），2026-08-15（工作底稿：`designs/backend/2026-08-15/m4-05-invalid-request-body-review-workpaper.md`）
