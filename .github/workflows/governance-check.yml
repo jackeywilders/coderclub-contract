@@ -1,0 +1,51 @@
+name: governance-check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  governance-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate status JSON files
+        run: |
+          for f in status/pm.json status/backend.json status/frontend.json status/sync-manifest.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8')); console.log('$f OK')"
+          done
+
+      - name: git diff --check
+        run: git diff --check
+
+      - name: Sensitive pattern scan on changed md/json files
+        run: |
+          git fetch origin main --quiet
+          changed=$(git diff --name-only origin/main...HEAD -- '*.md' '*.json')
+          if [ -z "$changed" ]; then
+            echo "No md/json changes in this PR"
+            exit 0
+          fi
+          hits=$(echo "$changed" | while read -r f; do
+            [ -f "$f" ] || continue
+            grep -HnE '([0-9]{1,3}\.){3}[0-9]{1,3}|BEGIN (RSA |EC |OPENSSH |DSA )?PRIVATE KEY|ghp_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}' "$f" 2>/dev/null
+          done | grep -vE '127\.0\.0\.1|0\.0\.0\.0')
+          if [ -n "$hits" ]; then
+            echo "Sensitive patterns detected in changed files:"
+            echo "$hits"
+            exit 1
+          fi
+          echo "Sensitive pattern scan passed"
+
+      - name: Enable auto-merge (no-conflict PRs merge automatically)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --auto --merge "${{ github.event.pull_request.number }}"
