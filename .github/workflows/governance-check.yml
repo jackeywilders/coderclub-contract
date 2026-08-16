@@ -45,6 +45,57 @@ jobs:
           fi
           echo "Sensitive pattern scan passed"
 
+      - name: Evidence gate (read-only)
+        run: |
+          set -eu
+          # 1) Receipt summary structure: handoff/**/*-summary.json (excluding templates)
+          required="taskId taskTitle receiptPath sourceProject implementationCommitSha receiptCommitSha pullRequestNumber contractSnapshotSha256 verificationResult verificationDate"
+          for f in $(git ls-files 'handoff/**/*-summary.json' | grep -v '_template-'); do
+            node -e "
+              const d = JSON.parse(require('fs').readFileSync('$f','utf8'));
+              const req = '$required'.split(' ');
+              const miss = req.filter(k => !(k in d));
+              if (miss.length) { console.error('$f missing fields: ' + miss.join(',')); process.exit(1); }
+              console.log('$f OK');
+            "
+          done
+          # 2) Status cross-consistency (whitelist): pm.json only for now
+          node -e "
+            const pm = JSON.parse(require('fs').readFileSync('status/pm.json','utf8'));
+            const reports = pm.m4AcceptanceReports || {};
+            for (const t of Object.keys(reports)) {
+              if (typeof pm.state === 'string' && pm.state.includes(t + '-in-progress')) {
+                console.error('state declares ' + t + '-in-progress but m4AcceptanceReports has a close acceptance for it'); process.exit(1);
+              }
+            }
+            if ((pm['m4-03Supplement'] || {}).status === 'covered' && typeof pm.state === 'string' && pm.state.includes('m4-03-pending')) {
+              console.error('m4-03Supplement covered but state still declares m4-03-pending'); process.exit(1);
+            }
+            console.log('status cross-consistency OK');
+          "
+          # 3) Referenced commits exist in history (existence = R1); referenced paths exist.
+          #    In-repo refs only: reviewedCommit/snapshotCommit are contract-repo commits.
+          #    contractSnapshot.sourceCommit lives in the private backend repo and is cross-repo
+          #    by design — human-chain verified (backend review signs it), not checked here.
+          node -e "
+            const cp = require('child_process');
+            const pm = JSON.parse(require('fs').readFileSync('status/pm.json','utf8'));
+            const refs = [pm.reviewedCommit, pm.contractSnapshot && pm.contractSnapshot.snapshotCommit].filter(Boolean);
+            for (const sha of refs) {
+              const r = cp.spawnSync('git', ['cat-file', '-e', sha + '^{commit}'], {stdio: 'pipe'});
+              if (r.status !== 0) { console.error('referenced commit not found: ' + sha); process.exit(1); }
+            }
+            for (const p of [pm.auditReport, pm.reviewReport, pm.coordinationRoadmap, pm.acceptanceReport, pm['g1-03BackendAcceptanceReport'], pm['g1-03CloseAcceptanceReport'], pm['g1-04CloseAcceptanceReport'], pm.m4SixProposal].filter(Boolean)) {
+              const r = cp.spawnSync('git', ['cat-file', '-e', 'HEAD:' + p], {stdio: 'pipe'});
+              if (r.status !== 0) { console.error('referenced path not found: ' + p); process.exit(1); }
+            }
+            for (const p of Object.values((pm.m4AcceptanceReports || {}))) {
+              const r = cp.spawnSync('git', ['cat-file', '-e', 'HEAD:' + p], {stdio: 'pipe'});
+              if (r.status !== 0) { console.error('referenced path not found: ' + p); process.exit(1); }
+            }
+            console.log('referenced commits/paths OK');
+          "
+
       - name: Enable auto-merge (no-conflict PRs merge automatically)
         continue-on-error: true
         env:
