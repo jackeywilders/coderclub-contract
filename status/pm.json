@@ -1,6 +1,6 @@
 {
   "role": "pm",
-  "state": "gate0-1-development-contract-accepted-release-pending",
+  "state": "gate0-1-m4-01-to-05-accepted-m4-06-pending",
   "repository": "coderclub-contract",
   "branch": "codex/pm-coordination",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
@@ -23,12 +23,19 @@
     "runtimeAuthority": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
     "releaseAuthority": "PM release gate; finalReleaseStatus remains not-published"
   },
-  "lastAction": "协调 PM dispatched all six M4 task books on 2026-08-13 to 后端实现 (execution) and 后端评审 (review and sign-off). Task books: pm/requirements/2026-08-13/m4-01-fine-grained-permission-task.md, pm/requirements/2026-08-13/m4-02-oss-access-control-task.md, pm/requirements/2026-08-13/m4-03-credential-hardening-task.md, pm/requirements/2026-08-13/m4-04-test-quality-gate-task.md, pm/requirements/2026-08-13/m4-05-invalid-request-body-task.md, pm/requirements/2026-08-13/m4-06-decorative-fields-task.md. Design spec: pm/requirements/2026-08-13/m4-task-design.md. Dispatch order: M4-01 first, then M4-02/M4-03 in parallel, then M4-05, then M4-04 after M4-01/02/05 complete (final quality baseline), M4-06 independent and parallel throughout. Receipts: 后端实现 submits one execution receipt per task to handoff/backend-to-frontend/<receipt creation date>/m4-0X-<task>-report.md; each receipt must be reviewed and signed off by 后端评审 before PM acceptance",
+  "lastAction": "协调 PM accepted and closed M4-01/02/03/04/05 on 2026-08-16 (five close-acceptance records in pm/reviews/2026-08-16/). M4-06 remains pending: requires proposal from 后端评审 (declare-in-contract vs runtime-removal) and PM confirmation before implementation. M4-01/02/03/04/05 receipts were signed by 后端评审 on 2026-08-13/15/16; all closing conditions verified (tests, OpenAPI SHA-256 unchanged 7576e28a, real-environment rechecks). Follow-up: Subject startup verification under rotated Nacos config (M4-03 sign-off note) to be recorded by 后端实现 before Gate 4.",
   "auditReport": "pm/reports/2026-08-10/pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10/pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10/pm-coordination-roadmap.md",
   "acceptanceReport": "pm/reviews/2026-08-10/gate-0-1-pm-acceptance.md",
   "g1-03BackendAcceptanceReport": "pm/reviews/2026-08-11/g1-03-backend-task-acceptance.md",
   "g1-03CloseAcceptanceReport": "pm/reviews/2026-08-12/g1-03-close-acceptance.md",
-  "g1-04CloseAcceptanceReport": "pm/reviews/2026-08-13/g1-04-close-acceptance.md"
+  "g1-04CloseAcceptanceReport": "pm/reviews/2026-08-13/g1-04-close-acceptance.md",
+  "m4AcceptanceReports": {
+    "m4-01": "pm/reviews/2026-08-16/m4-01-close-acceptance.md",
+    "m4-02": "pm/reviews/2026-08-16/m4-02-close-acceptance.md",
+    "m4-03": "pm/reviews/2026-08-16/m4-03-close-acceptance.md",
+    "m4-04": "pm/reviews/2026-08-16/m4-04-close-acceptance.md",
+    "m4-05": "pm/reviews/2026-08-16/m4-05-close-acceptance.md"
+  }
 }
