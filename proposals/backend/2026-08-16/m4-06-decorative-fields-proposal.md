@@ -87,3 +87,30 @@
 
 - 提案角色：后端评审（B-Review）
 - 日期：2026-08-16
+
+---
+
+## 7. 协调 PM 决策（2026-08-16）
+
+**决策：选定案二（运行时移除）。**
+
+### 决策依据
+
+1. `pageNo`/`pageSize` 在 `SubjectInfoDTO` 列表项上**无分页语义**（分页参数在请求体 `SubjectPageQueryDTO`、分页结果在外壳 `PageResultSubjectInfo`），属装饰冗余；契约应反映真实语义而非全部运行时输出。
+2. 快照当前声明语义正确（`SubjectInfoDTO` 14 字段无分页字段、请求侧/外壳侧已独立声明分页，已核验 SHA `9a97c055…` / `7576e28a…`），运行时移除后即达成一致，**无需改动快照**（避免全链哈希同步成本与快照变动风险）。
+3. 前端不消费列表项该两字段（前端仓库基线已复核）、`SubjectContractTest` 无相关断言，**零破坏**。
+
+### 实施要求（供后端实现执行，回执须逐项覆盖）
+
+1. 后端改造 `SubjectInfoDTO` 响应输出路径：列表项不输出 `pageNo`/`pageSize`；请求体仍可承载分页参数（`SubjectInfoDTO` 作请求参数能力保留）。实现方式由后端实现自定（视图类型/序列化忽略继承字段等），但不得改变已批准契约的字段/路径/方法。
+2. 测试：`SubjectContractTest` 45/45 回归 + 全量 `mvn test`（subject 53 基线，含 M4-04 后新增用例）全绿。
+3. 真实响应复核：真实环境请求 `POST /subject/getSubjectPage`，确认 `data.list` 元素 JSON **不含** `pageNo`/`pageSize`，请求体分页参数仍生效（原始请求/响应记录）。
+4. 契约核验：`docs/api/coderclub-openapi.json`（后端侧，SHA `7576e28a…`）与交接仓库 `api/coderclub-openapi.json`（SHA `9a97c055…`）**均不变化**；`status/sync-manifest.json` 不变。
+5. 回执提交至 `handoff/backend-to-frontend/<执行日期>/m4-06-decorative-fields-report.md`，经后端评审复核签署后由协调 PM 验收关闭。
+
+### 授权状态
+
+协调 PM 已确认方案（案二），后端实现可进入实施；实施须严格遵循任务书 §4 关闭条件与上述要求。
+
+- 决策角色：协调 PM
+- 日期：2026-08-16
