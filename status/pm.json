@@ -1,6 +1,6 @@
 {
   "role": "pm",
-  "state": "gate0-1-m4-01-to-05-accepted-m4-06-confirmed-in-progress",
+  "state": "gate0-1-m4-all-accepted",
   "repository": "coderclub-contract",
   "branch": "codex/pm-coordination",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
@@ -23,7 +23,7 @@
     "runtimeAuthority": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
     "releaseAuthority": "PM release gate; finalReleaseStatus remains not-published"
   },
-  "lastAction": "协调 PM confirmed M4-06 proposal on 2026-08-16 (option 2: runtime removal of decorative pageNo/pageSize on SubjectInfoDTO list items; contract snapshot unchanged). Implementation assigned to 后端实现 per decision section in proposals/backend/2026-08-16/m4-06-decorative-fields-proposal.md; awaiting execution receipt, 后端评审 sign-off, then PM acceptance.",
+  "lastAction": "协调 PM accepted and closed M4-06 on 2026-08-17 (runtime removal of decorative pageNo/pageSize via SubjectInfoViewDTO; receipt 494e862 merged in main PR #11, implementation commit ae2bb7e verified in backend repo). M4 01-06 all accepted; state -> gate0-1-m4-all-accepted. Next: Gate 4 release gate requires explicit user authorization for releaseStatus/finalReleaseStatus changes.",
   "auditReport": "pm/reports/2026-08-10/pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10/pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10/pm-coordination-roadmap.md",
@@ -36,7 +36,8 @@
     "m4-02": "pm/reviews/2026-08-16/m4-02-close-acceptance.md",
     "m4-03": "pm/reviews/2026-08-16/m4-03-close-acceptance.md",
     "m4-04": "pm/reviews/2026-08-16/m4-04-close-acceptance.md",
-    "m4-05": "pm/reviews/2026-08-16/m4-05-close-acceptance.md"
+    "m4-05": "pm/reviews/2026-08-16/m4-05-close-acceptance.md",
+    "m4-06": "pm/reviews/2026-08-17/m4-06-close-acceptance.md"
   },
   "m4SixProposal": "proposals/backend/2026-08-16/m4-06-decorative-fields-proposal.md",
   "m4SixDecision": {
