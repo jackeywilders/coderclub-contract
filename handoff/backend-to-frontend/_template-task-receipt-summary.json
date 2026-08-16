@@ -1,0 +1,14 @@
+{
+  "$template": true,
+  "_usage": "执行回执的结构化摘要模板。与回执 Markdown 同目录，文件名 `<task>-summary.json`（如 m4-06-decorative-fields-summary.json）。字段含义与必填性见 docs/agents/verification-workflow.md §6；governance-check 会校验必填字段完整性与引用存在性。真实环境信息遵循 AGENTS.md 规则 8 以占位符呈现。",
+  "taskId": "M4-0X-任务编号",
+  "taskTitle": "任务标题",
+  "receiptPath": "handoff/backend-to-frontend/YYYY-MM-DD/<task>-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "实施提交 SHA（前 7 位或完整）",
+  "receiptCommitSha": "回执提交 SHA（前 7 位或完整）",
+  "pullRequestNumber": 0,
+  "contractSnapshotSha256": "契约快照 SHA-256（前 8 位；如未涉及填 null）",
+  "verificationResult": "passed",
+  "verificationDate": "YYYY-MM-DD"
+}

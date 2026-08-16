@@ -28,9 +28,15 @@
 
 1. Nacos 配置持有运行凭据，轮换需在 Nacos 控制台同步（不在仓库范围）。
 2. 启动依赖 `NACOS_USERNAME`/`NACOS_PASSWORD` 环境变量。
-3. 签署备注：Subject 在轮换后 Nacos 配置下的独立启动验证未见明确记录（OSS 已由 M4-02 §8 覆盖）——**列为 M4 后续验证补充项**（M4-06 或 Gate 4 前由后端实现补记，不阻塞本任务关闭）。
+3. 签署备注：Subject 在轮换后 Nacos 配置下的独立启动验证未见明确记录（OSS 已由 M4-02 §8 覆盖）——**列为 M4 后续验证补充项**（M4-06 或 Gate 4 前由后端实现补记，不阻塞本任务关闭）。**已于 2026-08-17 闭环，见文末"补充登记"节。**
 
 ## 备注
 
 - 无阻塞项；任务书 §4 关闭条件 1-4 全部满足。
 - 验收结论写入 `status/pm.json`（M4-03 验收通过）；Subject 启动验证补充项登记在案。
+
+## 补充登记（2026-08-17）
+
+- **原补充项**（"已知限制"第 3 条）：Subject 在凭据轮换后 Nacos 配置下的独立启动验证，此前未见明确记录。
+- **补记依据**：`handoff/backend-to-frontend/2026-08-16/m4-06-decorative-fields-report.md` §5 真实响应复核——于 Nacos dev 环境对 Subject 服务执行 `POST /subject/getSubjectPage`（带登录 token），返回真实业务数据（`total=28`、`listSize=10`，外壳 `pageNo/pageSize` 正常），表明 Subject 在轮换后的 Nacos 配置下可独立启动并正常提供业务服务。
+- **结论**：✅ 补充项已闭环，M4-03 无遗留验证项。
