@@ -77,5 +77,12 @@ mvn test
 - 未改变已批准契约的字段/路径/方法；提交消息与回执未写真实环境信息（规则 8）。
 - 所有测试输出、真实响应与提交哈希为真实结果，未伪造。
 
-## 9. 后端评审复核签署（待复核）
-- [ ] （待后端评审复核后签署）
+## 9. 后端评审复核签署（2026-08-16）
+
+- [x] code-review 双轴：规范轴无文档化规范违规（4 条判断性气味均为 [仅供参考]：ViewDTO 字段重复为案二既定取舍、javadoc 模板风格、类名缩写、子串断言脆弱性）；规格轴 PM 决策实施要求 1-5 逐项核对无偏差 — **通过**
+- [x] 独立重跑：subject-app-controller **77/77**（含 SubjectContractTest 49/49、SubjectInfoViewDtoSerializationTest 2/2），BUILD SUCCESS — **通过**
+- [x] 契约核验：后端 OpenAPI 源 SHA-256 `7576e28a…` 未变（43/43）；diff 无 openapi/sync-manifest/api 文件变更 — **通过**
+- [x] 实现要点复核：4 读端点响应改 `SubjectInfoViewDTO`（不继承 PageInfo，14 字段与契约 schema 一致）、请求体 `SubjectInfoDTO` 分页参数能力保留、未改契约字段/路径/方法 — **通过**
+- [x] M4-06 关闭条件 1-4 满足；签署本回执
+
+**复核签署**：后端评审（B-Review），2026-08-16（工作底稿：`designs/backend/2026-08-16/m4-06-decorative-fields-review-workpaper.md`）
