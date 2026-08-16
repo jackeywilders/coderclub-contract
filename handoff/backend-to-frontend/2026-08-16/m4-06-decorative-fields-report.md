@@ -13,7 +13,7 @@
 | 来源项目 | `G:/Dev/backend/Club/CoderClub` |
 | 来源分支 | `main`（特性分支 `m4-06-signature-field-removal` → PR） |
 | 实施提交哈希 | `ae2bb7e`（feat(subject): M4-06 运行时移除列表项分页装饰字段 pageNo/pageSize） |
-| 回执提交哈希 | （待回填） |
+| 回执提交哈希 | `494e862`（docs(handoff): M4-06 装饰字段运行时移除执行回执） |
 
 ## 2. 提案编号与 PM 确认记录
 
