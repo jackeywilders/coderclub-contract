@@ -43,5 +43,11 @@
     "option": "runtime-removal",
     "date": "2026-08-16",
     "by": "协调 PM"
+  },
+  "m4-03Supplement": {
+    "item": "Subject startup verification under rotated Nacos config",
+    "status": "covered",
+    "closedDate": "2026-08-17",
+    "evidence": "handoff/backend-to-frontend/2026-08-16/m4-06-decorative-fields-report.md §5 (real-response verification, POST /subject/getSubjectPage in Nacos dev env)"
   }
 }
