@@ -58,6 +58,8 @@
 
 ## 6. 回执双轨：Markdown 正文 + 结构化摘要
 
+**"回执"= 交接仓库中的文件（Markdown 正文 + 同目录 `*-summary.json`，双轨），≠ 仅聊天/PR 描述中的通知。** 完成通知（§2）携带证据字段**不能代替**回执文件：回执必须作为文件提交到交接仓库对应角色的 `handoff/` 目录（日期目录按规则 6），供 governance-check 校验、接收方取用与审计留痕。通知与回执文件两者都要；缺一属于回执不完整。
+
 执行回执保持 Markdown 正文（人可读的论证与原始输出），另附**同目录结构化摘要** `*-summary.json`（机器可核验的证据声明）。模板见 `handoff/backend-to-frontend/_template-task-receipt-summary.json`。
 
 摘要必填字段（workflow §4.1 校验）：`taskId`、`taskTitle`、`receiptPath`、`sourceProject`、`implementationCommitSha`、`receiptCommitSha`、`pullRequestNumber`、`contractSnapshotSha256`、`verificationResult`、`verificationDate`。
@@ -82,11 +84,11 @@
 
 | 角色 | 分支 | 同步动作 | 后续执行要求 |
 | --- | --- | --- | --- |
-| 协调 PM | `codex/pm-coordination` | 已合入（本协议即由 PM 起草） | 维护 state 受控枚举（§7）；验收按 §2 通知字段收证据 |
-| 后端评审 | `codex/backend-contract` | `git merge origin/main` | 签署回执时按 §2 自检通知字段、按 §5 人链核验实施提交；工作底稿 + main 合入流程不变 |
-| 后端实现 | `claude/backend-proposals` | `git merge origin/main` | 执行回执**双轨**：Markdown 正文 + 同目录 `*-summary.json`（模板 `handoff/backend-to-frontend/_template-task-receipt-summary.json`，字段见 §6）；完成通知带 §2 四字段远端证据 |
-| 前端评审 | `codex/frontend-design` | `git merge origin/main` | 前端侧交接/验收回执同样适用 §2 通知字段与 §5 跨仓库人链核验（前端提交在 CoderClubFront） |
-| 前端实现 | `claude/frontend-proposals` | `git merge origin/main` | 前端回执双轨约定沿用 §6 字段（模板随后端方向；如前端回执新增，按 §6 字段结构补 `*-summary.json`） |
+| 协调 PM | `codex/pm-coordination` | 已合入（本协议即由 PM 起草） | 维护 state 受控枚举（§7）；验收按 §2 通知字段收证据，并核对 §6 回执文件已落交接仓库 |
+| 后端评审 | `codex/backend-contract` | `git merge origin/main` | 签署回执时按 §2 自检通知字段、按 §5 人链核验实施提交；回执须在交接仓库落文件（§6 双轨）；工作底稿 + main 合入流程不变 |
+| 后端实现 | `claude/backend-proposals` | `git merge origin/main` | 执行回执**双轨**：Markdown 正文 + 同目录 `*-summary.json`（模板 `handoff/backend-to-frontend/_template-task-receipt-summary.json`，字段见 §6）**提交到交接仓库 handoff 目录**；完成通知带 §2 四字段远端证据 |
+| 前端评审 | `codex/frontend-design` | `git merge origin/main` | 前端侧交接/验收回执同样适用 §2 通知字段与 §5 跨仓库人链核验（前端提交在 CoderClubFront）；前端回执同样须在交接仓库落文件（§6 双轨） |
+| 前端实现 | `claude/frontend-proposals` | `git merge origin/main` | 前端回执双轨约定沿用 §6 字段（模板随后端方向；如前端回执新增，按 §6 字段结构补 `*-summary.json` 并提交到交接仓库 handoff 目录） |
 
 **当前 M4 状态**：M4 01-06 全部验收关闭（`status/pm.json` `state = gate0-1-m4-all-accepted`）；下一步 Gate 4 发布门禁，`releaseStatus`/`finalReleaseStatus` 变更须用户明确授权。
 
@@ -94,3 +96,4 @@
 
 - 2026-08-17：初版定案（grilling 讨论 Q1-Q10；实施：AGENTS.md 规则 9 + 本协议 + governance-check 只读核验 + 回执摘要模板）。
 - 2026-08-17：新增 §9 各角色执行要点（治理变更同步；M4 01-06 全关、state `gate0-1-m4-all-accepted`）。
+- 2026-08-18：补正 §6/§9——明确"回执 = 交接仓库文件（Markdown + `*-summary.json` 双轨）≠ 仅通知"；通知带证据不能代替回执文件，两者都要（根因：合规合入 PR 仅通知带证据、未落回执文件）。
