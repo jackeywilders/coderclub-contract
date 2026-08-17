@@ -1,0 +1,12 @@
+{
+  "taskId": "backend-governance-compliance-merge",
+  "taskTitle": "后端治理补强合入（M4-06 实施收尾）",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-18/compliance-backend-merge-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "a9c2142",
+  "receiptCommitSha": "PENDING-REPLACED-AFTER-COMMIT",
+  "pullRequestNumber": 4,
+  "contractSnapshotSha256": null,
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-18"
+}
