@@ -1,0 +1,12 @@
+{
+  "taskId": "M4-06",
+  "taskTitle": "装饰字段（pageNo/pageSize）运行时移除",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-16/m4-06-decorative-fields-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "ae2bb7e",
+  "receiptCommitSha": "494e862",
+  "pullRequestNumber": 11,
+  "contractSnapshotSha256": "9a97c055",
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-16"
+}
