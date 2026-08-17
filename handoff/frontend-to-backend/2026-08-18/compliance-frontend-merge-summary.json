@@ -4,7 +4,7 @@
   "receiptPath": "handoff/frontend-to-backend/2026-08-18/compliance-frontend-merge-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
   "implementationCommitSha": "df9efa1",
-  "receiptCommitSha": "待回填",
+  "receiptCommitSha": "0ce514f",
   "pullRequestNumber": 4,
   "contractSnapshotSha256": null,
   "verificationResult": "passed",
