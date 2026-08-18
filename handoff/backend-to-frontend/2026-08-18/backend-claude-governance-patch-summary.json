@@ -4,7 +4,7 @@
   "receiptPath": "handoff/backend-to-frontend/2026-08-18/backend-claude-governance-patch-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClub",
   "implementationCommitSha": "5264b9e",
-  "receiptCommitSha": "PENDING-REPLACED-AFTER-COMMIT",
+  "receiptCommitSha": "024c655",
   "pullRequestNumber": 6,
   "contractSnapshotSha256": null,
   "verificationResult": "passed",
