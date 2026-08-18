@@ -1,0 +1,12 @@
+{
+  "taskId": "backend-claude-governance-patch",
+  "taskTitle": "后端治理文件 CLAUDE.md 三处补强",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-18/backend-claude-governance-patch-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "5264b9e",
+  "receiptCommitSha": "024c655",
+  "pullRequestNumber": 6,
+  "contractSnapshotSha256": null,
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-18"
+}
