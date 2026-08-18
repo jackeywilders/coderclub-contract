@@ -4,7 +4,7 @@
   "receiptPath": "handoff/frontend-to-backend/2026-08-18/subject-real-api-integration-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
   "implementationCommitSha": "3924dbc",
-  "receiptCommitSha": "待回填",
+  "receiptCommitSha": "517b946",
   "pullRequestNumber": 7,
   "contractSnapshotSha256": "9a97c055",
   "verificationResult": "passed",
