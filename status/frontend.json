@@ -1,6 +1,6 @@
 {
   "role": "frontend",
-  "state": "gate0-1-frontend-evidence-ready-g1-03-consumed",
+  "state": "gate3-subject-real-api-consumed-p1p3-pending-backend",
   "projectPath": "G:/Dev/backend/Club/CoderClubFront",
   "worktree": "G:/Dev/backend/Club/coderclub-contract-codex-frontend",
   "branch": "codex/frontend-design",
@@ -20,9 +20,16 @@
     "operationCount": 43,
     "baselineEndpointCount": 43
   },
-  "lastCommit": "afba2bee2665b576c2fc18aabc54759e0cda6513",
-  "lastHandoff": "handoff/frontend-to-backend/2026-08-11/g1-03-frontend-consumption-receipt.md",
+  "lastCommit": "ab60c04",
+  "lastHandoff": "handoff/frontend-to-backend/2026-08-18/subject-real-api-integration-report.md",
   "design": "designs/frontend/2026-08-07/api-integration-impact.md",
+  "subjectRealApi": {
+    "s1": "accepted 2026-08-18 (remove subject USE_MOCK, real requests; impl 2724af4/c068956/bbfa14c, frontend PR #6)",
+    "s2s3": "accepted 2026-08-18 (views aligned to contract + end-to-end; impl 3924dbc/7de780c, frontend PR #7, merge ab60c04)",
+    "s4Receipt": "handoff/frontend-to-backend/2026-08-18/subject-real-api-integration-report.md (dual-track, rule 9)",
+    "interfaceQuestions": "P1(sort)/P2(subjectScore)/P3(subjectType) decided by PM; P1/P3 require backend impl, see pm/reviews/2026-08-18/p1-p2-p3-interface-decisions.md",
+    "gate3Item4Acceptance": "accepted 2026-08-18, see pm/reviews/2026-08-18/gate3-item4-subject-consumption-acceptance.md"
+  },
   "validation": {
     "node": "22.14.0",
     "npm": "10.9.2",
