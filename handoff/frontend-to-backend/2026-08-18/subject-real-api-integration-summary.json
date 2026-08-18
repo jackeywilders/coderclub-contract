@@ -1,0 +1,12 @@
+{
+  "taskId": "subject-real-api-integration-S4-2026-08-18",
+  "taskTitle": "前端 subject 真实 API 集成 S4 验收（S1 切真实 + S2/S3 字段对齐与端到端）",
+  "receiptPath": "handoff/frontend-to-backend/2026-08-18/subject-real-api-integration-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
+  "implementationCommitSha": "3924dbc",
+  "receiptCommitSha": "517b946",
+  "pullRequestNumber": 7,
+  "contractSnapshotSha256": "9a97c055",
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-18"
+}
