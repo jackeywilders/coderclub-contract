@@ -4,7 +4,7 @@
   "receiptPath": "handoff/frontend-to-backend/2026-08-19/remove-deprecated-contract-workflow-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
   "implementationCommitSha": "634c22a",
-  "receiptCommitSha": "待回填",
+  "receiptCommitSha": "c8648b8",
   "pullRequestNumber": 8,
   "contractSnapshotSha256": null,
   "verificationResult": "passed",
