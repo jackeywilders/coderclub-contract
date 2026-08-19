@@ -1,0 +1,12 @@
+{
+  "taskId": "backend-p1-p3",
+  "taskTitle": "P1 分类排序字段 + P3 查询题型筛选契约声明",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-18/backend-p1-p3-implementation-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "f964f88",
+  "receiptCommitSha": "[claude/backend-proposals 9bcd746] docs(handoff): 后端实现回执 backend-p1-p3（P1 分类 sort 字段 + P3 subjectType 契约声明）\n 2 files changed, 73 insertions(+)\n create mode 100644 handoff/backend-to-frontend/2026-08-18/backend-p1-p3-implementation-report.md\n create mode 100644 handoff/backend-to-frontend/2026-08-18/backend-p1-p3-implementation-summary.json\n9bcd746",
+  "pullRequestNumber": 7,
+  "contractSnapshotSha256": "05933BEA",
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-19"
+}
