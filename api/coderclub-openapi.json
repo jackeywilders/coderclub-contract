@@ -276,7 +276,7 @@
               "example": {
                 "wxOpenId": "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o",
                 "userName": "zhangsan",
-                "password": "<new-password>"
+                "password": "<password>"
               }
             }
           }
@@ -2600,7 +2600,8 @@
                 "pageSize": 10,
                 "subjectDifficult": 2,
                 "categoryId": 1,
-                "labelId": 1
+                "labelId": 1,
+                "subjectType": 1
               }
             }
           }
@@ -2860,7 +2861,7 @@
           "password": {
             "type": "string",
             "description": "密码",
-            "example": "<password>"
+            "example": "123456"
           },
           "nickName": {
             "type": "string",
@@ -2884,7 +2885,7 @@
           "password": {
             "type": "string",
             "description": "密码",
-            "example": "<password>"
+            "example": "123456"
           }
         }
       },
@@ -2922,7 +2923,7 @@
           "password": {
             "type": "string",
             "description": "新密码",
-            "example": "<new-password>"
+            "example": "newpassword123"
           }
         }
       },
@@ -2972,7 +2973,7 @@
           "newPassword": {
             "type": "string",
             "description": "新密码",
-            "example": "<new-password>"
+            "example": "newSecurePass456"
           }
         }
       },
@@ -3307,7 +3308,7 @@
           "tokenValue": {
             "type": "string",
             "description": "Token 值",
-            "example": "<token>"
+            "example": "3f8a1c2d9b4e6f7a5c1d8e2f9b4a6c7d"
           }
         }
       },
@@ -3501,7 +3502,7 @@
               "token": {
                 "type": "string",
                 "description": "登录 Token（原始值，直接用于 Authorization 请求头，无 Bearer 前缀）",
-                "example": "<token>"
+                "example": "3f8a1c2d9b4e6f7a5c1d8e2f9b4a6c7d"
               },
               "tokenInfo": {
                 "$ref": "#/components/schemas/TokenInfo"
@@ -3680,6 +3681,11 @@
             "type": "integer",
             "format": "int64",
             "description": "父级分类 ID"
+          },
+          "sort": {
+            "type": "integer",
+            "format": "int32",
+            "description": "排序值（升序，空值排最后）"
           },
           "children": {
             "type": "array",
@@ -3927,6 +3933,12 @@
             "type": "integer",
             "format": "int64",
             "description": "标签 ID",
+            "example": 1
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型 1单选 2多选 3判断 4简答",
             "example": 1
           }
         }
