@@ -59,3 +59,14 @@
 - 未修改交接仓库 `api/coderclub-openapi.json` 快照与 `status/sync-manifest.json`（由协调 PM 实施后同步全链）
 - 未修改前端项目、交接仓库治理文件
 - 本回执不含真实环境信息（规则 8 脱敏）
+
+## 8. 后端评审复核签署（2026-08-19）
+
+- [x] 代码级复核：sort 字段全链（Entity/BO/DTO/Assembler 双向）、SQL 层与内存层排序语义一致（NULL 排最后 + id 兜底）、三份建表 SQL 同步、契约 sort/subjectType 声明 — **通过**
+- [x] 独立复验：全量 `mvn test` BUILD SUCCESS；`SubjectContractTest` **51/51**（回执命令 `-am`）；subject-app-controller **79/79** — **通过**
+- [x] OpenAPI SHA-256 `05933bea` 与回执一致；43/43 未变；新字段均已声明 — **通过**
+- [x] 测试断言（sort 透传、树排序、契约）与 flaky 修复 `a6e5831`（独立提交、合理）核验 — **通过**
+- [x] 已知限制（sort:0 前端收敛、整段对齐后续提案、运行库 ALTER 待执行）与回执一致 — **通过**
+- [x] 签署本回执
+
+**复核签署**：后端评审（B-Review），2026-08-19（工作底稿：`designs/backend/2026-08-19/p1-p3-sort-subjecttype-review-workpaper.md`）

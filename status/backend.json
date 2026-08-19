@@ -1,9 +1,9 @@
 {
   "role": "backend",
-  "state": "m4-01-to-06-backend-evidence-signed",
+  "state": "gate3-p1-p3-sort-subjecttype-evidence-signed",
   "projectPath": "G:/Dev/backend/Club/CoderClub",
-  "branch": "main",
-  "lastCommit": "ae2bb7e",
+  "branch": "feat/backend-p1-p3-sort-subjecttype",
+  "lastCommit": "f964f88",
   "baseline": {
     "name": "C0",
     "commit": "c0b01caaffa7b2fe0c927b2d19d028e6feb73e4d"
@@ -21,7 +21,7 @@
     "historicalDeclaredSha256Status": "superseded-by-observed-snapshot",
     "sanitizedExamples": true
   },
-  "lastHandoff": "handoff/backend-to-frontend/2026-08-16/m4-06-decorative-fields-report.md",
+  "lastHandoff": "handoff/backend-to-frontend/2026-08-18/backend-p1-p3-implementation-report.md",
   "designBaseline": "designs/backend/2026-08-10/gate0-1-backend-baseline.md",
   "documentationBaseline": {
     "sourceCommit": "e80aaf697fecd350ad478d8fed67eb81fdf45325",
@@ -73,6 +73,9 @@
     "m4-04ReceiptSigned": true,
     "m4-06RuntimeRemovalVerified": true,
     "m4-06ReceiptSigned": true,
+    "p1CategorySortVerified": true,
+    "p3SubjectTypeContractVerified": true,
+    "p1p3ReceiptSigned": true,
     "apiSourceJwtOrAbsolutePathValues": false,
     "apiSourceContainsSyntheticCredentialExamples": true
   }
