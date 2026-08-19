@@ -1,6 +1,6 @@
 {
   "role": "pm",
-  "state": "gate3-item4-accepted-p1p3-decided-backend-fix-pending",
+  "state": "gate3-p1p3-accepted-snapshot-synced",
   "repository": "coderclub-contract",
   "branch": "codex/pm-coordination",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
@@ -26,9 +26,10 @@
   "gate3": {
     "item4SubjectConsumption": "accepted 2026-08-18 (frontend subject real-API consumed, mock removed, end-to-end verified); see pm/reviews/2026-08-18/gate3-item4-subject-consumption-acceptance.md",
     "interfaceDecisions": "P1=backend adds sort (A), P2=frontend adaptation (subjectScore default), P3=contract adds subjectType (full schema alignment later); see pm/reviews/2026-08-18/p1-p2-p3-interface-decisions.md",
-    "pending": "backend implements P1 sort + P3 subjectType, then PM syncs api/ snapshot chain"
+    "p1p3Implementation": "backend implemented P1 (sort field + sorting) and P3 (subjectType declaration); receipt signed by B-Review; PM acceptance + snapshot sync 2026-08-18",
+    "snapshotSync": "source f964f88/05933BEA -> snapshot 0DAE8D3A (17 semantic diffs: 14 redacted examples + 3 P1/P3 additions); see status/sync-manifest.json"
   },
-  "lastAction": "协调 PM accepted Gate 3 item 4 (frontend subject consumption) on 2026-08-18 and decided interface questions P1/P2/P3 (P1=backend adds sort field + contract declaration, P2=frontend adaptation, P3=contract adds subjectType). Backend to implement P1/P3; PM to sync api/ snapshot afterward. M4 all closed previously.",
+  "lastAction": "协调 PM accepted backend P1/P3 implementation on 2026-08-18 (P1 sort field + sorting, P3 subjectType declaration; receipt signed by 后端评审) and synced api/ snapshot full chain (source f964f88 SHA 05933BEA -> snapshot SHA 0DAE8D3A, 3 additions + 14 redactions). state -> gate3-p1p3-accepted-snapshot-synced. Known limits: DB ALTER for subject_category.sort pending runtime env; frontend sort:0 payload now persisted (needs adaptation); getSubjectPage schema full alignment deferred.",
   "auditReport": "pm/reports/2026-08-10/pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10/pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10/pm-coordination-roadmap.md",
