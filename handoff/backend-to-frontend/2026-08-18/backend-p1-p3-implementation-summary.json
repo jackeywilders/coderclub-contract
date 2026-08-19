@@ -1,0 +1,12 @@
+{
+  "taskId": "backend-p1-p3",
+  "taskTitle": "P1 分类排序字段 + P3 查询题型筛选契约声明",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-18/backend-p1-p3-implementation-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "f964f88",
+  "receiptCommitSha": "PENDING",
+  "pullRequestNumber": 7,
+  "contractSnapshotSha256": "05933BEA",
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-19"
+}
