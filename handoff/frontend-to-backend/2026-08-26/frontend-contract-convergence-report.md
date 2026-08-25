@@ -71,4 +71,4 @@
 | PR 号 | 前端仓库 **#10** |
 | 影响文件 | `src/views/subject/info/SubjectList.vue`（删除关键词输入框、`queryParams.keyword`、`handleReset` 重置项；保留题型/难度/分类筛选与搜索/重置逻辑） |
 | 验证结果 | `npm run lint`（主范围 src/scripts）exit 0；`npm run build`（vue-tsc --noEmit + vite build）exit 0；无 API/契约变更（`api:check`/`npm test` 不涉及） |
-| R2 状态 | 待合入（合入人 = 用户或前端评审）；本小节随回执追加于交接仓库 |
+| R2 状态 | **已合入 `main`**（前端 PR #10 merge `601d778e`，2026-08-25T16:42:02Z；合入人：前端评审，用户授权） |
