@@ -20,14 +20,14 @@
     "operationCount": 43,
     "baselineEndpointCount": 43
   },
-  "lastCommit": "d81e665c",
+  "lastCommit": "601d778e",
   "lastHandoff": "handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md",
   "design": "designs/frontend/2026-08-07/api-integration-impact.md",
   "subjectRealApi": {
     "s1": "accepted 2026-08-18 (remove subject USE_MOCK, real requests; impl 2724af4/c068956/bbfa14c, frontend PR #6)",
     "s2s3": "accepted 2026-08-18 (views aligned to contract + end-to-end; impl 3924dbc/7de780c, frontend PR #7, merge ab60c04)",
     "s4Receipt": "handoff/frontend-to-backend/2026-08-18/subject-real-api-integration-report.md (dual-track, rule 9)",
-    "contractConvergence": "accepted 2026-08-26 (T1 baseline 0dae8d3a + T2 subjectScore 10 + T3 sort UI, frontend PR #9, merge d81e665c); P1/P2/P3 decisions closed; see pm/reviews/2026-08-18/p1-p2-p3-interface-decisions.md",
+    "contractConvergence": "accepted 2026-08-26 (T1 baseline 0dae8d3a + T2 subjectScore 10 + T3 sort UI, frontend PR #9, merge d81e665c); P1/P2/P3 decisions closed; A2 addendum keyword cleanup closed 2026-08-26 (impl d825a183, frontend PR #10, merge 601d778e, R2 confirmed; addendumCommitSha d825a183 in receipt section 9); see pm/reviews/2026-08-18/p1-p2-p3-interface-decisions.md + pm acceptance frontend-contract-convergence-acceptance.md",
     "gate3Item4Acceptance": "accepted 2026-08-18, see pm/reviews/2026-08-18/gate3-item4-subject-consumption-acceptance.md"
   },
   "validation": {
@@ -44,7 +44,8 @@
     "G1-02": "accepted: PM formally closed after user confirmation; remote frontend main contains remediation commit 85320f1",
     "G1-03": "accepted: PM formally closed 2026-08-12; frontend baseline updated to 43 endpoints and consumption verified; see pm/reviews/2026-08-12/g1-03-close-acceptance.md",
     "G1-05": "accepted: user verified default node and npm entry from local CMD",
-    "T1-T3-T5-2026-08-26": "accepted: frontend contract convergence (baseline 0dae8d3a, subjectScore 10, sort UI) merged via frontend PR #9 (d81e665c); verification passed; receipt handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md"
+    "T1-T3-T5-2026-08-26": "accepted: frontend contract convergence (baseline 0dae8d3a, subjectScore 10, sort UI) merged via frontend PR #9 (d81e665c); verification passed; receipt handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md",
+    "A2-addendum-2026-08-26": "closed: keyword dead param cleanup (impl d825a183, frontend PR #10, merge 601d778e, R2 confirmed); addendumCommitSha d825a183 in receipt section 9; PM A3 acceptance closed"
   },
   "openItems": []
 }
