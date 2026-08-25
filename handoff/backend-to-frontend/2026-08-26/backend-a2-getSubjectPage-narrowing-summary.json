@@ -4,7 +4,7 @@
   "receiptPath": "handoff/backend-to-frontend/2026-08-26/backend-a2-getSubjectPage-narrowing-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClub",
   "implementationCommitSha": "6b2aeddbb775f5039fa50a3feaa779f05e6fe0ed",
-  "receiptCommitSha": "",
+  "receiptCommitSha": "db198138ed471e7798dd6d74740bd2b318ae954f",
   "pullRequestNumber": 8,
   "contractSnapshotSha256": "0dae8d3a",
   "verificationResult": "passed",
