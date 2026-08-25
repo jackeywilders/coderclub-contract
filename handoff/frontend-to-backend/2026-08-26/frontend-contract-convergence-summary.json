@@ -1,0 +1,12 @@
+{
+  "taskId": "frontend-contract-convergence-2026-08-26",
+  "taskTitle": "前端契约收敛：T1 基线更新 + T2 subjectScore 默认 10 + T3 sort UI + T5 清理",
+  "receiptPath": "handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
+  "implementationCommitSha": "19405019",
+  "receiptCommitSha": "PENDING",
+  "pullRequestNumber": 9,
+  "contractSnapshotSha256": "0dae8d3a",
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-26"
+}
