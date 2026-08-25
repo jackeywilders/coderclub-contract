@@ -1,12 +1,12 @@
 {
   "role": "pm",
-  "state": "gate3-p1p3-accepted-snapshot-synced",
+  "state": "gate3-a2-proposal-decided",
   "repository": "coderclub-contract",
   "branch": "codex/pm-coordination",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
   "reviewedRef": "origin/main",
-  "reviewedCommit": "69511b4f95286526ac18d44833d5f234c2d0b947",
-  "reviewedRange": "145aae8fe39e56a44321853b56cad9d716e02361..69511b4f95286526ac18d44833d5f234c2d0b947",
+  "reviewedCommit": "c95f92297d084bf036024434c5538ff622d30455",
+  "reviewedRange": "69511b4f95286526ac18d44833d5f234c2d0b947..c95f92297d084bf036024434c5538ff622d30455",
   "trackedFileCount": 74,
   "releaseReady": false,
   "remotePushAuthorized": false,
@@ -27,9 +27,10 @@
     "item4SubjectConsumption": "accepted 2026-08-18 (frontend subject real-API consumed, mock removed, end-to-end verified); see pm/reviews/2026-08-18/gate3-item4-subject-consumption-acceptance.md",
     "interfaceDecisions": "P1=backend adds sort (A), P2=frontend adaptation (subjectScore default), P3=contract adds subjectType (full schema alignment later); see pm/reviews/2026-08-18/p1-p2-p3-interface-decisions.md",
     "p1p3Implementation": "backend implemented P1 (sort field + sorting) and P3 (subjectType declaration); receipt signed by B-Review; PM acceptance + snapshot sync 2026-08-18",
-    "snapshotSync": "source f964f88/05933BEA -> snapshot 0DAE8D3A (17 semantic diffs: 14 redacted examples + 3 P1/P3 additions); see status/sync-manifest.json"
+    "snapshotSync": "source f964f88/05933BEA -> snapshot 0DAE8D3A (17 semantic diffs: 14 redacted examples + 3 P1/P3 additions); see status/sync-manifest.json",
+    "a2Decision": "getSubjectPage schema alignment: PM accepted case B/C (runtime narrows to SubjectPageQueryDTO, contract/snapshot zero structural change) 2026-08-26; implementation to be dispatched after frontend A3 merge; see pm/reviews/2026-08-26/getSubjectPage-schema-alignment-decision.md"
   },
-  "lastAction": "协调 PM accepted backend P1/P3 implementation on 2026-08-18 (P1 sort field + sorting, P3 subjectType declaration; receipt signed by 后端评审) and synced api/ snapshot full chain (source f964f88 SHA 05933BEA -> snapshot SHA 0DAE8D3A, 3 additions + 14 redactions). state -> gate3-p1p3-accepted-snapshot-synced. Known limits: DB ALTER for subject_category.sort pending runtime env; frontend sort:0 payload now persisted (needs adaptation); getSubjectPage schema full alignment deferred.",
+  "lastAction": "协调 PM reviewed backend getSubjectPage schema alignment proposal (PR #40, merge c95f922) on 2026-08-26: facts verified read-only against CoderClub main (page consumes exactly contract 6 fields, no subjectName filter); accepted case B/C (runtime narrows to SubjectPageQueryDTO, contract/snapshot zero structural change). state -> gate3-a2-proposal-decided. Implementation to be dispatched to B-Impl after frontend A3 merge; frontend keyword dead param to be cleaned up in A3 scope.",
   "auditReport": "pm/reports/2026-08-10/pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10/pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10/pm-coordination-roadmap.md",
