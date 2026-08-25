@@ -3901,7 +3901,7 @@
       },
       "SubjectPageQueryDTO": {
         "type": "object",
-        "description": "分页查询请求体。实际绑定 SubjectInfoDTO，此处仅展示常用过滤字段。",
+        "description": "getSubjectPage 请求体即本 DTO，6 字段全部参与筛选。",
         "properties": {
           "pageNo": {
             "type": "integer",
