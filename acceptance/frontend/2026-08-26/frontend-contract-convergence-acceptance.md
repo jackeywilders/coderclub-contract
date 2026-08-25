@@ -19,6 +19,8 @@
 
 ✅ **A3 主体验收通过，同意关闭（T1/T2/T3/T5）。** 附带一项收尾项（见 §5 观察 1）：A2 决策 §3.3 的 `keyword` 死参数清理正由前端实现执行中，完成后追加回执并由 PM 追加关闭本验收。
 
+**收尾项已于 2026-08-26 关闭**（见 §5 观察 1）：`keyword` 死参数清理实施 `d825a183` 经前端 PR #10 合入 `main`（merge `601d778e`，2026-08-25T16:42:02Z，R2 ✓）；回执 §9 R2 状态已由前端评审标记「已合入」（交接仓库 PR #46）。本验收全部收尾项关闭。
+
 ## 3. 逐项核验（PM 依前端 PR #9 `get_files` 抽查）
 
 | 任务 | 验收点 | 核验结果 |
@@ -37,10 +39,11 @@
 
 ## 5. 验收意见
 
-1. **收尾项（不阻塞主体）**：`keyword` 死参数清理（A2 决策 `pm/reviews/2026-08-26/getSubjectPage-schema-alignment-decision.md` §3.3）——F-Impl 执行中；完成后按已发指示**追加**更新 A3 回执（report 增「§A2 addendum」小节 + summary 增 `addendumCommitSha`），合入后 PM 追加关闭本验收并更新 `frontend.json` `lastCommit`。
+1. **收尾项（已关闭）**：`keyword` 死参数清理（A2 决策 `pm/reviews/2026-08-26/getSubjectPage-schema-alignment-decision.md` §3.3）——实施 `d825a183`（`refactor(subject): remove dead keyword query param (A2)`，前端 PR #10，merge `601d778e`，2026-08-25T16:42:02Z，合入人 = 前端评审），R2 ✓；回执 `handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md` §9 R2 状态已标记「已合入」（交接仓库 PR #46，`0bc25047`）。**遗留提示**：`status/frontend.json` 的 `lastCommit` 仍为 `d81e665c`，待前端评审补记 `601d778e` 并在 `subjectRealApi.contractConvergence`/`acceptance` 记录 addendum 关闭（状态由角色维护，PM 不代写）。
 2. **关联不阻塞**：B1——`subject_category.sort` 运行时 DB ALTER 待运维/用户，排序真实语义待 ALTER 后验证（T3 代码收敛不依赖）；B5——前端仓库遗留 `.worktrees/` 清理待用户授权。
 3. **条件成就**：A3 已合入 → A2 实施阶段（后端 controller 收窄为 `SubjectPageQueryDTO`）派发条件已满足，待 PM 派发后端实现；与 `keyword` 清理并行无冲突（不同仓库/代码面）。
 
 ## 6. 版本记录
 
 - 2026-08-26：创建（A3 主体验收通过；`status/pm.json` state → `gate3-a3-accepted`）。
+- 2026-08-26：补充——收尾项（A2 决策 §3.3 `keyword` 清理 `d825a183`，前端 PR #10 merge `601d778e`）R2 达成并关闭。
