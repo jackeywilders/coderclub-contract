@@ -59,3 +59,16 @@
 ## 8. 版本记录
 
 - 2026-08-26：创建（前端评审回执，任务书 T1/T2/T3/T5）。
+
+## 9. A2 addendum：移除 SubjectList.vue keyword 死参数（2026-08-26 用户补充决策）
+
+> 补充来源：用户 2026-08-26 指令（A2 决策，A3 主体验收后追加）。
+> 说明：`SubjectList.vue` 的 `keyword` 查询参数为死参数（后端 `getSubjectPage` 无 `subjectName` 筛选，静默忽略），随收敛清理移除；前端侧清理，**无需契约变更**；标题搜索能力如需另行提案（不在本期）。
+
+| 字段 | 值 |
+| --- | --- |
+| 实施提交 SHA | `d825a183`（`refactor(subject): remove dead keyword query param (A2)`，前端仓库 `refactor/subject-remove-keyword-param` 分支，单 commit） |
+| PR 号 | 前端仓库 **#10** |
+| 影响文件 | `src/views/subject/info/SubjectList.vue`（删除关键词输入框、`queryParams.keyword`、`handleReset` 重置项；保留题型/难度/分类筛选与搜索/重置逻辑） |
+| 验证结果 | `npm run lint`（主范围 src/scripts）exit 0；`npm run build`（vue-tsc --noEmit + vite build）exit 0；无 API/契约变更（`api:check`/`npm test` 不涉及） |
+| R2 状态 | 待合入（合入人 = 用户或前端评审）；本小节随回执追加于交接仓库 |
