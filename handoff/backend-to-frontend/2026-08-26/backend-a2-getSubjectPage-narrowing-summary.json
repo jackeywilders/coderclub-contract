@@ -7,6 +7,6 @@
   "receiptCommitSha": "4bcf820",
   "pullRequestNumber": 8,
   "contractSnapshotSha256": "0dae8d3a",
-  "verificationResult": "passed",
+  "verificationResult": "passed (52/52 regression + real request A/B groups verified on cloud middleware)",
   "verificationDate": "2026-08-26"
 }
