@@ -29,9 +29,20 @@
   - 请求体 = 6 契约字段 + 5 个多余字段（subjectName/settleName/subjectScore/subjectParse/subjectAnswer）→ **HTTP 200**（非 400）
   - 真实 `@AutoMapper`（SubjectPageQueryDTO→SubjectInfoBO，纯 JUnit 可构造）验证：BO 的 pageNo=1/pageSize=10/subjectDifficult=1/categoryId=2/labelId=3/subjectType=1 全量透传；subjectName/settleName/subjectScore 为 null
 
-## 4. 真实请求验证（§2.6）
+## 4. 真实请求验证（§2.6）——已执行 ✅
 
-**未执行**：本机无运行环境（MySQL/Nacos 未起、无 DB 凭据——既有 BI-1 阻塞项，与 P1/P3 回执已知限制 3 同源）。以 MockMvc **HTTP 绑定层**等价验证替代（真实 Jackson 反序列化 + 真实 @AutoMapper 往返，仅网络/DB 未触达）；待运行环境具备凭据后补真实请求记录。
+云端中间件环境验证（auth 3100 + subject 3000 直连 Nacos/MySQL，Nacos 凭据走用户级环境变量）。测试账号：admin（脱敏，凭据不落盘）。
+
+| 组 | 请求要点 | 响应 | 结论 |
+| --- | --- | --- | --- |
+| 无登录态 | `POST /subject/getSubjectPage` `{}` | **HTTP 401** | `@SaCheckLogin` 生效 ✅ |
+| A（6 契约字段） | `{"pageNo":1,"pageSize":5,"subjectDifficult":1,"subjectType":1}` | **HTTP 200**，`total=6`、`listCount=5`、首个条目 `subjectType=1, subjectDifficult=1` | **6 字段全部参与筛选** ✅（对照无筛选 `total=28`） |
+| B（6 字段 + 多余字段） | A + `subjectName/settleName/subjectScore/subjectParse/subjectAnswer/categoryIds/labelIds` | **HTTP 200（未 400）**，`total=6`、`listCount=5`、首个条目与 A 组一致（id=328） | **多余字段静默忽略、不 400** ✅（硬条件满足） |
+
+- **登录链**：`POST /auth/login` 返回 token（tokenName=Authorization）→ 携带 `Authorization` 头调用 getSubjectPage
+- **筛选证据**：无筛选 total=28 vs `subjectType=1+subjectDifficult=1` total=6——筛选参数确实压缩结果集
+- **多余字段证据**：B 组与 A 组结果逐位一致（total=6、id=328 相同）——多余字段未参与查询
+- 补充：真实验证于 2026-08-26 补做（本回执初版因本地无运行环境标记为待验证，见 §6 已知限制变更）
 
 ## 5. 契约 SHA-256 与语义差异
 
@@ -44,7 +55,7 @@
 
 ## 6. 已知限制
 
-1. 真实请求验证待运行环境（MySQL/Nacos 凭据）——见 §4，等价绑定层验证已通过
+1. ~~真实请求验证待运行环境~~ **已解除**：2026-08-26 云端中间件环境完成真实请求验证（见 §4），mock 层 + 真实层双验证齐备
 2. 契约快照（`api/coderclub-openapi.json`、`0DAE8D3A`）零变更；`sync-manifest` 由 PM 在验收后全链同步
 
 ## 7. 声明
