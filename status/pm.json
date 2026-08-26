@@ -11,6 +11,7 @@
   "releaseReady": false,
   "remotePushAuthorized": false,
   "openFindings": [],
+  "a1Status": "user-executing (2026-08-26): subject_category.sort DB ALTER executed directly by user (ALTER statement prepared: ADD COLUMN sort int(11) DEFAULT NULL COMMENT '排序（升序，空值排最后）' AFTER parent_id; MySQL runtime credentials held by user/ops, not stored per placeholder convention); user to notify PM of result together with next task dispatch",
   "contractSnapshot": {
     "status": "accepted-for-development",
     "sourceCommit": "6b2aeddbb775f5039fa50a3feaa779f05e6fe0ed",
@@ -33,7 +34,7 @@
     "a5Acceptance": "accepted 2026-08-26 (impl 34ca345 via CoderClub PR #10; auth_user 18 rows personal fields redacted to sample forms + 6 unique openid -> 341 placeholders + share_message nickname; sensitive scan zero-hit, SQL executability held, DDL untouched; receipt PR #55, B-Review signoff PR #56, R2 main 1f530321; contract snapshot zero change 8ebcda53, state unchanged); see acceptance/backend/2026-08-26/a5-sql-personal-data-redaction-implementation-acceptance.md",
     "a3Acceptance": "frontend contract convergence T1/T2/T3/T5 accepted 2026-08-26 (impl b303bbc/7113535/19405019, frontend PR #9 merge d81e665c, receipt PR #42/#43); carryover item (keyword dead param cleanup, A2 decision 3.3): impl d825a183 merged via frontend PR #10 (merge 601d778e), closed 2026-08-26; see acceptance/frontend/2026-08-26/frontend-contract-convergence-acceptance.md"
   },
-  "lastAction": "协调 PM accepted A5 doc_jc-club-init.sql personal data redaction on 2026-08-26: impl 34ca345 (CoderClub PR #10), auth_user 18 rows personal fields redacted + 6 unique openid -> 341 placeholders + share_message nickname; sensitive scan zero-hit & SQL executability verified, DDL/contract untouched (snapshot 8ebcda53 unchanged); receipt (PR #55) signed by B-Review (PR #56) with R2 verified (main 1f530321). state stays gate3-a2-impl-accepted. A5 closed; remaining: A1 (DB ALTER, needs MySQL creds), A7 (frontend worktrees/branches cleanup, needs authorization), A8 (SubjectBrowse portal, scope to define), A9 (release gate, needs authorization).",
+  "lastAction": "协调 PM accepted A5 doc_jc-club-init.sql personal data redaction on 2026-08-26: impl 34ca345 (CoderClub PR #10), auth_user 18 rows personal fields redacted + 6 unique openid -> 341 placeholders + share_message nickname; sensitive scan zero-hit & SQL executability verified, DDL/contract untouched (snapshot 8ebcda53 unchanged); receipt (PR #55) signed by B-Review (PR #56) with R2 verified (main 1f530321). state stays gate3-a2-impl-accepted. A1 status updated 2026-08-26: subject_category.sort DB ALTER taken over by user directly (see a1Status); user to notify together with next task dispatch. A5 closed; remaining: A7 (frontend worktrees/branches cleanup, needs authorization), A8 (SubjectBrowse portal, scope to define), A9 (release gate, needs authorization).",
   "auditReport": "pm/reports/2026-08-10/pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10/pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10/pm-coordination-roadmap.md",
