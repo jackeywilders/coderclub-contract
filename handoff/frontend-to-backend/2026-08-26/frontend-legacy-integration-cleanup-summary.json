@@ -3,6 +3,7 @@
   "taskTitle": "前端遗留整合与清理：T1 auth 契约字段对齐 + T2 答题退出按钮 + T3 worktree/分支清理",
   "receiptPath": "handoff/frontend-to-backend/2026-08-26/frontend-legacy-integration-cleanup-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
+  "implementationCommitSha": "7731a2db",
   "implementationCommitShas": ["7731a2db2358ee21a93066065c34d1e2393df0dd", "d55dd819a07278aade6fe44120ef870f4ebbc13c"],
   "pullRequestNumber": 11,
   "mergedAt": "2026-08-26T14:51:52Z",
