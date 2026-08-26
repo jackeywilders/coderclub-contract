@@ -4,7 +4,7 @@
   "receiptPath": "handoff/backend-to-frontend/2026-08-26/backend-a8-phase1-endpoints-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClub",
   "implementationCommitSha": "c4e1efb9e28a1883ac527ab219fe77d152bcc6df",
-  "receiptCommitSha": "",
+  "receiptCommitSha": "2903a13b35f2dea48e2960b176dd8d32b3850204",
   "pullRequestNumber": 12,
   "contractSnapshotSha256": "8ebcda53",
   "verificationResult": "passed (SubjectContractTest 57/57, AuthContractTest 10/10, full mvn test exit 0; per-task review clean; openapi LF SHA A8C6A460->BA74B152)",
