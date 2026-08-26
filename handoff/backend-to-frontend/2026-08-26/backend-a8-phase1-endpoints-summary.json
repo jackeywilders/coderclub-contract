@@ -1,0 +1,12 @@
+{
+  "taskId": "A8-P1-BE",
+  "taskTitle": "A8 阶段一 3 门户端点（getSubjectPageBySearch / getContributeList / auth user list-by-identifiers）",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-26/backend-a8-phase1-endpoints-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "c4e1efb9e28a1883ac527ab219fe77d152bcc6df",
+  "receiptCommitSha": "",
+  "pullRequestNumber": 12,
+  "contractSnapshotSha256": "8ebcda53",
+  "verificationResult": "passed (SubjectContractTest 57/57, AuthContractTest 10/10, full mvn test exit 0; per-task review clean; openapi LF SHA A8C6A460->BA74B152)",
+  "verificationDate": "2026-08-26"
+}
