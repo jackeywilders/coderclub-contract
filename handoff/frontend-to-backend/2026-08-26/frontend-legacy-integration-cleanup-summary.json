@@ -18,6 +18,6 @@
     "remoteBranchesDeleted": ["chore/remove-deprecated-contract-workflow", "ci/github-actions", "docs/engineering-skill-setup", "docs/governance-compliance", "feat/contract-convergence", "feat/frontend-history", "feat/g1-03-baseline", "feat/subject-real-api-integration", "feat/subject-view-contract-alignment", "refactor/subject-remove-keyword-param", "feat/legacy-integration-a10"],
     "kept": ["main"]
   },
-  "receiptCommitSha": "<filled-after-receipt-commit>",
+  "receiptCommitSha": "1ea8c29b",
   "notes": "契约快照 8ebcda53 零变更；前端基线 0dae8d3a 为 A3 同步值；T3 后远端仅余 main（3d34dc68）；T1/T2 经 PR #11 合入（merge 3d34dc68）。"
 }
