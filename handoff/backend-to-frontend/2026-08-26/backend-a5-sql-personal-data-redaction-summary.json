@@ -1,0 +1,12 @@
+{
+  "taskId": "A5",
+  "taskTitle": "doc_jc-club-init.sql 个人数据脱敏（user_name/nick_name/email/phone/password/ext_json + openid/unionid 占位符）",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-26/backend-a5-sql-personal-data-redaction-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "34ca3450734ab4538de25c311cec7f48728ea2b0",
+  "receiptCommitSha": "",
+  "pullRequestNumber": 10,
+  "contractSnapshotSha256": "8ebcda53",
+  "verificationResult": "passed (sensitive scan zero-hit; SQL structure & executability verified; DDL untouched)",
+  "verificationDate": "2026-08-26"
+}
