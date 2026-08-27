@@ -4,7 +4,7 @@
   "receiptPath": "handoff/backend-to-frontend/2026-08-27/backend-a8p2-practice-domain-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClub",
   "implementationCommitSha": "a57f6b8ae7142a8c4b1e5cfbc32b8936af297dfc",
-  "receiptCommitSha": "c2738d2e3fefdd8c72d27fb8dbe4555bcad57578",
+  "receiptCommitSha": "c24b51e36d704d4244a59c75101d839946b773e0",
   "pullRequestNumber": 14,
   "contractSnapshotSha256": "4bfb3c72",
   "verificationResult": "passed (full mvn test 27 modules 1028 tests; PracticeContractTest 22/13-endpoints, SubjectContractTest 71/71 no regression; final whole-branch review FIX-THEN-MERGE -> fix round -> re-review 2/2 ADDRESSED; PR #14 CI green; openapi +17 endpoints 46->63 paths, LF SHA BA74B152->9EC37C66; cloud/gateway integration on cloud Nacos/MySQL/Redis 8.8.1: internal I1-I4 real SQL/Feign, practice full state machine (addPractice->submitSubject 4 types incl brief judgeable=false->submit rate 27.27 excl brief->getReport/skills/starLevel->scoreDetail->subjectDetail withAnswer=true->rank->giveUp)->guard 400 after submit->401 login wall; hard conditions verified via InOrder/domain tests: difference-fill before rate, brief excluded from denominator, submitSubject idempotent update-or-insert, all-Feign no direct subject-table)",
