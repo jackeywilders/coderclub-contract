@@ -12,6 +12,6 @@
   "contractChanged": false,
   "verificationResult": "passed",
   "verificationDate": "2026-08-27",
-  "receiptCommitSha": "<filled-after-receipt-commit>",
+  "receiptCommitSha": "60d7f5bb",
   "notes": "A8-P1 门户化一体交付（SDD 全流程：逐任务实现+任务级审查+最终宽范围审查 PASS）；契约快照 4bfb3c72 零变更；前端基线 43→46 端点同步；已知限制：categoryId 一级过滤语义待 PM/后端确认、组件级单测受零依赖约束未引 vitest、基线 CRLF→LF 一次性规范化（脚本固有）。"
 }
