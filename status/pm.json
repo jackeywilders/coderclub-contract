@@ -27,18 +27,42 @@
       "source": "A8-P1 frontend receipt/signoff known limitations",
       "description": "Portal home category filter uses categoryId equality on secondary category; whether backend getSubjectPage supports primary-level recursive filter semantics to be confirmed by PM/backend (follow-up case; conservative current behavior acceptable).",
       "suggestedAction": "confirm with backend (B-Review/B-Impl) whether primary category recursive filtering is needed; if yes, separate proposal at phase-2"
+    },
+    {
+      "id": "practice-detail-unique-index",
+      "status": "open",
+      "date": "2026-08-28",
+      "source": "A8-P2-BE SAP observation (D0 human ruling keeps no DDL)",
+      "description": "practice_detail has no unique index on (practice_id, subject_id); submitSubject update-or-insert has low-probability concurrent double-row window (defensive putIfAbsent/distinct in place).",
+      "suggestedAction": "evaluate adding uk(practice_id, subject_id) via proposal when DDL change is acceptable"
+    },
+    {
+      "id": "pageinfo-duplication",
+      "status": "open",
+      "date": "2026-08-28",
+      "source": "A8-P2-BE SAP observation",
+      "description": "Two PageInfo implementations exist (common and subject-common); practice uses common version. Architectural debt.",
+      "suggestedAction": "single-item refactor to consolidate into one PageInfo (standalone task)"
+    },
+    {
+      "id": "auth-role-check-gap",
+      "status": "open",
+      "date": "2026-08-28",
+      "source": "GW-1 SAP observation (pre-existing, not introduced by gateway)",
+      "description": "auth service has no SaInterceptor registered; class-level @SaCheckRole(\"admin_user\") annotations are not effective at runtime. Gateway login-level check ensures valid token but permission-level convergence stays in-service.",
+      "suggestedAction": "register SaInterceptor in auth service (or equivalent role check) to make permission annotations effective; scope/impact to be assessed"
     }
   ],
   "a1Status": "executed-by-user (2026-08-26): subject_category.sort DB ALTER completed by user on runtime MySQL instance (ALTER: ADD COLUMN sort int(11) DEFAULT NULL COMMENT '排序（升序，空值排最后）' AFTER parent_id, consistent with schema docs/database/schema per P1 commit d08faa4); MySQL runtime credentials held by user/ops only, not stored per placeholder convention; closed. Remaining: A7/A8/A9 pending decisions.",
   "contractSnapshot": {
     "status": "accepted-for-development",
-    "sourceCommit": "ceaffe472eaaf3960061068c2db8371d576bba43",
-    "sourceSha256": "BA74B152730A2F532A8118C18F20AB395CCD4AEA04DB672A17120833705493B1",
-    "snapshotCommit": "77d637ad10277a71a6e803592e6c87ce1f67bec0",
+    "sourceCommit": "a57f6b8ae7142a8c4b1e5cfbc32b8936af297dfc",
+    "sourceSha256": "9EC37C66571E40745732880309EEB231E7DC7C67C21F37BC466059C1F9959D4D",
+    "snapshotCommit": "b22b04491371f1ac15473fe560cac853485ab69b",
     "snapshotPath": "api/coderclub-openapi.json",
-    "snapshotSha256": "4BFB3C72A44550EBD6BAA9F37CC455CE760AEDC88F534453B9451EB4CABA715E",
-    "semanticDifferenceCount": 21,
-    "semanticDifferenceSummary": "14 password/Token example values redacted; 3 P1/P3 additions synced from source (SubjectCategoryDTO.sort, SubjectPageQueryDTO.subjectType, getSubjectPage example subjectType); 1 A2 description micro-sync (SubjectPageQueryDTO.description aligned to source 'getSubjectPage 请求体即本 DTO，6 字段全部参与筛选。'); 3 A8 phase-1 portal endpoints synced (getSubjectPageBySearch, getContributeList, auth user list-by-identifiers, +9 schemas); no path/method/security structure differences beyond additions.",
+    "snapshotSha256": "2583B90679ED990DB8BC11BA9EED0FCCBF0AF3DBEDFF8B84CDA35159F0B05C01",
+    "semanticDifferenceCount": 38,
+    "semanticDifferenceSummary": "14 password/Token example values redacted; 3 P1/P3 additions; 1 A2 description micro-sync; 3 A8 phase-1 portal endpoints +9 schemas; 17 A8 phase-2 practice/internal endpoints +46 schemas (13 practice C-end + 4 subject internal: random-subjects/category-count/subjects-by-ids/judge) synced from source (46->63 paths); no path/method/security structure differences beyond additions.",
     "runtimeAuthority": "G:/Dev/backend/Club/CoderClub/docs/api/coderclub-openapi.json",
     "releaseAuthority": "PM release gate; finalReleaseStatus remains not-published"
   },
@@ -53,9 +77,11 @@
     "a10Acceptance": "accepted 2026-08-26 (impl 7731a2db + d55dd819 via CoderClubFront PR #11 merge 3d34dc68; T1 auth login/register/bindAccount fields aligned to userName/nickName, T2 answer exit button added, T3 worktrees x2 removed + 11 remote & local branches cleaned, only main left; npm test 10/10, api:check baseline clean, lint/build pass, frontend CI SUCCESS; receipt PR #61/#62, F-Review signoff PR #63, R2 dual-repo verified; contract snapshot zero change 8ebcda53, state unchanged); see acceptance/frontend/2026-08-26/frontend-legacy-integration-cleanup-implementation-acceptance.md",
     "a8Phase1BackendAcceptance": "accepted 2026-08-27 (impl head ceaffe4, 8 commits incl. fixes, via CoderClub PR #12 merge 7ed442e; 3 endpoint semantics per C1-C4: search single-column LIKE + empty-string empty page, contribute created_by grouping + Feign nickName fallback, auth list-by-identifiers; SubjectContractTest 57/57, AuthContractTest 12/12, full mvn exit 0; source docs LF SHA A8C6A460 -> BA74B152; receipt PR #70, B-Review signoff PR #71, R2 verified; snapshot full-chain synced 8EBCDA53 -> 4BFB3C72, 46 paths, semantic diffs 18 -> 21; state unchanged); see acceptance/backend/2026-08-26/a8-phase1-endpoints-implementation-acceptance.md",
     "a8Phase1FrontendAcceptance": "accepted 2026-08-27 (impl tip 6909558, 8 commits a413b19->6909558, via CoderClubFront PR #12 merge cf9d460b; T1 portal shell + routing (browse removed, admin kept), T2 tri-column home, T3 same-page prev/next, T4 search page, T5 portal login + wx placeholder, T6 userinfo fields aligned residue 0; baseline 43->46 endpoints specSha256 4bfb3c72a445; build/test 10/10/api:check/lint green + CI SUCCESS; receipt PR #74/#75, F-Review signoff PR #76, R2 verified; contract snapshot 4BFB3C72 zero change; state advanced to gate3-a8-phase1-accepted; cloud verification of A8-P1-BE known limits pending); see acceptance/frontend/2026-08-27/frontend-portalization-implementation-acceptance.md",
+    "gw1Acceptance": "accepted 2026-08-28 (impl 5c0fb421 via CoderClub PR #13 merge b960da3; spring-cloud-gateway + sa-token-reactor 1.46.0 + shared Redis; 401 unified, whitelist 46-endpoint audit 0 miss, loginId transfer + overwrite anti-forge, 6-prefix routes (3 reserved 503), CORS unified; business services zero-code-change, @SaCheckLogin kept; gateway 69/69 + 20-module green; cloud 9/9 incl A8-P1-BE pending items closed (search SQL/Feign/401 e2e/topN); contract zero change 4bfb3c72; receipt PR #83, B-Review signoff, R2 verified); see acceptance/backend/2026-08-27/gw1-gateway-implementation-acceptance.md",
+    "a8p2BackendAcceptance": "accepted 2026-08-28 (impl a57f6b8a 25 commits via CoderClub PR #14 open CI-green, merge pending user/B-Review; subject internal I1-I4 (judge unique via Handler factory) + coder-club-practice 13 endpoints; hard conditions: difference-fill before rate incl brief excluded, submitSubject idempotent + post-submit 400 guard, all-Feign no direct subject-table, ownership guard; 1028 tests green (SubjectContractTest 71/71, PracticeContractTest 22/22); source docs 46->63 paths LF BA74B152 -> 9EC37C66; cloud full state-machine via gateway verified; receipt PR #84, B-Review signoff, R2 receipt-side; snapshot full-chain synced 4BFB3C72 -> 2583B906, 63 paths, semantic diffs 21 -> 38; state unchanged); see acceptance/backend/2026-08-27/a8p2-practice-domain-implementation-acceptance.md",
     "a3Acceptance": "frontend contract convergence T1/T2/T3/T5 accepted 2026-08-26 (impl b303bbc/7113535/19405019, frontend PR #9 merge d81e665c, receipt PR #42/#43); carryover item (keyword dead param cleanup, A2 decision 3.3): impl d825a183 merged via frontend PR #10 (merge 601d778e), closed 2026-08-26; see acceptance/frontend/2026-08-26/frontend-contract-convergence-acceptance.md"
   },
-  "lastAction": "协调 PM accepted A8-P1 (frontend portalization T1-T6) on 2026-08-27: impl 6909558 (CoderClubFront PR #12 merge cf9d460b), portal shell/routing + tri-column home + same-page prev-next + search + portal login/wx placeholder + userinfo aligned (residue 0); baseline 43->46 endpoints (4bfb3c72); build/test/api:check/lint/CI green; receipt (PR #74/#75) signed by F-Review (PR #76), R2 verified. A8 phase-1 fully closed: state advanced to gate3-a8-phase1-accepted; openFinding userinfo-fields-mismatch closed; new openFinding categoryId-primary-filter-semantics (confirm with backend, follow-up). Pending: cloud verification of A8-P1-BE known limits (SQL/Feign/401/topN, B-Impl); next per A8 design: phase-2 practice domain.",
+  "lastAction": "协调 PM accepted GW-1 gateway + A8-P2-BE practice on 2026-08-28: gateway impl 5c0fb421 (PR #13 merged b960da3; whitelist audit 0-miss, 401 unified, loginId anti-forge, cloud 9/9 incl A8-P1-BE items closed); practice impl a57f6b8a (PR #14 open CI-green; 17 endpoints, hard conditions locked, 1028 tests, cloud state-machine via gateway). Snapshot full-chain synced +17 (46->63 paths, 4BFB3C72 -> 2583B906, semantic diffs 21 -> 38). state stays gate3-a8-phase1-accepted (phase-2 frontend pending). openFindings +4 (practice-detail unique index, PageInfo duplication, auth role-check gap, categoryId semantics earlier). Pending: CoderClub PR #14 merge by user/B-Review; docker container smoke (complementary); frontend phase-2 task dispatch (F-Impl); categoryId semantics; A9 release gate needs authorization.",
   "auditReport": "pm/reports/2026-08-10/pm-main-audit-summary.md",
   "reviewReport": "pm/reviews/2026-08-10/pm-main-review.md",
   "coordinationRoadmap": "pm/roadmap/2026-08-10/pm-coordination-roadmap.md",
