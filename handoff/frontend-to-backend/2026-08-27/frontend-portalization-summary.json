@@ -1,0 +1,17 @@
+{
+  "taskId": "A8-P1-FE",
+  "taskTitle": "前端门户化：T1 门户壳/路由重构 + T2 三栏首页 + T3 刷题翻页 + T4 搜索页 + T5 登录门户化 + T6 userinfo 对齐 + 基线 46 端点同步",
+  "receiptPath": "handoff/frontend-to-backend/2026-08-27/frontend-portalization-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
+  "implementationCommitSha": "6909558",
+  "implementationCommitShas": ["a413b19", "18f90a2", "5ff840a", "7fa0aad", "dfe44c7", "557a94c", "a2089d3", "6909558"],
+  "pullRequestNumber": 12,
+  "mergedAt": "2026-08-27T04:18:09Z",
+  "mergeCommitSha": "cf9d460b880b0432b0797252576f2e179c27537a",
+  "contractSnapshotSha256": "4bfb3c72",
+  "contractChanged": false,
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-27",
+  "receiptCommitSha": "<filled-after-receipt-commit>",
+  "notes": "A8-P1 门户化一体交付（SDD 全流程：逐任务实现+任务级审查+最终宽范围审查 PASS）；契约快照 4bfb3c72 零变更；前端基线 43→46 端点同步；已知限制：categoryId 一级过滤语义待 PM/后端确认、组件级单测受零依赖约束未引 vitest、基线 CRLF→LF 一次性规范化（脚本固有）。"
+}
