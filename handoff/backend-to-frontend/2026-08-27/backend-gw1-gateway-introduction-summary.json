@@ -4,7 +4,7 @@
   "receiptPath": "handoff/backend-to-frontend/2026-08-27/backend-gw1-gateway-introduction-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClub",
   "implementationCommitSha": "5c0fb421be9d3f2e6d0c54d44e36f5b7cd10a63f",
-  "receiptCommitSha": "PENDING_PUSH",
+  "receiptCommitSha": "bfff12255f3c008644a220ef6d83a3a3211de0ae",
   "pullRequestNumber": 13,
   "contractSnapshotSha256": "4bfb3c72",
   "verificationResult": "passed (gateway 69 tests + full 20-module mvn test exit 0; final whole-branch review FIX-THEN-MERGE -> IMP-1/IMP-2 fix round -> re-review 2/2 ADDRESSED; PR #13 CI green (build-and-test + sensitive-scan 0 hits); cloud integration 9/9 via gateway chain on cloud Nacos/MySQL/Redis 8.8.1: 401 body exact, whitelist login, auth/user/info with token, A8 search SQL, A8 contribute Feign cross-service, topN<=20, reserved-domain 503, CORS preflight ACAO, oss whitelist no-token 200; sa-token 1.46.0 full-regression green, upstream #968/#970 no impact (Lettuce/no-annotation-path))",
