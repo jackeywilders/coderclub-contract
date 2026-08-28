@@ -1,0 +1,18 @@
+{
+  "taskId": "A8-P2-FE",
+  "taskTitle": "前端阶段二练习：T1 练习列表页（专项/套卷/未完成）+ T2 答题页 + T3 分析报告页 + T4 门户练习榜 + 基线 63 端点同步",
+  "receiptPath": "handoff/frontend-to-backend/2026-08-28/frontend-practice-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
+  "implementationCommitSha": "5c05279",
+  "implementationCommitShas": ["5c05279", "81a2e28", "5062d50", "3179035", "bcb407a", "561ddc0", "20f7f69", "bf5a810", "6432814", "2a56a8f", "047e69a", "902718d", "b67db27", "0743c30", "00b1a14", "0afaf8a", "d57cbfe", "ba050d3", "3a91350", "b9d4e77", "69f4462", "d52a9a0"],
+  "pullRequestNumber": 15,
+  "mergedAt": "2026-08-28T05:48:18Z",
+  "mergeCommitSha": "ed3c56a880b0432b0797252576f2e179c27537a",
+  "contractSnapshotSha256": "2583b906",
+  "contractChanged": false,
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-28",
+  "receiptCommitSha": "aa03fc6",
+  "receiptCommitShas": ["8a3beed", "aa03fc6"],
+  "notes": "A8-P2-FE 阶段二练习全链路一体交付（SDD 全流程：7 任务逐任务实现+任务级审查+3 轮修复收敛+全分支最终审查 PASS）；契约快照 2583b906（63 端点）零变更；前端基线 46→63 端点同步（新增 13 practice + 4 subject/internal）；推送因 git 通道（TUN 代理）不稳定，实施提交经 GitHub API（contents PUT，22 文件）重建于 feat/practice-a8-p2，22 文件 blob 与本地 final tip 逐字节核验一致；已知限制：correctRate 量纲待联调、简答未判分显示语义、getSpecialPracticeContent 响应递归树（D1 决策）、组件级单测受零依赖约束未引 vitest。receiptCommitSha 已回填（回执 PR #89 合入交接 main `bfd2ebd`，回执 commit `8a3beed`/`aa03fc6`）。"
+}
