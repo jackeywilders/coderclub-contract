@@ -1,0 +1,27 @@
+{
+  "taskId": "A8-P3-BE",
+  "taskTitle": "A8 阶段三 circle 社区域：coder-club-circle 11 端点（圈子树/动态/评论树/消息落库拉取/敏感词 DFA 方案A′+X3 角色鉴权）+ X1/X2 既有端点向后兼容扩展",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-30/backend-a8p3-circle-domain-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "d9eb64f",
+  "pullRequestNumber": 15,
+  "contractSnapshotSha256": "2583b906",
+  "sourceDoc": {
+    "path": "docs/api/coderclub-openapi.json",
+    "lfSha256Before": "9EC37C66571E40745732880309EEB231E7DC7C67C21F37BC466059C1F9959D4D",
+    "lfSha256After": "736F65886FC60E758AF6AB2F1C306BF47259CBEFACF69AC94FA032C567753225",
+    "pathCountBefore": 63,
+    "pathCountAfter": 74
+  },
+  "verificationResult": "passed (PR #15 CI build-and-test+sensitive-scan green run 33267186300; CircleContractTest 20/20 incl 11-endpoint positives+401+403+400 matrix, circle domain 33/33, AuthContractTest 13/13 & SubjectContractTest 73/73 no regression with X1/X2 new cases; 11 task reviews + 3 fix rounds + whole-branch final review fix wave 3/3 ADDRESSED; gateway/cloud e2e 6-step passed on cloud Nacos/MySQL/Redis: 401 login wall & route 503->live, circle tree, sensitive save (admin), full state machine cross-user (publish->comment->reply->unread 1/1->getMessages structured VO neutral msg->read-marking 1->0->E4 self-comment no-message->remove cascade+idempotent), DFA 400 business error; openapi 63->74 paths LF SHA 9EC37C66->736F6588)",
+  "openFindings": [
+    "X1-consumer-key-mismatch (C1 degraded by ruling): auth VO lacks id field, consumers key by userName so numeric identifiers still degrade to identifier string (live evidence nickName='1'/'9'); practice rank nickname claim withdrawn from this round; VO contract amendment proposal requested from B-Review",
+    "subject/practice GlobalExceptionHandler lacks NotRoleException mapping (sa-token 1.46.0 sibling classes; role failure would 500) — sync proposal requested",
+    "cloud 403 not exercised live (single admin test account; covered by contract test)",
+    "sensitive-word remove->rebuild cloud e2e not possible (no list endpoint to discover id; unit-covered)",
+    "share_message.created_by null (blueprint parity; from_id carries actor; VO does not expose)",
+    "docker image builds structurally repaired (5 Dockerfiles 34=34 poms); real image build deferred to deployment (no local Docker); pin TZ=Asia/Shanghai on containers",
+    "openapi info.description still says 63 paths (header frozen per task book) — PM authorization requested at snapshot sync"
+  ],
+  "verificationDate": "2026-08-30"
+}
