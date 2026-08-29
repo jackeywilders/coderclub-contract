@@ -1,0 +1,12 @@
+{
+  "taskId": "A2",
+  "taskTitle": "getSubjectPage 请求体运行时收窄实施（SubjectPageQueryDTO，6 字段显式映射）",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-26/backend-a2-getSubjectPage-narrowing-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "6b2aeddbb775f5039fa50a3feaa779f05e6fe0ed",
+  "receiptCommitSha": "4bcf820",
+  "pullRequestNumber": 8,
+  "contractSnapshotSha256": "0dae8d3a",
+  "verificationResult": "passed (52/52 regression + real request A/B groups verified on cloud middleware)",
+  "verificationDate": "2026-08-26"
+}

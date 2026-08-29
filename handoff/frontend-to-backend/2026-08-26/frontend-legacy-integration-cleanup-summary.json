@@ -1,0 +1,23 @@
+{
+  "taskId": "A10",
+  "taskTitle": "前端遗留整合与清理：T1 auth 契约字段对齐 + T2 答题退出按钮 + T3 worktree/分支清理",
+  "receiptPath": "handoff/frontend-to-backend/2026-08-26/frontend-legacy-integration-cleanup-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
+  "implementationCommitSha": "7731a2db",
+  "implementationCommitShas": ["7731a2db2358ee21a93066065c34d1e2393df0dd", "d55dd819a07278aade6fe44120ef870f4ebbc13c"],
+  "pullRequestNumber": 11,
+  "mergedAt": "2026-08-26T14:51:52Z",
+  "mergeCommitSha": "3d34dc6815ba7a8700cd5f24eabdac791250d2ce",
+  "contractSnapshotSha256": "8ebcda53",
+  "contractChanged": false,
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-26",
+  "t3Cleanup": {
+    "worktreesRemoved": ["feat-subject-real-api", "feat-view-contract-alignment"],
+    "localBranchesDeleted": ["chore/remove-deprecated-contract-workflow", "ci/github-actions", "feat/frontend-history", "feat/g1-03-baseline", "feat/subject-real-api-integration", "feat/subject-view-contract-alignment"],
+    "remoteBranchesDeleted": ["chore/remove-deprecated-contract-workflow", "ci/github-actions", "docs/engineering-skill-setup", "docs/governance-compliance", "feat/contract-convergence", "feat/frontend-history", "feat/g1-03-baseline", "feat/subject-real-api-integration", "feat/subject-view-contract-alignment", "refactor/subject-remove-keyword-param", "feat/legacy-integration-a10"],
+    "kept": ["main"]
+  },
+  "receiptCommitSha": "1ea8c29b",
+  "notes": "契约快照 8ebcda53 零变更；前端基线 0dae8d3a 为 A3 同步值；T3 后远端仅余 main（3d34dc68）；T1/T2 经 PR #11 合入（merge 3d34dc68）。"
+}

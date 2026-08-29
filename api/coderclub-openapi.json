@@ -495,6 +495,101 @@
         }
       }
     },
+    "/auth/user/list-by-identifiers": {
+      "post": {
+        "tags": [
+          "用户管理"
+        ],
+        "summary": "按用户标识批量查询（内部）",
+        "description": "内部跨服务查询接口：按用户名批量获取昵称、头像等展示信息（门户出题贡献榜经 Feign 调用）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserIdentifierQueryDTO"
+              },
+              "example": {
+                "identifiers": [
+                  "zhangsan",
+                  "lisi",
+                  "wangwu"
+                ],
+                "type": "userName"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "用户展示信息列表（仅返回存在的用户，顺序不保证）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultIdentifierUserItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "userName": "zhangsan",
+                      "nickName": "张三",
+                      "avatar": "https://cdn.example.com/avatar/1.png"
+                    },
+                    {
+                      "userName": "lisi",
+                      "nickName": "李四",
+                      "avatar": "https://cdn.example.com/avatar/2.png"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "identifiers 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/admin/user/page": {
       "post": {
         "tags": [
@@ -2703,6 +2798,198 @@
         }
       }
     },
+    "/subject/getSubjectPageBySearch": {
+      "post": {
+        "tags": [
+          "题目管理"
+        ],
+        "summary": "分页搜索题目",
+        "description": "按关键词搜索题目（subject_name LIKE），支持分类/标签/题型/难度筛选；keyWord 缺失返回 400，空串返回空列表。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSearchQueryDTO"
+              },
+              "example": {
+                "pageNo": 1,
+                "pageSize": 10,
+                "keyWord": "Java",
+                "subjectType": 1,
+                "subjectDifficult": 2,
+                "categoryId": 1,
+                "labelId": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "分页搜索结果（按关键词匹配题目，命中项含标签名称与选项列表）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultPageSubjectSearchItem"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "pageNo": 1,
+                    "pageSize": 10,
+                    "total": 5,
+                    "totalPages": 1,
+                    "list": [
+                      {
+                        "id": 2,
+                        "subjectName": "Java中ArrayList和LinkedList的区别",
+                        "subjectType": 1,
+                        "subjectDifficult": 2,
+                        "categoryId": 1,
+                        "labelId": 3,
+                        "labelName": [
+                          "集合框架"
+                        ],
+                        "optionList": [
+                          {
+                            "optionType": 1,
+                            "optionContent": "ArrayList基于动态数组",
+                            "isCorrect": 1
+                          },
+                          {
+                            "optionType": 2,
+                            "optionContent": "LinkedList基于双向链表",
+                            "isCorrect": 0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "搜索关键词不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subject/getContributeList": {
+      "post": {
+        "tags": [
+          "题目管理"
+        ],
+        "summary": "出题贡献榜",
+        "description": "按出题人（created_by）分组统计题目数量并按数量降序返回 TOP N；昵称经 auth 服务批量查询组装，缺失时降级为用户名。请求体可省略，缺省返回前 10 名（上限 20）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContributeListQueryDTO"
+              },
+              "example": {
+                "topN": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "出题贡献榜列表（按出题数量降序）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultSubjectContributeItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "userName": "zhangsan",
+                      "nickName": "张三",
+                      "count": 25
+                    },
+                    {
+                      "userName": "lisi",
+                      "nickName": "李四",
+                      "count": 18
+                    },
+                    {
+                      "userName": "wangwu",
+                      "nickName": "王五",
+                      "count": 9
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/oss/getUrl": {
       "get": {
         "tags": [
@@ -2833,8 +3120,1633 @@
           }
         }
       }
-    }
-  },
+    },
+    "/practice/set/getSpecialPracticeContent": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "专项内容树（大类 → 分类 → 标签）",
+        "description": "练题专项内容树：按大类 id 返回 大类 → 分类 → 标签 三级节点及题量，数据经 subject 内部端点 /subject/internal/category-count（Feign）组装。需登录（@SaCheckLogin 登录墙，未登录 401）。节点 categoryType：1=大类、2=分类、3=标签（节点层级标注，新约定）；subjectCount=0 的节点不产出。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecialContentQueryDTO"
+              },
+              "example": {
+                "primaryCategoryId": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "专项内容树（data 为空数组时表示无节点产出）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultCategoryCountNodeList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "categoryId": 1,
+                      "categoryName": "Java编程",
+                      "categoryType": 1,
+                      "parentId": 0,
+                      "subjectCount": 20,
+                      "children": [
+                        {
+                          "categoryId": 2,
+                          "categoryName": "集合框架",
+                          "categoryType": 2,
+                          "parentId": 1,
+                          "subjectCount": 8,
+                          "children": [
+                            {
+                              "categoryId": 5,
+                              "categoryName": "HashMap",
+                              "categoryType": 3,
+                              "parentId": 2,
+                              "subjectCount": 4,
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "primaryCategoryId 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/set/addPractice": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "创建 / 续做练习",
+        "description": "装配练习并返回 practiceId：assembleIds 元素形如 \"catId-labelId\"，其中 catId 为 subject_mapping.category_id（分类[叶子] id），labelId 为标签 id；随机抽题经 subject 内部端点 /subject/internal/random-subjects（Feign）完成。practiceId 非空且归属校验通过时按续做处理（直接返回该 id，不重复建草稿），否则创建新草稿练习。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPracticeDTO"
+              },
+              "example": {
+                "assembleIds": [
+                  "1-3"
+                ],
+                "practiceId": 1001
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "练习 id（新建或续做的 practiceId）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultLong"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": 1001
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "装配ID不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/set/getSubjects": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "套卷题列表（不含答案）",
+        "description": "按套题（setId）或练习（practiceId）返回题目列表：setId 与 practiceId 至少其一；提供 practiceId 时按练习所属套题取题并回填作答态（isAnswer/answerContent）。不含答案：optionList 元素 isCorrect 已剥离（经 subject 内部端点 /subject/internal/subjects-by-ids withAnswer=false）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSubjectsDTO"
+              },
+              "example": {
+                "setId": 501,
+                "practiceId": 1001
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "套卷题列表（data 为空数组时表示无题）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultPracticeSubjectItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 11,
+                      "subjectName": "HashMap的底层数据结构是什么",
+                      "subjectType": 1,
+                      "subjectDifficult": 2,
+                      "optionList": [
+                        {
+                          "optionType": 1,
+                          "optionContent": "数组+链表+红黑树"
+                        },
+                        {
+                          "optionType": 2,
+                          "optionContent": "仅数组+链表"
+                        }
+                      ],
+                      "categoryIds": [
+                        2
+                      ],
+                      "labelIds": [
+                        5
+                      ],
+                      "labelName": [
+                        "HashMap"
+                      ],
+                      "isAnswer": true,
+                      "answerContent": "A"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "setId 与 practiceId 至少其一"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/set/getPracticeSubject": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "单题内容（不含答案）",
+        "description": "按练习 + 题目返回单题内容（不含答案，optionList 元素 isCorrect 已剥离）；practiceId 提供时回填该题作答态（isAnswer/answerContent）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPracticeSubjectDTO"
+              },
+              "example": {
+                "subjectId": 11,
+                "practiceId": 1001
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "单题内容（不含答案）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultPracticeSubjectItem"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "id": 11,
+                    "subjectName": "HashMap的底层数据结构是什么",
+                    "subjectType": 1,
+                    "subjectDifficult": 2,
+                    "optionList": [
+                      {
+                        "optionType": 1,
+                        "optionContent": "数组+链表+红黑树"
+                      },
+                      {
+                        "optionType": 2,
+                        "optionContent": "仅数组+链表"
+                      }
+                    ],
+                    "categoryIds": [
+                      2
+                    ],
+                    "labelIds": [
+                      5
+                    ],
+                    "labelName": [
+                      "HashMap"
+                    ],
+                    "isAnswer": true,
+                    "answerContent": "A"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "subjectId 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/set/getPreSetContent": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "预设套卷分页",
+        "description": "预设套卷分页列表（orderType：1 名称升序、2 最新（创建时间倒序）、3 最热（热度倒序），缺省 1）。分页复用 PageInfo：pageNo 默认 1 / pageSize 默认 20。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPreSetContentDTO"
+              },
+              "example": {
+                "orderType": 3,
+                "pageNo": 1,
+                "pageSize": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "预设套卷分页结果（无结果时 data.list 为 []）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultPagePreSetItem"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "pageNo": 1,
+                    "pageSize": 10,
+                    "total": 3,
+                    "totalPages": 1,
+                    "list": [
+                      {
+                        "id": 501,
+                        "setName": "Java 基础综合练习",
+                        "setType": 2,
+                        "setHeat": 128,
+                        "setDesc": "覆盖集合框架与多线程",
+                        "primaryCategoryId": 1,
+                        "createdTime": "2026-08-01 10:00:00"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "pageNo 不能小于 1"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/set/getUnCompletePractice": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "未完成练习分页",
+        "description": "当前登录用户的未完成练习分页（complete_status=0）。分页复用 PageInfo：pageNo 默认 1 / pageSize 默认 20。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetUnCompletePracticeDTO"
+              },
+              "example": {
+                "pageNo": 1,
+                "pageSize": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "未完成练习分页结果（无结果时 data.list 为 []）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultPageUnCompleteItem"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "pageNo": 1,
+                    "pageSize": 10,
+                    "total": 2,
+                    "totalPages": 1,
+                    "list": [
+                      {
+                        "practiceId": 1001,
+                        "setId": 501,
+                        "setName": "Java 基础综合练习",
+                        "timeUse": "00:15:30",
+                        "correctRate": null,
+                        "submitTime": null,
+                        "createdTime": "2026-08-27 09:00:00"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "pageNo 不能小于 1"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/detail/submitSubject": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "单题提交判分",
+        "description": "单题提交并判分（调 subject 内部端点 /subject/internal/judge 判分，判分逻辑不在 practice 复制）。幂等 update-or-insert：按 practice_id + subject_id 判定，重复提交以本次答案覆盖原记录。面试题类（subjectType=4 简答）无法判分，返回 {judgeable:false, isCorrect:false}，前端展示「不计分」且不计入正确率分母。练习已交卷（complete_status=1）后禁止继续提交，返回业务错误 400「练习已交卷，不能继续答题」（HTTP 200 + body code=400）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitSubjectDTO"
+              },
+              "example": {
+                "practiceId": 1001,
+                "subjectId": 11,
+                "subjectType": 1,
+                "answerContent": "A"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "单题判分结果（简答固定返回 judgeable=false、isCorrect=false）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultSubjectJudgeResult"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "judgeable": true,
+                    "isCorrect": true
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "subjectType 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/detail/submit": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "交卷",
+        "description": "交卷并结账计算：先补差集（未作答题目按未答补记）再计算正确率（先行补差、后算率的顺序契约）；正确率 correct_rate 为 decimal(10,2) 百分比（非简答口径，简答不计入分母）；timeUse 须匹配 ^\\d{2}:\\d{2}:\\d{2}$（HH:mm:ss），格式非法返回 400；随后更新练习完成态并将套题热度 +1。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitPracticeDTO"
+              },
+              "example": {
+                "practiceId": 1001,
+                "timeUse": "00:15:30"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "交卷结果（true=交卷成功）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultBoolean"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验 / timeUse 格式校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "timeUse 格式必须为 HH:mm:ss"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/detail/getReport": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "评估报告",
+        "description": "交卷后的评估报告（C6）：totalCount 题目总数、correctCount 正确数、correctRate 正确率均按非简答口径（与交卷一致，简答不计入分母）；skills 为按标签（labelName）内存聚合的技能项列表，元素含 {labelName, correctRate, starLevel}——starLevel 技能星级（1-5：≥90→5、≥80→4、≥70→3、≥60→2、低于60→1）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetReportDTO"
+              },
+              "example": {
+                "practiceId": 1001
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "评估报告",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultReport"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "totalCount": 8,
+                    "correctCount": 6,
+                    "correctRate": 75,
+                    "skills": [
+                      {
+                        "labelName": "集合框架",
+                        "correctRate": 80,
+                        "starLevel": 4
+                      },
+                      {
+                        "labelName": "多线程",
+                        "correctRate": 66.67,
+                        "starLevel": 3
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "practiceId 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/detail/getScoreDetail": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "答题明细",
+        "description": "当前练习的答题明细（practice_detail 按 id 升序）：每项含题目类型、回答状态（0 未答或未判分 / 1 对）、用户作答内容与是否答对。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetScoreDetailDTO"
+              },
+              "example": {
+                "practiceId": 1001
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "答题明细列表（data 为空数组时表示无明细）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultScoreDetailItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "subjectId": 11,
+                      "subjectType": 1,
+                      "answerStatus": 1,
+                      "answerContent": "A",
+                      "isCorrect": true
+                    },
+                    {
+                      "subjectId": 12,
+                      "subjectType": 2,
+                      "answerStatus": 0,
+                      "answerContent": "A,B",
+                      "isCorrect": false
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "practiceId 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/detail/getSubjectDetail": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "单题答案详情",
+        "description": "单题答案详情：题目信息、选项（含 isCorrect）、正确答案、解析与标签；myAnswer 为当前练习下我的作答（经 practice_detail.answer_content 回填，未作答时为 null 或空串，允许未作答查看）。不做「题是否在本卷内」的再校验（与 getPracticeSubject 同权限面：仅练习归属校验 + 题目可见性经 subject 内部端点 /subject/internal/subjects-by-ids withAnswer=true 保证）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSubjectDetailDTO"
+              },
+              "example": {
+                "practiceId": 1001,
+                "subjectId": 11
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "单题答案详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultSubjectDetailItem"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "subjectId": 11,
+                    "subjectName": "HashMap的底层数据结构是什么",
+                    "subjectType": 1,
+                    "subjectDifficult": 2,
+                    "optionList": [
+                      {
+                        "optionType": 1,
+                        "optionContent": "数组+链表+红黑树",
+                        "isCorrect": 1
+                      },
+                      {
+                        "optionType": 2,
+                        "optionContent": "仅数组+链表",
+                        "isCorrect": 0
+                      }
+                    ],
+                    "subjectAnswer": "A",
+                    "subjectParse": "HashMap 底层采用数组+链表+红黑树实现。",
+                    "labelName": [
+                      "集合框架",
+                      "HashMap"
+                    ],
+                    "myAnswer": "A"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "subjectId 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/detail/getPracticeRankList": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "综合练习榜",
+        "description": "综合练习榜（按完成练习数降序取前 N）：topN 默认 10、约束 @Min(1) @Max(20)——越界（<1 或 >20）返回 400；请求体可省略（@RequestBody(required=false)，不传 body 或缺省 topN 时按默认 10 返回）。榜项含用户名（practice_info.created_by）、昵称（缺失降级为用户名）、头像（缺失为 null）与完成练习数。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPracticeRankListDTO"
+              },
+              "example": {
+                "topN": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "综合练习榜列表（data 为空数组时表示暂无完成记录）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultRankItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "userName": "zhangsan",
+                      "nickName": "张三",
+                      "avatar": "https://cdn.example.com/avatar/1.png",
+                      "practiceCount": 12
+                    },
+                    {
+                      "userName": "lisi",
+                      "nickName": "李四",
+                      "avatar": null,
+                      "practiceCount": 9
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景：topN 越界时 data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "topN 不能大于 20"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practice/detail/giveUp": {
+      "post": {
+        "tags": [
+          "练习"
+        ],
+        "summary": "放弃练习",
+        "description": "放弃练习：软删除（逻辑删除）该练习的 practice_detail 与 practice_info 记录，返回 true。幂等：重复放弃同一练习返回失败业务（HTTP 200 + body code=400）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GiveUpDTO"
+              },
+              "example": {
+                "practiceId": 1001
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "放弃结果（true=放弃成功）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultBoolean"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "practiceId 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subject/internal/random-subjects": {
+      "post": {
+        "tags": [
+          "题目内部"
+        ],
+        "summary": "内部随机抽题（I1）",
+        "description": "subject 内部端点：仅内部 Feign 消费，不向 C 端门户宣传。按装配 id 集随机返回题目 id 集：assembleIds 元素形如 \"catId-labelId\"，其中 catId 为 subject_mapping.category_id（分类[叶子] id），labelId 为标签 id。typeCountMap 非空时按题型配比（{subjectType: count}）逐型随机合并；为空时全量随机（count 缺省取候选全量）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InternalRandomQueryDTO"
+              },
+              "example": {
+                "assembleIds": [
+                  "1-3"
+                ],
+                "excludeSubjectIds": [
+                  99
+                ],
+                "count": 20,
+                "typeCountMap": {
+                  "1": 10,
+                  "2": 6,
+                  "3": 4
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "随机抽到的题目 id 集（data 为空数组时表示无候选题目）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultLongList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    11,
+                    12,
+                    13,
+                    14
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "装配ID不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subject/internal/category-count": {
+      "post": {
+        "tags": [
+          "题目内部"
+        ],
+        "summary": "内部分类题量树（I2）",
+        "description": "subject 内部端点：仅内部 Feign 消费，不向 C 端门户宣传。按大类 id 集组装 大类 → 分类 → 标签 分类题量树；categoryType：1=大类、2=分类、3=标签（节点层级标注，新约定）；subjectCount（count distinct subject_id）=0 的节点不产出。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InternalCategoryCountQueryDTO"
+              },
+              "example": {
+                "primaryCategoryIds": [
+                  1
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "分类题量树（data 为空数组时表示无节点产出）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultCategoryCountNodeList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "categoryId": 1,
+                      "categoryName": "Java编程",
+                      "categoryType": 1,
+                      "parentId": 0,
+                      "subjectCount": 20,
+                      "children": [
+                        {
+                          "categoryId": 2,
+                          "categoryName": "集合框架",
+                          "categoryType": 2,
+                          "parentId": 1,
+                          "subjectCount": 8,
+                          "children": [
+                            {
+                              "categoryId": 5,
+                              "categoryName": "HashMap",
+                              "categoryType": 3,
+                              "parentId": 2,
+                              "subjectCount": 4,
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "主分类ID不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subject/internal/subjects-by-ids": {
+      "post": {
+        "tags": [
+          "题目内部"
+        ],
+        "summary": "内部批量取题（I3）",
+        "description": "subject 内部端点：仅内部 Feign 消费，不向 C 端门户宣传。按题目 id 集返回题目详情项（最多 500 个）：withAnswer=false（缺省）时剥离 optionList 项 isCorrect 与 subjectParse；withAnswer=true 时保留并组装 subjectAnswer。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InternalSubjectsByIdsQueryDTO"
+              },
+              "example": {
+                "subjectIds": [
+                  11,
+                  12,
+                  13
+                ],
+                "withAnswer": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "题目详情项列表（不存在的 id 不返回；data 为空数组时表示无匹配题目）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultInternalSubjectItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 11,
+                      "subjectName": "HashMap的底层数据结构是什么",
+                      "subjectType": 1,
+                      "subjectDifficult": 2,
+                      "optionList": [
+                        {
+                          "optionType": 1,
+                          "optionContent": "数组+链表+红黑树",
+                          "isCorrect": null
+                        },
+                        {
+                          "optionType": 2,
+                          "optionContent": "仅数组+链表",
+                          "isCorrect": null
+                        }
+                      ],
+                      "subjectAnswer": null,
+                      "subjectParse": null,
+                      "categoryIds": [
+                        2
+                      ],
+                      "labelIds": [
+                        5
+                      ],
+                      "labelName": [
+                        "集合框架",
+                        "HashMap"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "题目ID集合不能超过500个"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subject/internal/judge": {
+      "post": {
+        "tags": [
+          "题目内部"
+        ],
+        "summary": "内部判分（I4）",
+        "description": "subject 内部端点：仅内部 Feign 消费，不向 C 端门户宣传。按题目类型分发 Handler 判分（判分唯一实现在 subject 侧，practice 不复制判分逻辑）：单（1）/多选（2）/判断（3）返回可判分结果；简答（4）返回 {judgeable:false, isCorrect:false}。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InternalJudgeQueryDTO"
+              },
+              "example": {
+                "subjectId": 11,
+                "subjectType": 1,
+                "answerContent": "A"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "判分结果（简答固定返回 judgeable=false、isCorrect=false）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultJudgeResult"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "judgeable": true,
+                    "isCorrect": true
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "答案内容不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    }},
   "components": {
     "securitySchemes": {
       "Authorization": {
@@ -3901,7 +5813,7 @@
       },
       "SubjectPageQueryDTO": {
         "type": "object",
-        "description": "分页查询请求体。实际绑定 SubjectInfoDTO，此处仅展示常用过滤字段。",
+        "description": "getSubjectPage 请求体即本 DTO，6 字段全部参与筛选。",
         "properties": {
           "pageNo": {
             "type": "integer",
@@ -4246,7 +6158,1576 @@
             "description": "错误数据：参数校验失败时为字符串数组，其他错误时为 null"
           }
         }
-      }
-    }
+      },
+      "SubjectSearchQueryDTO": {
+        "type": "object",
+        "required": [
+          "keyWord"
+        ],
+        "description": "getSubjectPageBySearch 请求体：按关键词分页搜索题目，keyWord 必填。",
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "description": "页码（默认 1）",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "description": "每页条数（默认 20）",
+            "example": 20
+          },
+          "keyWord": {
+            "type": "string",
+            "description": "搜索关键词（必填；空串返回空列表）",
+            "example": "Java"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型 1单选 2多选 3判断 4简答",
+            "example": 1
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度",
+            "example": 2
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "分类 ID",
+            "example": 1
+          },
+          "labelId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "标签 ID",
+            "example": 1
+          }
+        }
+      },
+      "SubjectSearchItem": {
+        "type": "object",
+        "description": "getSubjectPageBySearch 搜索列表项（不含答案解析，答案见题目详情接口）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 ID"
+          },
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型 1单选 2多选 3判断 4简答"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "分类 ID"
+          },
+          "labelId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "标签 ID"
+          },
+          "labelName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "标签名称列表"
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表"
+          }
+        }
+      },
+      "ContributeListQueryDTO": {
+        "type": "object",
+        "description": "getContributeList 请求体：返回出题贡献榜前 N 名；body 可省略。",
+        "properties": {
+          "topN": {
+            "type": "integer",
+            "format": "int32",
+            "default": 10,
+            "description": "返回条数（默认 10，上限 20，超出按 20 截断）",
+            "example": 10
+          }
+        }
+      },
+      "ContributeItem": {
+        "type": "object",
+        "description": "出题贡献榜条目：按出题人统计题目数量，昵称经 auth 批量查询组装。",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "出题人用户名（subject_info.created_by）"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称（来自 auth 用户信息，缺失时降级为用户名）"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "出题数量"
+          }
+        }
+      },
+      "UserIdentifierQueryDTO": {
+        "type": "object",
+        "required": [
+          "identifiers"
+        ],
+        "description": "auth 侧用户标识批量查询请求体：按用户名批量获取展示信息（内部跨服务查询）。",
+        "properties": {
+          "identifiers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "用户标识列表（必填，上限 100 个）",
+            "example": [
+              "zhangsan",
+              "lisi"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "标识类型（预留扩展，默认 userName）",
+            "example": "userName"
+          }
+        }
+      },
+      "IdentifierUserItem": {
+        "type": "object",
+        "description": "用户标识批量查询响应条目（仅展示信息）。",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像 URL"
+          }
+        }
+      },
+      "ResponseResultPageSubjectSearchItem": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "pageNo",
+              "pageSize",
+              "total",
+              "totalPages",
+              "list"
+            ],
+            "properties": {
+              "pageNo": {
+                "type": "integer",
+                "format": "int32",
+                "description": "当前页码"
+              },
+              "pageSize": {
+                "type": "integer",
+                "format": "int32",
+                "description": "每页条数"
+              },
+              "total": {
+                "type": "integer",
+                "format": "int32",
+                "description": "总记录数"
+              },
+              "totalPages": {
+                "type": "integer",
+                "format": "int32",
+                "description": "总页数"
+              },
+              "list": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SubjectSearchItem"
+                },
+                "description": "当前页数据列表"
+              }
+            }
+          }
+        }
+      },
+      "ResponseResultSubjectContributeItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContributeItem"
+            }
+          }
+        }
+      },
+      "ResponseResultIdentifierUserItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdentifierUserItem"
+            }
+          }
+        }
+      },
+      "PracticeErrorResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "错误信息"
+          },
+          "data": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "参数校验错误信息列表"
+              },
+              {
+                "type": "object",
+                "nullable": true,
+                "description": "业务异常时为 null"
+              }
+            ],
+            "description": "错误数据：参数校验失败时为字符串数组，其他错误时为 null"
+          }
+        }
+      },
+      "PracticeSubjectItemVO": {
+        "type": "object",
+        "description": "套卷题列表 / 单题内容响应项 VO（不含答案：optionList 项已剥离 isCorrect；isAnswer/answerContent 为作答态回填）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id"
+          },
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度"
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表（withAnswer=false，isCorrect 已剥离）"
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "分类 id 列表"
+          },
+          "labelIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "标签 id 列表"
+          },
+          "labelName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "标签名称列表"
+          },
+          "isAnswer": {
+            "type": "boolean",
+            "description": "是否已作答"
+          },
+          "answerContent": {
+            "type": "string",
+            "description": "用户已作答内容"
+          }
+        }
+      },
+      "PreSetItemVO": {
+        "type": "object",
+        "description": "预设套卷列表项 VO。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "套题 id"
+          },
+          "setName": {
+            "type": "string",
+            "description": "套题名称"
+          },
+          "setType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "套题类型（预设恒为 2）"
+          },
+          "setHeat": {
+            "type": "integer",
+            "format": "int32",
+            "description": "热度"
+          },
+          "setDesc": {
+            "type": "string",
+            "description": "套题描述"
+          },
+          "primaryCategoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "大类 id"
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "创建时间"
+          }
+        }
+      },
+      "RankItemVO": {
+        "type": "object",
+        "description": "综合练习榜项 VO。",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "用户名（practice_info.created_by）"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称（缺失降级为 userName）"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像（缺失为 null）"
+          },
+          "practiceCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "完成练习数"
+          }
+        }
+      },
+      "InternalCategoryCountQueryDTO": {
+        "type": "object",
+        "required": [
+          "primaryCategoryIds"
+        ],
+        "description": "内部分类题量树请求体（仅内部 Feign 消费）。",
+        "properties": {
+          "primaryCategoryIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "大类（primary category）id 集（必填；空 → 400）",
+            "example": [
+              1
+            ]
+          }
+        }
+      },
+      "InternalJudgeQueryDTO": {
+        "type": "object",
+        "required": [
+          "subjectId",
+          "subjectType",
+          "answerContent"
+        ],
+        "description": "内部判分请求体（仅内部 Feign 消费）。",
+        "properties": {
+          "subjectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id（必填）",
+            "example": 11
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答（必填）",
+            "example": 1
+          },
+          "answerContent": {
+            "type": "string",
+            "description": "用户答案内容（必填；单选/多选为标号逗号串，判断为 1/0）",
+            "example": "A"
+          }
+        }
+      },
+      "InternalRandomQueryDTO": {
+        "type": "object",
+        "required": [
+          "assembleIds"
+        ],
+        "description": "内部随机抽题请求体（仅内部 Feign 消费）：assembleIds 必填；typeCountMap 非空按题型配比逐型随机合并，空则全量随机（count 缺省取候选全量）。",
+        "properties": {
+          "assembleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "装配 id 集（必填；元素形如 \"catId-labelId\"，其中 catId 为 subject_mapping.category_id，即分类[叶子] id，labelId 为标签 id）",
+            "example": [
+              "1-3"
+            ]
+          },
+          "excludeSubjectIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "排除题目 id 集（可选）",
+            "example": [
+              99
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "全量随机时的抽题总数（可选；缺省取候选全量）",
+            "example": 20
+          },
+          "typeCountMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "description": "题型配比 {subjectType: count}（可选；subjectType 1单选 2多选 3判断）",
+            "example": {
+              "1": 10,
+              "2": 6,
+              "3": 4
+            }
+          }
+        }
+      },
+      "InternalSubjectItemVO": {
+        "type": "object",
+        "description": "内部批量取题响应项 VO（仅内部 Feign 消费）：withAnswer=false 时 optionList 项 isCorrect、subjectAnswer、subjectParse 为 null。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id"
+          },
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度"
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表（withAnswer=false 时项内 isCorrect 为 null）"
+          },
+          "subjectAnswer": {
+            "type": "string",
+            "description": "正确答案（withAnswer=false 时为 null）"
+          },
+          "subjectParse": {
+            "type": "string",
+            "description": "题目解析（withAnswer=false 时为 null）"
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "分类 id 列表"
+          },
+          "labelIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "标签 id 列表"
+          },
+          "labelName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "标签名称列表"
+          }
+        }
+      },
+      "InternalSubjectsByIdsQueryDTO": {
+        "type": "object",
+        "required": [
+          "subjectIds"
+        ],
+        "description": "内部批量取题请求体（仅内部 Feign 消费）。",
+        "properties": {
+          "subjectIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "题目 id 集（必填；最多 500）",
+            "example": [
+              11,
+              12,
+              13
+            ]
+          },
+          "withAnswer": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否携带答案（缺省 false：剥离 isCorrect 与 subjectParse；true 保留并组 subjectAnswer）",
+            "example": false
+          }
+        }
+      },
+      "JudgeResultVO": {
+        "type": "object",
+        "description": "内部判分响应 VO（仅内部 Feign 消费）：字段与 practice 侧 SubjectJudgeResultVO 逐字一致（judgeable / isCorrect）。",
+        "properties": {
+          "judgeable": {
+            "type": "boolean",
+            "description": "是否可判分（简答题等主观题为 false）",
+            "example": true
+          },
+          "isCorrect": {
+            "type": "boolean",
+            "description": "判分结果是否正确",
+            "example": true
+          }
+        }
+      },
+      "PageResultUnCompleteItem": {
+        "type": "object",
+        "required": [
+          "pageNo",
+          "pageSize",
+          "total",
+          "totalPages",
+          "list"
+        ],
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnCompleteItemVO"
+            },
+            "description": "当前页未完成练习列表"
+          }
+        }
+      },
+      "AddPracticeDTO": {
+        "type": "object",
+        "required": [
+          "assembleIds"
+        ],
+        "properties": {
+          "assembleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "装配 id 集（必填；元素形如 \"catId-labelId\"，其中 catId 为 subject_mapping.category_id，即分类[叶子] id，labelId 为标签 id）",
+            "example": [
+              "1-3"
+            ]
+          },
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "续做练习 id（可选；非空且校验通过时直接返回该 id，不重复建草稿）",
+            "example": 1001
+          }
+        }
+      },
+      "SubmitPracticeDTO": {
+        "type": "object",
+        "required": [
+          "practiceId",
+          "timeUse"
+        ],
+        "description": "submit 交卷请求体：timeUse 格式校验在 domain 侧（不符合 HH:mm:ss 返回 400）。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（必填）",
+            "example": 1001
+          },
+          "timeUse": {
+            "type": "string",
+            "description": "用时（必填；格式 ^\\d{2}:\\d{2}:\\d{2}$ 即 HH:mm:ss，非法 → 400）",
+            "example": "00:15:30"
+          }
+        }
+      },
+      "SubmitSubjectDTO": {
+        "type": "object",
+        "required": [
+          "practiceId",
+          "subjectId",
+          "subjectType"
+        ],
+        "description": "submitSubject 单题提交判分请求体。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（必填）",
+            "example": 1001
+          },
+          "subjectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id（必填）",
+            "example": 11
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答（必填）",
+            "example": 1
+          },
+          "answerContent": {
+            "type": "string",
+            "description": "用户答案内容（单选/多选为标号逗号串，判断为 1/0，简答为文本）",
+            "example": "A"
+          }
+        }
+      },
+      "ResponseResultInternalSubjectItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InternalSubjectItemVO"
+            }
+          }
+        }
+      },
+      "ResponseResultJudgeResult": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/JudgeResultVO"
+          }
+        }
+      },
+      "ResponseResultLong": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "integer",
+            "format": "int64",
+            "description": "结果数据（如 practiceId）"
+          }
+        }
+      },
+      "ResponseResultLongList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "题目 id 集"
+          }
+        }
+      },
+      "ResponseResultPagePreSetItem": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultPreSetItem"
+          }
+        }
+      },
+      "ResponseResultPageUnCompleteItem": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultUnCompleteItem"
+          }
+        }
+      },
+      "ResponseResultPracticeSubjectItem": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PracticeSubjectItemVO"
+          }
+        }
+      },
+      "ResponseResultPracticeSubjectItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PracticeSubjectItemVO"
+            }
+          }
+        }
+      },
+      "ResponseResultRankItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RankItemVO"
+            }
+          }
+        }
+      },
+      "ResponseResultReport": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReportVO"
+          }
+        }
+      },
+      "ResponseResultScoreDetailItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScoreDetailItemVO"
+            }
+          }
+        }
+      },
+      "ReportVO": {
+        "type": "object",
+        "description": "评估报告响应 VO（C6）：totalCount/correctCount/correctRate 与交卷口径一致（非简答）；skills 按 labelName 聚合。",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目总数（非简答）"
+          },
+          "correctCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "正确数（非简答且答对）"
+          },
+          "correctRate": {
+            "type": "number",
+            "format": "double",
+            "description": "正确率（百分比，2 位小数）"
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SkillItemVO"
+            },
+            "description": "技能标签聚合"
+          }
+        }
+      },
+      "SubjectDetailItemVO": {
+        "type": "object",
+        "description": "单题答案详情响应 VO（经 subject 内部端点 /subject/internal/subjects-by-ids withAnswer=true 组装；不做题在卷内再校验）。",
+        "properties": {
+          "subjectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id"
+          },
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度"
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表（含 isCorrect）"
+          },
+          "subjectAnswer": {
+            "type": "string",
+            "description": "正确答案"
+          },
+          "subjectParse": {
+            "type": "string",
+            "description": "题目解析"
+          },
+          "labelName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "标签名称列表"
+          },
+          "myAnswer": {
+            "type": "string",
+            "description": "我的答案（practice_detail.answer_content；未作答可为 null 或空串，允许未作答查看）"
+          }
+        }
+      },
+      "SubjectJudgeResultVO": {
+        "type": "object",
+        "description": "单题判分结果响应 VO（submitSubject）：字段与 subject 内部端点 JudgeResultVO 逐字一致。",
+        "properties": {
+          "judgeable": {
+            "type": "boolean",
+            "description": "是否可判分（简答题等主观题为 false；此时前端展示「不计分」）",
+            "example": true
+          },
+          "isCorrect": {
+            "type": "boolean",
+            "description": "判分结果是否正确",
+            "example": true
+          }
+        }
+      },
+      "ScoreDetailItemVO": {
+        "type": "object",
+        "description": "答题明细响应项 VO（practice_detail 按 id 升序）。",
+        "properties": {
+          "subjectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
+          },
+          "answerStatus": {
+            "type": "integer",
+            "format": "int32",
+            "description": "回答状态：0 未答或未判分，1 对"
+          },
+          "answerContent": {
+            "type": "string",
+            "description": "用户作答内容"
+          },
+          "isCorrect": {
+            "type": "boolean",
+            "description": "是否答对（answer_status==1）"
+          }
+        }
+      },
+      "SkillItemVO": {
+        "type": "object",
+        "description": "报告技能标签项 VO（C6 星级产物）：增量登记，skills[] 元素 = {labelName, correctRate, starLevel}。",
+        "properties": {
+          "labelName": {
+            "type": "string",
+            "description": "标签名称"
+          },
+          "correctRate": {
+            "type": "number",
+            "format": "double",
+            "description": "该标签正确率（百分比，2 位小数）"
+          },
+          "starLevel": {
+            "type": "integer",
+            "format": "int32",
+            "description": "技能星级（1-5：≥90→5、≥80→4、≥70→3、≥60→2、低于60→1）"
+          }
+        }
+      },
+      "SpecialContentQueryDTO": {
+        "type": "object",
+        "required": [
+          "primaryCategoryId"
+        ],
+        "description": "getSpecialPracticeContent 请求体：专项内容树查询。",
+        "properties": {
+          "primaryCategoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "大类 id（必填；空 → 400）",
+            "example": 1
+          }
+        }
+      },
+      "PageResultPreSetItem": {
+        "type": "object",
+        "required": [
+          "pageNo",
+          "pageSize",
+          "total",
+          "totalPages",
+          "list"
+        ],
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreSetItemVO"
+            },
+            "description": "当前页预设套卷列表"
+          }
+        }
+      },
+      "ResponseResultSubjectJudgeResult": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SubjectJudgeResultVO"
+          }
+        }
+      },
+      "ResponseResultSubjectDetailItem": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SubjectDetailItemVO"
+          }
+        }
+      },
+      "CategoryCountNodeVO": {
+        "type": "object",
+        "description": "分类题量树节点 VO：practice 与 subject 两侧字段逐字一致（practice 经内部端点 /subject/internal/category-count Feign 消费）。",
+        "properties": {
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "节点 id：大类/分类为 subject_category.id，标签为 subject_label.id",
+            "example": 1
+          },
+          "categoryName": {
+            "type": "string",
+            "description": "节点名称：大类/分类为 category_name，标签为 label_name",
+            "example": "Java编程"
+          },
+          "categoryType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "节点类型：1=大类、2=分类、3=标签（节点层级标注，新约定）",
+            "example": 1
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "父节点 id：大类为 0，分类为所属大类 id，标签为所属分类 id",
+            "example": 0
+          },
+          "subjectCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题量（count distinct subject_id）；subjectCount=0 的节点不产出",
+            "example": 20
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryCountNodeVO"
+            },
+            "description": "子节点"
+          }
+        }
+      },
+      "UnCompleteItemVO": {
+        "type": "object",
+        "description": "未完成练习列表项 VO（complete_status=0 且属于当前登录用户）。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id"
+          },
+          "setId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "套题 id"
+          },
+          "setName": {
+            "type": "string",
+            "description": "套题名称"
+          },
+          "timeUse": {
+            "type": "string",
+            "description": "用时（HH:mm:ss）"
+          },
+          "correctRate": {
+            "type": "number",
+            "format": "double",
+            "description": "正确率（decimal(10,2) 百分比；未交卷为 null）"
+          },
+          "submitTime": {
+            "type": "string",
+            "description": "交卷时间（未交卷为 null）"
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "创建时间"
+          }
+        }
+      },
+      "GetPracticeRankListDTO": {
+        "type": "object",
+        "description": "getPracticeRankList 请求体：返回综合练习榜前 N 名；body 可省略（@RequestBody(required=false)）。",
+        "properties": {
+          "topN": {
+            "type": "integer",
+            "format": "int32",
+            "default": 10,
+            "description": "返回条数（可选，默认 10；@Min(1) @Max(20)——越界（<1 或 >20）返回 400）",
+            "example": 10
+          }
+        }
+      },
+      "GetPracticeSubjectDTO": {
+        "type": "object",
+        "required": [
+          "subjectId"
+        ],
+        "description": "getPracticeSubject 请求体：单题查询。",
+        "properties": {
+          "subjectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id（必填）",
+            "example": 11
+          },
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（可选；提供时回填该题作答态）",
+            "example": 1001
+          }
+        }
+      },
+      "GetPreSetContentDTO": {
+        "type": "object",
+        "description": "getPreSetContent 请求体：预设套卷分页（继承 PageInfo，pageNo 默认 1 / pageSize 默认 20）。",
+        "properties": {
+          "orderType": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "description": "排序类型：1 名称升序、2 最新（创建时间倒序）、3 最热（热度倒序），缺省 1",
+            "example": 3
+          },
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "description": "页码（默认 1）",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "description": "每页条数（默认 20）",
+            "example": 10
+          }
+        }
+      },
+      "GetReportDTO": {
+        "type": "object",
+        "required": [
+          "practiceId"
+        ],
+        "description": "getReport 请求体：评估报告。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（必填）",
+            "example": 1001
+          }
+        }
+      },
+      "GetScoreDetailDTO": {
+        "type": "object",
+        "required": [
+          "practiceId"
+        ],
+        "description": "getScoreDetail 请求体：答题明细。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（必填）",
+            "example": 1001
+          }
+        }
+      },
+      "GetSubjectDetailDTO": {
+        "type": "object",
+        "required": [
+          "practiceId",
+          "subjectId"
+        ],
+        "description": "getSubjectDetail 请求体：单题答案详情。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（必填）",
+            "example": 1001
+          },
+          "subjectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id（必填）",
+            "example": 11
+          }
+        }
+      },
+      "GetSubjectsDTO": {
+        "type": "object",
+        "description": "getSubjects 请求体：套卷题列表（set 与 practice 二选一）。",
+        "properties": {
+          "setId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "套题 id（可选；与 practiceId 至少其一）",
+            "example": 501
+          },
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（可选；提供时按练习所属套题取题并回填作答态）",
+            "example": 1001
+          }
+        }
+      },
+      "GetUnCompletePracticeDTO": {
+        "type": "object",
+        "description": "getUnCompletePractice 请求体：未完成练习分页（继承 PageInfo，pageNo 默认 1 / pageSize 默认 20）。",
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "description": "页码（默认 1）",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "description": "每页条数（默认 20）",
+            "example": 10
+          }
+        }
+      },
+      "GiveUpDTO": {
+        "type": "object",
+        "required": [
+          "practiceId"
+        ],
+        "description": "giveUp 请求体：放弃练习。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（必填）",
+            "example": 1001
+          }
+        }
+      },
+      "ResponseResultCategoryCountNodeList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryCountNodeVO"
+            }
+          }
+        }
+      }}
   }
 }

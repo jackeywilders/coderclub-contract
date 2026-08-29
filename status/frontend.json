@@ -1,42 +1,50 @@
 {
   "role": "frontend",
-  "state": "gate3-p1p3-accepted-snapshot-consumed",
+  "state": "gate3-a8-phase2-accepted-snapshot-consumed",
   "projectPath": "G:/Dev/backend/Club/CoderClubFront",
   "worktree": "G:/Dev/backend/Club/coderclub-contract-codex-frontend",
   "branch": "codex/frontend-design",
-  "sourceCommit": "afba2bee2665b576c2fc18aabc54759e0cda6513",
+  "sourceCommit": "d52a9a0fbf652816cb34aa1fe4faba94a7e6ebb5",
+  "sourceCommitNote": "A8-P2 消费落地提交（api-docs-baseline.json 更新至 63 端点，2026-08-28）；实施经前端 PR #15 合入 main（merge ed3c56a9）",
   "contract": {
-    "sourceCommit": "f964f88ba51942150c2fd982010ddc3aac73f526",
+    "sourceCommit": "a57f6b8ae7142a8c4b1e5cfbc32b8936af297dfc",
     "sourcePath": "api/coderclub-openapi.json",
-    "sourceSha256": "0dae8d3a753ec86048601813950f2be59a2c03d2386c5697a44970b15a988d61",
-    "sourceSha256DiskCrlf": "12a193acaba81beb904f78d24b4c6c530c40062525f635ae0571897db9439503",
-    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md",
-    "consumedSha256": "0dae8d3a753ec86048601813950f2be59a2c03d2386c5697a44970b15a988d61",
-    "consumedSha256DiskCrlf": "12a193acaba81beb904f78d24b4c6c530c40062525f635ae0571897db9439503",
-    "historicalConsumedSha256": "9a97c055186883adb6c45304f66417c27c4da7b632375cd70a02c44a652db26a",
-    "historicalConsumedSha256Status": "superseded-by-contract-convergence-2026-08-26",
+    "sourceSha256": "2583b90679ed990db8bc11ba9eed0fccbf0af3dbedff8b84cda35159f0b05c01",
+    "sourceSha256DiskCrlf": "2583b90679ed990db8bc11ba9eed0fccbf0af3dbedff8b84cda35159f0b05c01",
+    "sourceSha256DiskCrlfNote": "2026-08-30 F-Review 实测本地快照 234597 bytes，LF 存储，disk==LF",
+    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-28/frontend-practice-report.md",
+    "consumedSha256": "2583b90679ed990db8bc11ba9eed0fccbf0af3dbedff8b84cda35159f0b05c01",
+    "consumedSha256DiskCrlf": "2583b90679ed990db8bc11ba9eed0fccbf0af3dbedff8b84cda35159f0b05c01",
+    "historicalConsumedSha256": "0dae8d3a753ec86048601813950f2be59a2c03d2386c5697a44970b15a988d61",
+    "historicalConsumedSha256Status": "superseded-by-a8-phase1-portal-2026-08-27 (46 endpoints, 4bfb3c72a445) and a8-phase2-practice-2026-08-28 (63 endpoints, 2583b90679ed)",
     "openapi": "3.0.3",
-    "pathCount": 43,
-    "operationCount": 43,
-    "baselineEndpointCount": 43
+    "pathCount": 63,
+    "operationCount": 63,
+    "baselineEndpointCount": 63
   },
-  "lastCommit": "d81e665c",
-  "lastHandoff": "handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md",
+  "lastCommit": "ed3c56a9",
+  "lastCommitNote": "A8-P2-FE 实现（22 commits，impl head 5c05279）经前端 PR #15 合入 main（merge ed3c56a9，2026-08-28），R2 已核验；docs PR #16（A8-P2 设计/计划文档落库 + .gitignore 卫生项，merge 5e68c1d，2026-08-30）随后合入",
+  "lastHandoff": "handoff/frontend-to-backend/2026-08-28/frontend-practice-report.md",
   "design": "designs/frontend/2026-08-07/api-integration-impact.md",
   "subjectRealApi": {
     "s1": "accepted 2026-08-18 (remove subject USE_MOCK, real requests; impl 2724af4/c068956/bbfa14c, frontend PR #6)",
     "s2s3": "accepted 2026-08-18 (views aligned to contract + end-to-end; impl 3924dbc/7de780c, frontend PR #7, merge ab60c04)",
     "s4Receipt": "handoff/frontend-to-backend/2026-08-18/subject-real-api-integration-report.md (dual-track, rule 9)",
-    "contractConvergence": "accepted 2026-08-26 (T1 baseline 0dae8d3a + T2 subjectScore 10 + T3 sort UI, frontend PR #9, merge d81e665c); P1/P2/P3 decisions closed; see pm/reviews/2026-08-18/p1-p2-p3-interface-decisions.md",
+    "contractConvergence": "accepted 2026-08-26 (T1 baseline 0dae8d3a + T2 subjectScore 10 + T3 sort UI, frontend PR #9, merge d81e665c); P1/P2/P3 decisions closed; A2 addendum keyword cleanup closed 2026-08-26 (impl d825a183, frontend PR #10, merge 601d778e, R2 confirmed; addendumCommitSha d825a183 in receipt section 9); see pm/reviews/2026-08-18/p1-p2-p3-interface-decisions.md + pm acceptance frontend-contract-convergence-acceptance.md",
     "gate3Item4Acceptance": "accepted 2026-08-18, see pm/reviews/2026-08-18/gate3-item4-subject-consumption-acceptance.md"
+  },
+  "a8Phases": {
+    "phase1": "accepted 2026-08-27（门户壳/三栏首页/同页翻页/搜索页/门户登录/userinfo 对齐；impl a413b19→6909558 经前端 PR #12 合入 cf9d460b；基线 43→46 specSha256 4bfb3c72a445）；receipt PR #74/#75，F-Review signoff PR #76；see acceptance/frontend/2026-08-27/frontend-portalization-implementation-acceptance.md",
+    "phase2": "accepted 2026-08-28（练习列表三面板/答题页/分析报告/门户练习榜 + 基线 46→63；impl 5c05279 22 commits 经前端 PR #15 合入 ed3c56a9；build/test 24/24/api:check/lint 绿 + CI SUCCESS run 33145503223；blob 4/4 逐字节一致）；receipt PR #89/#90，F-Review signoff PR #91；4 项联调确认于 PM 验收闭环（correctRate 0-100 从源头确认、简答 judgeable=false 语义、D1 树契约、vitest 延后）；see acceptance/frontend/2026-08-28/frontend-practice-implementation-acceptance.md"
   },
   "validation": {
     "node": "22.14.0",
     "npm": "10.9.2",
-    "npmRunApiCheck": "2026-08-26 passed: consumed SHA 0dae8d3a753ec86048601813950f2be59a2c03d2386c5697a44970b15a988d61, 43 endpoints, no API contract changes detected",
-    "npmTest": "2026-08-26 passed: 10 tests, 0 failures, 0 skipped",
-    "npmRunLint": "2026-08-26 passed (src/scripts scope, --fix=false exit 0); full-tree lint still interfered by leftover .worktrees/ (B5, not part of this change)",
-    "npmRunBuild": "2026-08-26 passed: vue-tsc --noEmit and vite build exit 0",
+    "npmRunApiCheck": "2026-08-28 passed: consumed SHA 2583b90679ed990db8bc11ba9eed0fccbf0af3dbedff8b84cda35159f0b05c01, 63 endpoints, no API contract changes detected（F-Review 于 feat/practice-a8-p2 独立复验；CI run 33145875228 于 merge ed3c56a9 后 SUCCESS）；2026-08-30 F-Review 复测本地快照 disk==LF==2583b906…（234597 bytes）",
+    "npmTest": "2026-08-28 passed: 24 tests, 0 failures, 0 skipped（含 silent 400/401 用例与 14 条练习纯函数用例）",
+    "npmRunLint": "2026-08-28 passed（全量 --fix=false exit 0）",
+    "npmRunBuild": "2026-08-28 passed: vue-tsc --noEmit and vite build exit 0",
+    "frontendCi": "ci workflow paths 过滤仅覆盖 src/scripts/package 变更；PR #15（代码）PR CI SUCCESS run 33145503223、main push run 33145875228 SUCCESS；docs PR #16 无 checks 属设计如此（CI 不适用，2026-08-30 合入）",
     "defaultNpmEntry": "accepted by user confirmation from local CMD; node and npm default entry verified"
   },
   "acceptance": {
@@ -44,7 +52,19 @@
     "G1-02": "accepted: PM formally closed after user confirmation; remote frontend main contains remediation commit 85320f1",
     "G1-03": "accepted: PM formally closed 2026-08-12; frontend baseline updated to 43 endpoints and consumption verified; see pm/reviews/2026-08-12/g1-03-close-acceptance.md",
     "G1-05": "accepted: user verified default node and npm entry from local CMD",
-    "T1-T3-T5-2026-08-26": "accepted: frontend contract convergence (baseline 0dae8d3a, subjectScore 10, sort UI) merged via frontend PR #9 (d81e665c); verification passed; receipt handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md"
+    "T1-T3-T5-2026-08-26": "accepted: frontend contract convergence (baseline 0dae8d3a, subjectScore 10, sort UI) merged via frontend PR #9 (d81e665c); verification passed; receipt handoff/frontend-to-backend/2026-08-26/frontend-contract-convergence-report.md",
+    "A2-addendum-2026-08-26": "closed: keyword dead param cleanup (impl d825a183, frontend PR #10, merge 601d778e, R2 confirmed); addendumCommitSha d825a183 in receipt section 9; PM A3 acceptance closed",
+    "A8-P1-2026-08-27": "accepted: portalization phase 1 (impl a413b19→6909558, frontend PR #12 merge cf9d460b, baseline 43→46/4bfb3c72a445); receipt PR #74/#75, F-Review signoff PR #76; see acceptance/frontend/2026-08-27/frontend-portalization-implementation-acceptance.md",
+    "A8-P2-2026-08-28": "accepted: practice T1-T4 + baseline 46→63/2583b90679ed (impl 5c05279, frontend PR #15 merge ed3c56a9); receipt PR #89/#90, F-Review signoff PR #91; 4 join-verification items closed at PM acceptance; see acceptance/frontend/2026-08-28/frontend-practice-implementation-acceptance.md"
   },
-  "openItems": []
+  "openItems": [
+    {
+      "id": "categoryId-primary-filter-semantics",
+      "status": "open",
+      "date": "2026-08-27",
+      "source": "A8-P1 frontend receipt/signoff known limitations",
+      "description": "门户首页大类筛选按二级分类 categoryId 等值匹配；后端 getSubjectPage 是否支持一级递归筛选语义待 PM/后端确认（当前保守行为可接受）。",
+      "suggestedAction": "若确认需一级递归，随阶段三 proposal 评估前端适配；与 status/pm.json openFindings 同名条目联动跟踪"
+    }
+  ]
 }
