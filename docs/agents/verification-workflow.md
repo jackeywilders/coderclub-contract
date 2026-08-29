@@ -17,10 +17,10 @@
 
 | 层级 | 判定对象 | 判据 | 适用声称 |
 | --- | --- | --- | --- |
-| **R1 存在性** | 证据已 push 到远端 | `git fetch origin` 后在远端分支或 PR 上可见（`git ls-remote` / `gh pr view` / `git log origin/<branch>`） | "已提交回执""已签署""已推送" |
-| **R2 生效性** | 证据已合入 `main` | `git fetch origin` 后 `main` 上可见（`git merge-base --is-ancestor <sha> origin/main` 或 `git log origin/main`） | "已合入""已验收""可进入下一阶段" |
+| **R1 存在性** | 证据已 push 到远端 | 按通道策略（`docs/agents/remote-channel-policy.md`：MCP/gh API 优先，git fetch 直连兜底）访问远端后在远端分支或 PR 上可见（MCP 读文件/PR、`gh pr view` / `git ls-remote` / `git log origin/<branch>`） | "已提交回执""已签署""已推送" |
+| **R2 生效性** | 证据已合入 `main` | 按通道策略访问远端后 `main` 上可见（MCP list_commits/get_file_contents ref=main、`gh api commits/main`、`git merge-base --is-ancestor <sha> origin/main`） | "已合入""已验收""可进入下一阶段" |
 
-**核验动作统一为：先 `git fetch origin`，再按声称类型查对应层级；禁止仅凭本地 worktree 内容判定。** 若本地没有最新 `main`，必须先 fetch 再判断——"本地找不到"不能作为"远端不存在"的证据。
+**核验动作统一为：先按通道策略访问远端（MCP/gh API 优先，git fetch 兜底；通道全断时排队登记、恢复补推，见 remote-channel-policy §5），再按声称类型查对应层级；禁止仅凭本地 worktree 内容判定。** 若本地没有最新 `main`，必须先经通道获取再判断——"本地找不到"不能作为"远端不存在"的证据。
 
 > 注：auto-merge 机制下，PR 合入 `main` 存在时间窗口。R1 成立时 R2 未必成立（PR 已开但未合入），验收类声称必须等 R2。
 
@@ -97,3 +97,4 @@
 - 2026-08-17：初版定案（grilling 讨论 Q1-Q10；实施：AGENTS.md 规则 9 + 本协议 + governance-check 只读核验 + 回执摘要模板）。
 - 2026-08-17：新增 §9 各角色执行要点（治理变更同步；M4 01-06 全关、state `gate0-1-m4-all-accepted`）。
 - 2026-08-18：补正 §6/§9——明确"回执 = 交接仓库文件（Markdown + `*-summary.json` 双轨）≠ 仅通知"；通知带证据不能代替回执文件，两者都要（根因：合规合入 PR 仅通知带证据、未落回执文件）。
+- 2026-08-29：§2 通道表述更新——核验动作由"先 git fetch origin"改为"按通道策略访问远端（MCP/gh API 优先，git fetch 兜底，全断排队登记）"，引用 `docs/agents/remote-channel-policy.md`（背景：GitHub 直连不稳定，实际操作已长期以 MCP/gh API 优先）。
