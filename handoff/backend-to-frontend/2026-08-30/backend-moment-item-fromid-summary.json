@@ -1,0 +1,25 @@
+{
+  "taskId": "MOMENT-ITEM-FROMID",
+  "taskTitle": "MomentItemVO 补 fromId（动态创建人登录标识，D3）：VO 字段 + getMoments 组装 + 契约测试判别性断言 + openapi 登记 fromId（75 路径不变）",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-30/backend-moment-item-fromid-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "1fbf0ad",
+  "receiptCommitSha": "",
+  "pullRequestNumber": 18,
+  "contractSnapshotSha256": "AE967C70",
+  "sourceDoc": {
+    "path": "docs/api/coderclub-openapi.json",
+    "lfSha256Before": "24DC841402BB5E063758A4156FC3AAF8D84609845BC218D92D0DC8FE6C7DD82A",
+    "lfSha256After": "26AEC009C4A823629DCC1D6EB5984773791BC3380407F846AAA7D4308F12CC90",
+    "pathCountBefore": 75,
+    "pathCountAfter": 75
+  },
+  "verificationResult": "passed (PR #18 CI build-and-test+sensitive-scan; full mvn reactor green exit 0; CircleContractTest 23/23 incl discriminative fromId assertion createdBy=2002 vs login 2001 — misreading StpUtil would fail; whole-branch final review mergeable, Minor doc-value drift fixed in 1fbf0ad, re-review ADDRESSED)",
+  "openFindings": [
+    "openapi schema fromId entry uses multiline format vs adjacent single-line short properties (style only, deferred to later openapi edit batch)",
+    "CircleContractTest injects real MapStruct converter (not mock) — mapping-generated-code changes could ripple to contract tests (pre-existing suite design, observation only)",
+    "openapi 200 example fromId value '2001' coincides with test login id (illustrative example value consistent with file; test uses discriminative '2002' — descriptive only)",
+    "snapshot micro-sync (MomentItemVO.fromId adoption, 75 paths unchanged) pending PM acceptance batch — mirror of sensitive-words-list micro-sync pattern"
+  ],
+  "verificationDate": "2026-08-30"
+}
