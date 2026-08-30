@@ -77,7 +77,7 @@
     "status": "accepted-for-development",
     "sourceCommit": "1fbf0ad83f4270c735b6de95b24db51538f4d1bc",
     "sourceSha256": "26AEC009C4A823629DCC1D6EB5984773791BC3380407F846AAA7D4308F12CC90",
-    "snapshotCommit": "1f2f125f311c5945221adcf883319e7363b6969c",
+    "snapshotCommit": "539c625eadb0f376f0f41c1b540669511c239e9d",
     "snapshotPath": "api/coderclub-openapi.json",
     "snapshotSha256": "74417DD8ECDF835BE33688BC14C1A4CA8E3D11BDD8F9559056EBE86ED0F85182",
     "semanticDifferenceCount": 12,
