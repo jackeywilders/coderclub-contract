@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "CoderClub API",
-    "description": "CoderClub 刷题平台后端接口文档，覆盖认证、用户、角色、权限、分类、标签、题目、文件存储、练习、圈子 10 大模块共 74 个路径 74 个操作（A8-P2 登记 practice 13 端点 + subject internal 4 端点，A8-P3 登记 circle 圈子 11 端点；internal 端点仅内部 Feign 消费，不向 C 端门户宣传）。统一响应权威目标契约：所有 ResponseResult 均必须包含 success、code、message、data 四字段；无业务载荷时 data 为 null，数组接口无结果时 data 为 []，分页接口无结果时 data.list 为 []。鉴权：除显式标注 security=[] 的公开路径外，全部路径均走登录墙（@SaCheckLogin，未登录 HTTP 401）；业务失败返回 HTTP 200 + body code=400（BaseException 口径），参数校验失败返回 HTTP 400 + body data 为字段错误列表。该规则为前后端权威目标契约，不因当前服务序列化配置而放宽。",
+    "description": "CoderClub 刷题平台后端接口文档，覆盖认证、用户、角色、权限、分类、标签、题目、文件存储、练习、圈子 10 大模块共 75 个路径 75 个操作（A8-P2 登记 practice 13 端点 + subject internal 4 端点，A8-P3 登记 circle 圈子 11 端点；internal 端点仅内部 Feign 消费，不向 C 端门户宣传）。统一响应权威目标契约：所有 ResponseResult 均必须包含 success、code、message、data 四字段；无业务载荷时 data 为 null，数组接口无结果时 data 为 []，分页接口无结果时 data.list 为 []。鉴权：除显式标注 security=[] 的公开路径外，全部路径均走登录墙（@SaCheckLogin，未登录 HTTP 401）；业务失败返回 HTTP 200 + body code=400（BaseException 口径），参数校验失败返回 HTTP 400 + body data 为字段错误列表。该规则为前后端权威目标契约，不因当前服务序列化配置而放宽。",
     "version": "1.0.0",
     "contact": {
       "name": "CoderClub Team"
@@ -5662,6 +5662,71 @@
           }
         }
       }
+    },
+    "/circle/sensitive/words/list": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "敏感词词库列表（管理）",
+        "description": "敏感词词库全量列表（管理端，只读）：type ASC + id ASC 排序；createdTime 为 yyyy-MM-dd HH:mm:ss 串或 null（存量行补列前无值，如实返回，序列化下省略）。需登录（@SaCheckLogin）且需 admin_user 角色（@SaCheckRole，非管理员 403）；不触碰 DFA 词库缓存重建。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "词库全量列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultSensitiveWordItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 1,
+                      "words": "赌博",
+                      "type": 1,
+                      "createdTime": null
+                    },
+                    {
+                      "id": 3,
+                      "words": "招聘",
+                      "type": 2,
+                      "createdTime": "2026-08-30 12:00:00"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "非管理员",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -9121,6 +9186,66 @@
             "format": "int64",
             "description": "敏感词id",
             "example": 1
+          }
+        }
+      },
+      "SensitiveWordItemVO": {
+        "type": "object",
+        "required": [
+          "id",
+          "words",
+          "type"
+        ],
+        "description": "敏感词词库条目（管理端只读列表；createdTime 存量行为 null，序列化下省略）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "敏感词id（remove 端点入参）",
+            "example": 1
+          },
+          "words": {
+            "type": "string",
+            "description": "词内容（复数，对齐表列/实体/save DTO）",
+            "example": "赌博"
+          },
+          "type": {
+            "type": "integer",
+            "description": "1=黑名单 2=白名单",
+            "example": 1
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "创建时间（yyyy-MM-dd HH:mm:ss；存量行 null）",
+            "example": "2026-08-30 12:00:00"
+          }
+        }
+      },
+      "ResponseResultSensitiveWordItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "description": "统一响应：data 为敏感词词库条目数组。",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensitiveWordItemVO"
+            }
           }
         }
       },
