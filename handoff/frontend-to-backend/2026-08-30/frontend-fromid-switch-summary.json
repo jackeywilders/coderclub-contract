@@ -28,7 +28,8 @@
   },
   "verificationDate": "2026-08-30",
   "r2Status": "pending-frontend-merge (PR #19 open, CI success; 待用户/F-Review 合入)",
-  "receiptCommitSha": null,
-  "receiptCommitShas": [],
+  "receiptPr": 128,
+  "receiptCommitSha": "42e5f68b",
+  "receiptCommitShas": ["42e5f68b"],
   "notes": "A8-P3-FE D3 fromId 小批：PM 决策 PR #114 确认 MomentItemVO fromId；后端 86a09e7；类型 src/types/circle.d.ts + 判定 src/utils/circle.ts + 调用 MomentCard.vue + 单测 circle.test.ts + 基线 specSha256 74417dd8（75 端点，main 基线 6262F444 端点数一致无冲突）。分支 rebase 至最新 main（含敏感词批 #18 合入，7905579），4/4 无冲突，rebase 后 tree=a859b77c 与 rebase 前逐位一致；origin/main..HEAD diff 仅 7 个 fromId 文件。本地门禁：api:check No changes / lint 0 / vue-tsc 0 / 等价全量单测 53/53 pass（npm test 原命令与 vite build 沙箱未现场执行，CI npm test+build 阶段绿兜底）；前端 PR #19 CI check=success。回执经 gh API 提交交接仓库 claude/frontend-proposals 分支（本地 git 写沙箱受限，通道降级为 API，见回执 §5 登记说明）。receiptCommitSha 待本回执合入后回填。"
 }
