@@ -58,8 +58,8 @@
 | 字段 | 值 |
 | --- | --- |
 | 实施提交 SHA | `ed12997`（前端分支 tip，完整 `ed12997aa9acd98bf4b96ff93509945ad1f6348e`） |
-| 回执提交 SHA | `REPLACE_RECEIPT_SHA`（本回执在交接仓库的提交，待创建后回填） |
-| PR 号 | 前端 **#19**；回执 PR `REPLACE_RECEIPT_PR` |
+| 回执提交 SHA | `42e5f68b`（本回执在交接仓库的提交，完整 `42e5f68bad2736d2241ca705a0d49c7183680967`） |
+| PR 号 | 前端 **#19**；回执 PR **#128**（governance-check 自动合入，2026-08-30 19:20 UTC） |
 | R2 状态 | 否（前端 PR #19 已开、CI 绿；回执 PR 待 governance-check 自动合入） |
 
 ## 6. Frontend 声明
