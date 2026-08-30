@@ -4,6 +4,7 @@
   "receiptPath": "handoff/backend-to-frontend/2026-08-30/backend-a8p3-circle-domain-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClub",
   "implementationCommitSha": "d9eb64f",
+  "receiptCommitSha": "101b900",
   "pullRequestNumber": 15,
   "contractSnapshotSha256": "2583b906",
   "sourceDoc": {
