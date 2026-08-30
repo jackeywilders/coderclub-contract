@@ -4960,6 +4960,7 @@
                           "https://cdn.example.com/moment/1.png"
                         ],
                         "replyCount": 2,
+                        "fromId": "2001",
                         "nickName": "张三",
                         "avatar": "https://cdn.example.com/avatar/1.png",
                         "createdTime": 1787980800000
@@ -8884,6 +8885,10 @@
             "format": "int32",
             "description": "回复数",
             "example": 2
+          },
+          "fromId": {
+            "type": "string",
+            "description": "动态创建人登录标识（与 CommentNodeVO.fromId 同源；前端「本人动态」精确判定）"
           },
           "nickName": {
             "type": "string",
