@@ -1,0 +1,31 @@
+{
+  "role": "frontend-implementation",
+  "taskId": "A8-P3-FE",
+  "taskTitle": "前端阶段三第二批：管理端敏感词管理页（T1 路由/菜单 + T2-T3 列表三 tab 徽标/本地搜索 + T4 批量新增 + T5 批量删除，3 端点消费，基线 74→75 6262F444）",
+  "receiptPath": "handoff/frontend-to-backend/2026-08-30/frontend-sensitive-words-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
+  "implementationCommitSha": "9374a5d",
+  "implementationCommitShas": ["ba455f6", "84302e6", "635ffea", "e2e87ee", "dcf7900", "795f128", "e98f434", "6ac5178", "ed9ba6c", "85fe11e", "9374a5d"],
+  "pullRequestNumber": 18,
+  "mergedAt": null,
+  "mergeCommitSha": null,
+  "contractSnapshotSha256": "6262f44477a1a6887668f3514b506d6874edcc645516d471131a2d2a3a2cb439",
+  "specSha256": "6262f44477a1a6887668f3514b506d6874edcc645516d471131a2d2a3a2cb439",
+  "endpointCount": 75,
+  "contractChanged": true,
+  "validation": {
+    "apiCheck": "exit 0; Endpoints 75; SHA-256 6262f444...; No API contract changes detected.",
+    "lint": "exit 0",
+    "test": "npm test 原命令被本沙箱拦截（node --test spawn EPERM）；等价命令 node --experimental-strip-types --test --experimental-test-isolation=none ... → 52/52 pass（8 suites, 0 fail，既有用例零回归）",
+    "build": "vue-tsc --noEmit exit 0；vite build 阶段被本沙箱拦截（esbuild spawn EPERM）——如实登记，CI check 含 build 且 success",
+    "ci": "前端 PR #18 check workflow conclusion=success（46s）"
+  },
+  "verificationResult": "passed",
+  "verificationDate": "2026-08-30",
+  "receiptCommitSha": "待回填（本回执 commit，见交接仓库 claude/frontend-proposals 提交记录）",
+  "receiptCommitShas": [],
+  "r2Status": "否（前端 PR #18 open + CI success，待用户/F-Review 合入；合入后按 docs/agents/verification-workflow.md R2 复验）",
+  "integrationStatus": "deferred",
+  "integrationEvidence": "本机后端服务未启动（gateway 5000 / circle 3500 / auth 3100 均未监听），云端联调暂缓，证据待后端服务启动后补登（回执 §5）",
+  "notes": "A8-P3-FE 第二批敏感词管理页一体交付（SDD：设计 ba455f6 + 计划 84302e6 + 8 任务逐任务实现 + 任务级审查 7 轮全通过 + 计划勾选完成项 9374a5d）；契约快照 6262F444（75 路径，specSha256 6262f444...）基线 74→75 由 635ffea 同步；本地验证 api:check exit0（75 No changes）/ lint exit0 / 等价单测 52/52（npm test 原命令被沙箱拦截 EPERM，如实登记）/ vue-tsc exit0（vite build 阶段被沙箱拦截 EPERM，CI check build success 兜底）；前端 PR #18 CI check=success。云端网关联调暂缓（本机后端服务未启动，gateway 5000 / circle 3500 / auth 3100 均未监听），联调证据待后端服务启动后补登回执 §5，不伪造证据。mergeCommitSha 与 receiptCommitSha 待 PR #18 合入、本回执合入后回填。"
+}
