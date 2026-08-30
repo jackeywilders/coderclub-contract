@@ -22,10 +22,10 @@
   },
   "verificationResult": "passed",
   "verificationDate": "2026-08-30",
-  "receiptCommitSha": "待回填（本回执 commit，见交接仓库 claude/frontend-proposals 提交记录）",
+  "receiptCommitSha": "85caaa9（首次回执 commit，已合入 main）；联调证据补登 commit 见交接仓库提交记录",
   "receiptCommitShas": [],
   "r2Status": "否（前端 PR #18 open + CI success，待用户/F-Review 合入；合入后按 docs/agents/verification-workflow.md R2 复验）",
-  "integrationStatus": "deferred",
-  "integrationEvidence": "本机后端服务未启动（gateway 5000 / circle 3500 / auth 3100 均未监听），云端联调暂缓，证据待后端服务启动后补登（回执 §5）",
-  "notes": "A8-P3-FE 第二批敏感词管理页一体交付（SDD：设计 ba455f6 + 计划 84302e6 + 8 任务逐任务实现 + 任务级审查 7 轮全通过 + 计划勾选完成项 9374a5d）；契约快照 6262F444（75 路径，specSha256 6262f444...）基线 74→75 由 635ffea 同步；本地验证 api:check exit0（75 No changes）/ lint exit0 / 等价单测 52/52（npm test 原命令被沙箱拦截 EPERM，如实登记）/ vue-tsc exit0（vite build 阶段被沙箱拦截 EPERM，CI check build success 兜底）；前端 PR #18 CI check=success。云端网关联调暂缓（本机后端服务未启动，gateway 5000 / circle 3500 / auth 3100 均未监听），联调证据待后端服务启动后补登回执 §5，不伪造证据。mergeCommitSha 与 receiptCommitSha 待 PR #18 合入、本回执合入后回填。"
+  "integrationStatus": "done",
+  "integrationEvidence": "2026-08-30 经网关 localhost:5000 实跑（admin_user 角色账号凭据取本机环境变量，密码未落盘）：401 登录墙 ✓、admin 登录 ✓、list 全量（初始 5 条）✓、批量新增黑/白各 2 词（save 均 success=True code=200 data=True）✓、重拉核对（type 1/2、createdTime yyyy-MM-dd HH:mm:ss 正确）✓、批量删除 2 词（remove 均 success=True data=True）✓、重拉核对 ✓、清理测试词恢复初始 ✓、403 非管理员（save/list 均 HTTP 403「无权限访问」）✓；消费一致性：save/remove 返回 data:boolean 成功标志（非 id），list 顺序 type ASC + id ASC；页面级交互由纯函数单测 + 代码审查覆盖，浏览器级 UI 复核未做（见回执 §5）",
+  "notes": "A8-P3-FE 第二批敏感词管理页一体交付（SDD：设计 ba455f6 + 计划 84302e6 + 8 任务逐任务实现 + 任务级审查 7 轮全通过 + 计划勾选完成项 9374a5d）；契约快照 6262F444（75 路径，specSha256 6262f444...）基线 74→75 由 635ffea 同步；本地验证 api:check exit0（75 No changes）/ lint exit0 / 等价单测 52/52（npm test 原命令被沙箱拦截 EPERM，如实登记）/ vue-tsc exit0（vite build 阶段被沙箱拦截 EPERM，CI check build success 兜底）；前端 PR #18 CI check=success。云端网关联调已完成并补登（2026-08-30，见回执 §5 与 integrationEvidence，测试词已清理）。mergeCommitSha 与 receiptCommitShas 待前端 PR #18 合入、回执补登合入后回填。"
 }

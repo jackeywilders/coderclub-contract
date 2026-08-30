@@ -23,7 +23,7 @@
 
 - **实现**：T1-T7 全部完成（路由/菜单、列表三 tab + 徽标、本地搜索、批量新增、批量删除，3 端点消费），11 commits 一体交付，任务级审查 7 轮全通过（task-1..7 报告留档 `.superpowers/sdd/2026-08-30-sensitive-words-manage/`）。
 - **验证**：本地四件套按环境实际登记（见 §4）——api:check 75 No changes、lint exit0、单测 52/52、vue-tsc exit0；`npm test` 原命令与 vite build 阶段被本沙箱拦截（EPERM），已如实登记并走等价命令。
-- **联调**：**暂缓**——本机后端服务未启动（gateway 5000 / circle 3500 / auth 3100 均未监听，已探测确认），云端联调证据待后端服务启动后补登（见 §5）。
+- **联调**：已完成并补登（见 §5）——401 登录墙、admin 登录、list 全量、批量新增（黑/白各 2 词）、批量删除、重拉核对、403 非管理员各轮全部通过；联调测试词已清理，词库恢复初始。
 - **交付**：前端 PR **#18**（CI success，待合入）；本回执双轨提交于 `claude/frontend-proposals` 分支，PR 至交接仓库 main。
 
 ## 3. 关键实现面
@@ -61,11 +61,22 @@
 
 ## 5. 云端网关联调证据
 
-**状态：暂缓执行，待补登。**
+**状态：已完成（2026-08-30 补登；经网关 `localhost:5000` 实跑，admin_user 角色账号凭据取本机环境变量，密码未落盘/未入库）。**
 
-- 前置探测（2026-08-30 本任务执行时）：`localhost:5000`（gateway）、`localhost:3500`（circle）、`localhost:3100`（auth）均**未监听**（Test-NetConnection 均 False）——后端服务未启动，联调环境不可用。
-- 验证链（401 登录墙 → admin 登录 → save 黑/白名单 → remove → normal 403 → 前端页面核对）**未执行**，不伪造证据。
-- 待后端服务启动后补登：请求/响应摘录（脱敏）将登记于本回执 §5（本条替换为实际证据）。
+| 步骤 | 请求 | 结果 |
+| --- | --- | --- |
+| 1. 401 登录墙 | POST `/circle/sensitive/words/list`（无 token） | HTTP 401 |
+| 2. admin 登录 | POST `/auth/login`（admin_user 角色账号） | success，取 token（会话内使用，未落盘） |
+| 3. list 全量 | POST `/circle/sensitive/words/list`（带 Authorization） | success，初始 5 条 |
+| 4. 批量新增（黑/白） | 串行 POST `/circle/sensitive/words/save`：黑名单 2 词 + 白名单 2 词 | 4 次均 success=True code=200 data=True |
+| 5. 重拉核对 | POST list | 5→9 条；新增 id 9-12，type 1/2 正确，createdTime 格式 `yyyy-MM-dd HH:mm:ss` |
+| 6. 批量删除 | 串行 POST `/circle/sensitive/words/remove`（id 9/11，黑 1 + 白 1） | 2 次均 success=True data=True |
+| 7. 重拉核对 | POST list | 9→7 条；剩余 id 10/12 核对正确 |
+| 8. 清理测试词 | POST remove（剩余 2 词） | 词库恢复初始 5 条（不留联调数据） |
+| 9. 403 非管理员 | 临时注册 normal 账号 → save / list | 均 HTTP 403「无权限访问」 |
+
+- 消费一致性：`save`/`remove` 返回 `data:boolean` 成功标志（非 id），与前端「重拉列表取最新」消费方式核对一致；`type` 1=黑名单 2=白名单与契约一致；list 返回顺序 type ASC + id ASC。
+- 页面级交互（三 tab 徽标、本地搜索、切 tab）由 `src/utils/sensitive.ts` 纯函数单测（7 用例）+ 组件代码审查（任务级 7 轮 + 分支级最终审查）覆盖；浏览器级 UI 复核未做（本环境无浏览器），如需可由用户/评审执行。
 
 ## 6. 完成通知四字段
 
@@ -78,7 +89,7 @@
 
 ## 7. 待确认项 / 备注
 
-1. **云端联调待补登**：§5 证据在后端服务启动后补登（回执更新或后续回执追加）。
+1. **浏览器级 UI 复核未做**：接口链（数据层）已实跑全绿；页面交互（搜索/切 tab/徽标）依赖纯函数单测 + 代码审查覆盖，浏览器级复核可由用户/评审执行。
 2. **vite 生产构建未现场验证**：沙箱拦截 esbuild spawn；CI `check` 已含 build 且 success（46s），以 CI 为准。
 3. 任务级 minor 遗留（progress.md 登记，非缺陷）：`local/__write_tool_probe.txt` 5 字节探针（gitignored，沙箱拒绝删除待清理）；测试覆盖盲区 3 处（简报自带缺口）；Sidebar Stamp 显式导入风格差异；runRemove 防重入可选硬化。
 
