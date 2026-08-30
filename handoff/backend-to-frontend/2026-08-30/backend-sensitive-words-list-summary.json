@@ -1,0 +1,26 @@
+{
+  "taskId": "SENSITIVE-WORDS-LIST",
+  "taskTitle": "敏感词词库 list 端点（管理端只读全量：POST /circle/sensitive/words/list + SensitiveWordsEntity.createdTime + schema/openapi 登记 75 路径）",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-30/backend-sensitive-words-list-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "90a1e96",
+  "receiptCommitSha": "",
+  "pullRequestNumber": 17,
+  "contractSnapshotSha256": "DAAEECB7",
+  "sourceDoc": {
+    "path": "docs/api/coderclub-openapi.json",
+    "lfSha256Before": "BF59FECD7DA3A97BBC86CA589AA2D0E21CCD450444A63CE82B8AD040E49382B4",
+    "lfSha256After": "24DC841402BB5E063758A4156FC3AAF8D84609845BC218D92D0DC8FE6C7DD82A",
+    "pathCountBefore": 74,
+    "pathCountAfter": 75
+  },
+  "verificationResult": "passed (PR #17 CI build-and-test+sensitive-scan green runs 33304005875/33305070033; full mvn reactor green 15 modules; CircleContractTest 23/23 incl new 200-order-fields + legacy-null-as-is + new-word-with-time + 401 + 403 real-interceptor; domain listWords read-only case with verifyNoMoreInteractions; whole-branch final review 1 Important (CREATE TABLE embedded AFTER clause) + 2 Minor (indent) fixed in 90a1e96, re-review 3/3 ADDRESSED)",
+  "openFindings": [
+    "L2 ordering SQL (type ASC + id ASC) has no automated anchor (infra orderBy review-only; contract/domain tests mock respective layers) — deferred",
+    "style minors: inline fully-qualified Collectors.toList/domain interface FQN signature/contract-test FQN post call (could add helper overload) — deferred",
+    "openapi 200 example shows createdTime:null while non_null serialization omits the field (descriptive only; description text correct)",
+    "spec-wording defect reported: §1.5 'verbatim DDL alignment' led to AFTER clause embedded in CREATE TABLE (fixed; suggests future schema-doc tasks state ALTER-semantic transcription convention)",
+    "info.description '74 paths' wording to be updated by PM snapshot micro-sync (74->75)"
+  ],
+  "verificationDate": "2026-08-30"
+}

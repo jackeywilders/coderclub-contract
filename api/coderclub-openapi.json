@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "CoderClub API",
-    "description": "CoderClub 刷题平台后端接口文档，覆盖认证、用户、角色、权限、分类、标签、题目、文件存储 8 大模块共 43 个路径 43 个操作。统一响应权威目标契约：所有 ResponseResult 均必须包含 success、code、message、data 四字段；无业务载荷时 data 为 null，数组接口无结果时 data 为 []，分页接口无结果时 data.list 为 []。该规则为前后端权威目标契约，不因当前服务序列化配置而放宽。",
+    "description": "CoderClub 刷题平台后端接口文档，覆盖认证、用户、角色、权限、分类、标签、题目、文件存储、练习、圈子 10 大模块共 75 个路径 75 个操作（A8-P2 登记 practice 13 端点 + subject internal 4 端点，A8-P3 登记 circle 圈子 11 端点；internal 端点仅内部 Feign 消费，不向 C 端门户宣传）。统一响应权威目标契约：所有 ResponseResult 均必须包含 success、code、message、data 四字段；无业务载荷时 data 为 null，数组接口无结果时 data 为 []，分页接口无结果时 data.list 为 []。鉴权：除显式标注 security=[] 的公开路径外，全部路径均走登录墙（@SaCheckLogin，未登录 HTTP 401）；业务失败返回 HTTP 200 + body code=400（BaseException 口径），参数校验失败返回 HTTP 400 + body data 为字段错误列表。该规则为前后端权威目标契约，不因当前服务序列化配置而放宽。",
     "version": "1.0.0",
     "contact": {
       "name": "CoderClub Team"
@@ -20,6 +20,10 @@
     {
       "url": "http://localhost:3200",
       "description": "OSS 文件存储服务"
+    },
+    {
+      "url": "http://localhost:3400",
+      "description": "Practice 练题服务"
     }
   ],
   "security": [
@@ -59,6 +63,18 @@
     {
       "name": "文件存储",
       "description": "OSS 文件上传与获取路径"
+    },
+    {
+      "name": "练习",
+      "description": "练题基础数据 / 答题判分 / 评估报告与排行 / 放弃（A8-P2，全部 @SaCheckLogin 登录墙）"
+    },
+    {
+      "name": "题目内部",
+      "description": "subject 内部端点：仅内部 Feign 消费，不向 C 端门户宣传（A8-P2）"
+    },
+    {
+      "name": "圈子",
+      "description": "圈子树 / 动态 / 评论 / 消息 / 敏感词管理（A8-P3；除敏感词管理需 admin_user 角色外，全部 @SaCheckLogin 登录墙）"
     }
   ],
   "paths": {
@@ -487,101 +503,6 @@
                   "success": true,
                   "code": 200,
                   "message": "操作成功",
-                  "data": null
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/user/list-by-identifiers": {
-      "post": {
-        "tags": [
-          "用户管理"
-        ],
-        "summary": "按用户标识批量查询（内部）",
-        "description": "内部跨服务查询接口：按用户名批量获取昵称、头像等展示信息（门户出题贡献榜经 Feign 调用）。",
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserIdentifierQueryDTO"
-              },
-              "example": {
-                "identifiers": [
-                  "zhangsan",
-                  "lisi",
-                  "wangwu"
-                ],
-                "type": "userName"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "用户展示信息列表（仅返回存在的用户，顺序不保证）",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseResultIdentifierUserItemList"
-                },
-                "example": {
-                  "success": true,
-                  "code": 200,
-                  "message": "操作成功",
-                  "data": [
-                    {
-                      "userName": "zhangsan",
-                      "nickName": "张三",
-                      "avatar": "https://cdn.example.com/avatar/1.png"
-                    },
-                    {
-                      "userName": "lisi",
-                      "nickName": "李四",
-                      "avatar": "https://cdn.example.com/avatar/2.png"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthErrorResponse"
-                },
-                "example": {
-                  "success": false,
-                  "code": 400,
-                  "message": "参数校验失败",
-                  "data": [
-                    "identifiers 不能为空"
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthErrorResponse"
-                },
-                "example": {
-                  "success": false,
-                  "code": 401,
-                  "message": "未登录",
                   "data": null
                 }
               }
@@ -2677,7 +2598,7 @@
           "题目管理"
         ],
         "summary": "分页查询题目",
-        "description": "按难度、分类、标签组合条件分页查询题目列表。",
+        "description": "按难度、分类、标签组合条件分页查询题目列表；可选 primaryCategoryId 一级分类过滤（大类自身+直接子分类，经 subject_mapping），缺省不生效（A8-P3 X2，向后兼容）。",
         "security": [
           {
             "Authorization": []
@@ -2791,198 +2712,6 @@
                       }
                     ]
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/subject/getSubjectPageBySearch": {
-      "post": {
-        "tags": [
-          "题目管理"
-        ],
-        "summary": "分页搜索题目",
-        "description": "按关键词搜索题目（subject_name LIKE），支持分类/标签/题型/难度筛选；keyWord 缺失返回 400，空串返回空列表。",
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SubjectSearchQueryDTO"
-              },
-              "example": {
-                "pageNo": 1,
-                "pageSize": 10,
-                "keyWord": "Java",
-                "subjectType": 1,
-                "subjectDifficult": 2,
-                "categoryId": 1,
-                "labelId": 1
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "分页搜索结果（按关键词匹配题目，命中项含标签名称与选项列表）",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseResultPageSubjectSearchItem"
-                },
-                "example": {
-                  "success": true,
-                  "code": 200,
-                  "message": "操作成功",
-                  "data": {
-                    "pageNo": 1,
-                    "pageSize": 10,
-                    "total": 5,
-                    "totalPages": 1,
-                    "list": [
-                      {
-                        "id": 2,
-                        "subjectName": "Java中ArrayList和LinkedList的区别",
-                        "subjectType": 1,
-                        "subjectDifficult": 2,
-                        "categoryId": 1,
-                        "labelId": 3,
-                        "labelName": [
-                          "集合框架"
-                        ],
-                        "optionList": [
-                          {
-                            "optionType": 1,
-                            "optionContent": "ArrayList基于动态数组",
-                            "isCorrect": 1
-                          },
-                          {
-                            "optionType": 2,
-                            "optionContent": "LinkedList基于双向链表",
-                            "isCorrect": 0
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SubjectErrorResponse"
-                },
-                "example": {
-                  "success": false,
-                  "code": 400,
-                  "message": "参数校验失败",
-                  "data": [
-                    "搜索关键词不能为空"
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SubjectErrorResponse"
-                },
-                "example": {
-                  "success": false,
-                  "code": 401,
-                  "message": "未登录",
-                  "data": null
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/subject/getContributeList": {
-      "post": {
-        "tags": [
-          "题目管理"
-        ],
-        "summary": "出题贡献榜",
-        "description": "按出题人（created_by）分组统计题目数量并按数量降序返回 TOP N；昵称经 auth 服务批量查询组装，缺失时降级为用户名。请求体可省略，缺省返回前 10 名（上限 20）。",
-        "security": [
-          {
-            "Authorization": []
-          }
-        ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContributeListQueryDTO"
-              },
-              "example": {
-                "topN": 10
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "出题贡献榜列表（按出题数量降序）",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseResultSubjectContributeItemList"
-                },
-                "example": {
-                  "success": true,
-                  "code": 200,
-                  "message": "操作成功",
-                  "data": [
-                    {
-                      "userName": "zhangsan",
-                      "nickName": "张三",
-                      "count": 25
-                    },
-                    {
-                      "userName": "lisi",
-                      "nickName": "李四",
-                      "count": 18
-                    },
-                    {
-                      "userName": "wangwu",
-                      "nickName": "王五",
-                      "count": 9
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SubjectErrorResponse"
-                },
-                "example": {
-                  "success": false,
-                  "code": 401,
-                  "message": "未登录",
-                  "data": null
                 }
               }
             }
@@ -4746,7 +4475,1261 @@
           }
         }
       }
-    }},
+    },
+    "/subject/getSubjectPageBySearch": {
+      "post": {
+        "tags": [
+          "题目管理"
+        ],
+        "summary": "分页搜索题目",
+        "description": "按关键词搜索题目（subject_name LIKE），支持分类/标签/题型/难度筛选；keyWord 缺失返回 400，空串返回空列表。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectSearchQueryDTO"
+              },
+              "example": {
+                "pageNo": 1,
+                "pageSize": 10,
+                "keyWord": "Java",
+                "subjectType": 1,
+                "subjectDifficult": 2,
+                "categoryId": 1,
+                "labelId": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "分页搜索结果（按关键词匹配题目，命中项含标签名称与选项列表）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultPageSubjectSearchItem"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "pageNo": 1,
+                    "pageSize": 10,
+                    "total": 5,
+                    "totalPages": 1,
+                    "list": [
+                      {
+                        "id": 2,
+                        "subjectName": "Java中ArrayList和LinkedList的区别",
+                        "subjectType": 1,
+                        "subjectDifficult": 2,
+                        "categoryId": 1,
+                        "labelId": 3,
+                        "labelName": [
+                          "集合框架"
+                        ],
+                        "optionList": [
+                          {
+                            "optionType": 1,
+                            "optionContent": "ArrayList基于动态数组",
+                            "isCorrect": 1
+                          },
+                          {
+                            "optionType": 2,
+                            "optionContent": "LinkedList基于双向链表",
+                            "isCorrect": 0
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "搜索关键词不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subject/getContributeList": {
+      "post": {
+        "tags": [
+          "题目管理"
+        ],
+        "summary": "出题贡献榜",
+        "description": "按出题人（created_by）分组统计题目数量并按数量降序返回 TOP N；昵称经 auth 服务批量查询组装，缺失时降级为用户名。请求体可省略，缺省返回前 10 名（上限 20）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContributeListQueryDTO"
+              },
+              "example": {
+                "topN": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "出题贡献榜列表（按出题数量降序）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultSubjectContributeItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "userName": "zhangsan",
+                      "nickName": "张三",
+                      "count": 25
+                    },
+                    {
+                      "userName": "lisi",
+                      "nickName": "李四",
+                      "count": 18
+                    },
+                    {
+                      "userName": "wangwu",
+                      "nickName": "王五",
+                      "count": 9
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user/list-by-identifiers": {
+      "post": {
+        "tags": [
+          "用户管理"
+        ],
+        "summary": "按用户标识批量查询（内部）",
+        "description": "内部跨服务查询接口：按用户名批量获取昵称、头像等展示信息（门户出题贡献榜经 Feign 调用）；标识集合中纯数字串同时按用户 id 匹配（并集去重），非数字行为不变（A8-P3 X1，向后兼容）。返回条目含 auth_user 主键 id（响应增字段，向后兼容）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserIdentifierQueryDTO"
+              },
+              "example": {
+                "identifiers": [
+                  "zhangsan",
+                  "lisi",
+                  "wangwu"
+                ],
+                "type": "userName"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "用户展示信息列表（仅返回存在的用户，顺序不保证）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultIdentifierUserItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "userName": "zhangsan",
+                      "nickName": "张三",
+                      "avatar": "https://cdn.example.com/avatar/1.png"
+                    },
+                    {
+                      "userName": "lisi",
+                      "nickName": "李四",
+                      "avatar": "https://cdn.example.com/avatar/2.png"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "identifiers 不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，Sa-Token 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/circle/list": {
+      "get": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "圈子树",
+        "description": "圈子两层树：parent_id=-1 为大类根，子圈挂 children（叶子节点 children 因 non_null 序列化省略）；domain 层 Caffeine 缓存（TTL 30s）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "圈子两层树（data 为空数组时表示无圈子）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultCircleNodeVOList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 1,
+                      "circleName": "Java进阶",
+                      "icon": "https://cdn.example.com/circle/java.png",
+                      "children": [
+                        {
+                          "id": 2,
+                          "circleName": "JVM 实战",
+                          "icon": "https://cdn.example.com/circle/jvm.png"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/moment/save": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "发布动态",
+        "description": "发布动态：仅子圈可发（大类或不存在的圈子返回业务失败 code=400），content 与 picUrlList 至少一项；content 经敏感词校验，命中返回业务失败。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MomentSaveDTO"
+              },
+              "example": {
+                "circleId": 2,
+                "content": "分享一下今天刷题的心得",
+                "picUrlList": [
+                  "https://cdn.example.com/moment/1.png"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "发布结果（true=发布成功；非法圈子/内容与图片均空/敏感词命中等业务失败返回 HTTP 200 + body code=400）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultBoolean"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "圈子id不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/moment/getMoments": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "动态分页",
+        "description": "按圈子分页查询动态（circleId 缺省查全部圈子），created_time 倒序；昵称头像经 auth 用户目录组装（Feign 失败降级：昵称=标识串、头像=null）；createdTime 为 epoch 毫秒数。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MomentPageQueryDTO"
+              },
+              "example": {
+                "circleId": 2,
+                "pageNo": 1,
+                "pageSize": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "动态分页结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultPageMomentItemVO"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "pageNo": 1,
+                    "pageSize": 10,
+                    "total": 12,
+                    "totalPages": 2,
+                    "list": [
+                      {
+                        "id": 1001,
+                        "circleId": 2,
+                        "content": "分享一下今天刷题的心得",
+                        "picUrlList": [
+                          "https://cdn.example.com/moment/1.png"
+                        ],
+                        "replyCount": 2,
+                        "fromId": "2001",
+                        "nickName": "张三",
+                        "avatar": "https://cdn.example.com/avatar/1.png",
+                        "createdTime": 1787980800000
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/moment/remove": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "删除动态",
+        "description": "删除动态：仅本人可删（非本人返回业务失败 code=400）；动态不存在或已删除幂等返回 true；删除时级联软删该动态全部评论回复。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MomentRemoveDTO"
+              },
+              "example": {
+                "id": 1001
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "删除结果（true=删除成功或幂等命中）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultBoolean"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "动态id不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/comment/save": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "评论/回复",
+        "description": "发表评论/回复：replyType=1 评论动态（parentId=-1）/ replyType=2 回复评论（targetId 必填为目标评论 id）；content 与 picUrlList 至少一项，content 经敏感词校验；评论计数与消息落库在同事务内联动。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentSaveDTO"
+              },
+              "example": {
+                "momentId": 1001,
+                "replyType": 1,
+                "content": "写得很清楚，收藏了"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "发表结果（true=成功；动态不存在/内容与图片均空/回复目标缺失或不存在/敏感词命中等业务失败返回 HTTP 200 + body code=400）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultBoolean"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "动态id不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/comment/list": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "评论树",
+        "description": "动态评论树：type1 评论归根（parentId=-1）、type2 回复挂父节点 children；fromIsMomentAuthor / toId（type1=动态作者、type2=被回复评论者）读时派生；昵称头像一次 Feign 组装（降级：昵称=标识串、头像=null）；createdTime 为 yyyy-MM-dd HH:mm:ss 格式字符串。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentListQueryDTO"
+              },
+              "example": {
+                "momentId": 1001
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "评论树（data 为空数组时表示暂无评论；叶子节点 children 序列化为空数组 []）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultCommentNodeVOList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 2001,
+                      "momentId": 1001,
+                      "replyType": 1,
+                      "content": "写得很清楚，收藏了",
+                      "picUrlList": [
+                        "https://cdn.example.com/comment/1.png"
+                      ],
+                      "parentId": -1,
+                      "fromId": "zhangsan",
+                      "fromNickName": "张三",
+                      "fromAvatar": "https://cdn.example.com/avatar/1.png",
+                      "toId": "lisi",
+                      "toNickName": "李四",
+                      "toAvatar": "https://cdn.example.com/avatar/2.png",
+                      "fromIsMomentAuthor": false,
+                      "createdTime": "2026-08-29 10:00:00",
+                      "children": [
+                        {
+                          "id": 2002,
+                          "momentId": 1001,
+                          "replyType": 2,
+                          "content": "谢谢支持",
+                          "parentId": 2001,
+                          "fromId": "lisi",
+                          "fromNickName": "李四",
+                          "fromAvatar": "https://cdn.example.com/avatar/2.png",
+                          "toId": "zhangsan",
+                          "toNickName": "张三",
+                          "toAvatar": "https://cdn.example.com/avatar/1.png",
+                          "fromIsMomentAuthor": true,
+                          "createdTime": "2026-08-29 10:05:00",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "动态id不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/comment/remove": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "删除评论",
+        "description": "删除评论：评论者本人或动态作者可删（其余返回业务失败 code=400）；不存在或已删除幂等返回 true；子树级联软删并按实际删除行数回减动态评论计数；replyType 契约必填（实现按 id 查询为准）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentRemoveDTO"
+              },
+              "example": {
+                "id": 2001,
+                "replyType": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "删除结果（true=删除成功或幂等命中）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultBoolean"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "评论id不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/message/unRead": {
+      "get": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "未读数",
+        "description": "当前用户未读消息数（只计数，不改状态；自评/自回复不产生消息）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "未读消息数",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultInteger"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": 3
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/share/message/getMessages": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "消息分页（读后置已读）",
+        "description": "当前用户消息分页：isRead 筛选（1 已读 / 2 未读，缺省查全部），id 倒序；消息 content JSON 结构化展开为 msgType/targetId/msg（msg 为中性文案，昵称前端拼 fromNickName）；total 为全量计数（非未读数）；返回后按页内消息 id 批量置已读（空页跳过）。需登录（@SaCheckLogin 登录墙，未登录 401）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessagePageQueryDTO"
+              },
+              "example": {
+                "isRead": 2,
+                "pageNo": 1,
+                "pageSize": 10
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "消息分页结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultPageMessageVO"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": {
+                    "pageNo": 1,
+                    "pageSize": 10,
+                    "total": 5,
+                    "totalPages": 1,
+                    "list": [
+                      {
+                        "id": 3001,
+                        "msgType": "COMMENT",
+                        "targetId": 1001,
+                        "msg": "评论了你的动态",
+                        "fromId": "zhangsan",
+                        "fromNickName": "张三",
+                        "createdTime": "2026-08-29 10:00:00"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/sensitive/words/save": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "敏感词新增（管理）",
+        "description": "敏感词新增（管理端）：type 1=黑名单 2=白名单，同词同类型幂等；保存后即时重建词库缓存。需登录（@SaCheckLogin）且需 admin_user 角色（@SaCheckRole，非管理员 403）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensitiveWordSaveDTO"
+              },
+              "example": {
+                "words": "示例敏感词",
+                "type": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "保存结果（true=保存成功或幂等命中；类型非法返回业务失败 HTTP 200 + body code=400）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultBoolean"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "敏感词不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "角色权限不足（HTTP 403，@SaCheckRole 限 admin_user 角色，仅管理员可管理敏感词）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 403,
+                  "message": "无权限访问",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/sensitive/words/remove": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "敏感词删除（管理）",
+        "description": "敏感词删除（管理端）：逻辑删，不命中视为已删幂等返回 true；删除后即时重建词库缓存。需登录（@SaCheckLogin）且需 admin_user 角色（@SaCheckRole，非管理员 403）。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensitiveWordRemoveDTO"
+              },
+              "example": {
+                "id": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "删除结果（true=删除成功或幂等命中）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultBoolean"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "参数校验失败（HTTP 400，仅参数校验失败场景，body data 为字段错误列表）。注意：业务失败返回 HTTP 200 + body code=400，并非 HTTP 400。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 400,
+                  "message": "参数校验失败",
+                  "data": [
+                    "敏感词id不能为空"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录或登录已过期（HTTP 401，@SaCheckLogin 拦截）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 401,
+                  "message": "未登录或Token已过期",
+                  "data": null
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "角色权限不足（HTTP 403，@SaCheckRole 限 admin_user 角色，仅管理员可管理敏感词）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "code": 403,
+                  "message": "无权限访问",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/circle/sensitive/words/list": {
+      "post": {
+        "tags": [
+          "圈子"
+        ],
+        "summary": "敏感词词库列表（管理）",
+        "description": "敏感词词库全量列表（管理端，只读）：type ASC + id ASC 排序；createdTime 为 yyyy-MM-dd HH:mm:ss 串或 null（存量行补列前无值，如实返回，序列化下省略）。需登录（@SaCheckLogin）且需 admin_user 角色（@SaCheckRole，非管理员 403）；不触碰 DFA 词库缓存重建。",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "词库全量列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResultSensitiveWordItemList"
+                },
+                "example": {
+                  "success": true,
+                  "code": 200,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 1,
+                      "words": "赌博",
+                      "type": 1,
+                      "createdTime": null
+                    },
+                    {
+                      "id": 3,
+                      "words": "招聘",
+                      "type": 2,
+                      "createdTime": "2026-08-30 12:00:00"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "非管理员",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CircleErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {
     "securitySchemes": {
       "Authorization": {
@@ -4757,6 +5740,169 @@
       }
     },
     "schemas": {
+      "PracticeErrorResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "错误信息"
+          },
+          "data": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "参数校验错误信息列表"
+              },
+              {
+                "type": "object",
+                "nullable": true,
+                "description": "业务异常时为 null"
+              }
+            ],
+            "description": "错误数据：参数校验失败时为字符串数组，其他错误时为 null"
+          }
+        }
+      },
+      "PracticeSubjectItemVO": {
+        "type": "object",
+        "description": "套卷题列表 / 单题内容响应项 VO（不含答案：optionList 项已剥离 isCorrect；isAnswer/answerContent 为作答态回填）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id"
+          },
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度"
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表（withAnswer=false，isCorrect 已剥离）"
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "分类 id 列表"
+          },
+          "labelIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "标签 id 列表"
+          },
+          "labelName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "标签名称列表"
+          },
+          "isAnswer": {
+            "type": "boolean",
+            "description": "是否已作答"
+          },
+          "answerContent": {
+            "type": "string",
+            "description": "用户已作答内容"
+          }
+        }
+      },
+      "PreSetItemVO": {
+        "type": "object",
+        "description": "预设套卷列表项 VO。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "套题 id"
+          },
+          "setName": {
+            "type": "string",
+            "description": "套题名称"
+          },
+          "setType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "套题类型（预设恒为 2）"
+          },
+          "setHeat": {
+            "type": "integer",
+            "format": "int32",
+            "description": "热度"
+          },
+          "setDesc": {
+            "type": "string",
+            "description": "套题描述"
+          },
+          "primaryCategoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "大类 id"
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "创建时间"
+          }
+        }
+      },
+      "RankItemVO": {
+        "type": "object",
+        "description": "综合练习榜项 VO。",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "用户名（practice_info.created_by）"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称（缺失降级为 userName）"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像（缺失为 null）"
+          },
+          "practiceCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "完成练习数"
+          }
+        }
+      },
       "RegisterDTO": {
         "type": "object",
         "required": [
@@ -4779,6 +5925,204 @@
             "type": "string",
             "description": "昵称",
             "example": "张三"
+          }
+        }
+      },
+      "InternalCategoryCountQueryDTO": {
+        "type": "object",
+        "required": [
+          "primaryCategoryIds"
+        ],
+        "description": "内部分类题量树请求体（仅内部 Feign 消费）。",
+        "properties": {
+          "primaryCategoryIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "大类（primary category）id 集（必填；空 → 400）",
+            "example": [
+              1
+            ]
+          }
+        }
+      },
+      "InternalJudgeQueryDTO": {
+        "type": "object",
+        "required": [
+          "subjectId",
+          "subjectType",
+          "answerContent"
+        ],
+        "description": "内部判分请求体（仅内部 Feign 消费）。",
+        "properties": {
+          "subjectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id（必填）",
+            "example": 11
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答（必填）",
+            "example": 1
+          },
+          "answerContent": {
+            "type": "string",
+            "description": "用户答案内容（必填；单选/多选为标号逗号串，判断为 1/0）",
+            "example": "A"
+          }
+        }
+      },
+      "InternalRandomQueryDTO": {
+        "type": "object",
+        "required": [
+          "assembleIds"
+        ],
+        "description": "内部随机抽题请求体（仅内部 Feign 消费）：assembleIds 必填；typeCountMap 非空按题型配比逐型随机合并，空则全量随机（count 缺省取候选全量）。",
+        "properties": {
+          "assembleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "装配 id 集（必填；元素形如 \"catId-labelId\"，其中 catId 为 subject_mapping.category_id，即分类[叶子] id，labelId 为标签 id）",
+            "example": [
+              "1-3"
+            ]
+          },
+          "excludeSubjectIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "排除题目 id 集（可选）",
+            "example": [
+              99
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "全量随机时的抽题总数（可选；缺省取候选全量）",
+            "example": 20
+          },
+          "typeCountMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "description": "题型配比 {subjectType: count}（可选；subjectType 1单选 2多选 3判断）",
+            "example": {
+              "1": 10,
+              "2": 6,
+              "3": 4
+            }
+          }
+        }
+      },
+      "InternalSubjectItemVO": {
+        "type": "object",
+        "description": "内部批量取题响应项 VO（仅内部 Feign 消费）：withAnswer=false 时 optionList 项 isCorrect、subjectAnswer、subjectParse 为 null。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id"
+          },
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度"
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表（withAnswer=false 时项内 isCorrect 为 null）"
+          },
+          "subjectAnswer": {
+            "type": "string",
+            "description": "正确答案（withAnswer=false 时为 null）"
+          },
+          "subjectParse": {
+            "type": "string",
+            "description": "题目解析（withAnswer=false 时为 null）"
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "分类 id 列表"
+          },
+          "labelIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "标签 id 列表"
+          },
+          "labelName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "标签名称列表"
+          }
+        }
+      },
+      "InternalSubjectsByIdsQueryDTO": {
+        "type": "object",
+        "required": [
+          "subjectIds"
+        ],
+        "description": "内部批量取题请求体（仅内部 Feign 消费）。",
+        "properties": {
+          "subjectIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "题目 id 集（必填；最多 500）",
+            "example": [
+              11,
+              12,
+              13
+            ]
+          },
+          "withAnswer": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否携带答案（缺省 false：剥离 isCorrect 与 subjectParse；true 保留并组 subjectAnswer）",
+            "example": false
+          }
+        }
+      },
+      "JudgeResultVO": {
+        "type": "object",
+        "description": "内部判分响应 VO（仅内部 Feign 消费）：字段与 practice 侧 SubjectJudgeResultVO 逐字一致（judgeable / isCorrect）。",
+        "properties": {
+          "judgeable": {
+            "type": "boolean",
+            "description": "是否可判分（简答题等主观题为 false）",
+            "example": true
+          },
+          "isCorrect": {
+            "type": "boolean",
+            "description": "判分结果是否正确",
+            "example": true
           }
         }
       },
@@ -4873,6 +6217,45 @@
             "type": "string",
             "description": "个人介绍",
             "example": "十年Java老兵"
+          }
+        }
+      },
+      "PageResultUnCompleteItem": {
+        "type": "object",
+        "required": [
+          "pageNo",
+          "pageSize",
+          "total",
+          "totalPages",
+          "list"
+        ],
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnCompleteItemVO"
+            },
+            "description": "当前页未完成练习列表"
           }
         }
       },
@@ -5147,6 +6530,30 @@
           }
         }
       },
+      "AddPracticeDTO": {
+        "type": "object",
+        "required": [
+          "assembleIds"
+        ],
+        "properties": {
+          "assembleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "装配 id 集（必填；元素形如 \"catId-labelId\"，其中 catId 为 subject_mapping.category_id，即分类[叶子] id，labelId 为标签 id）",
+            "example": [
+              "1-3"
+            ]
+          },
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "续做练习 id（可选；非空且校验通过时直接返回该 id，不重复建草稿）",
+            "example": 1001
+          }
+        }
+      },
       "AdminAuthUser": {
         "type": "object",
         "properties": {
@@ -5209,6 +6616,61 @@
           }
         }
       },
+      "SubmitPracticeDTO": {
+        "type": "object",
+        "required": [
+          "practiceId",
+          "timeUse"
+        ],
+        "description": "submit 交卷请求体：timeUse 格式校验在 domain 侧（不符合 HH:mm:ss 返回 400）。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（必填）",
+            "example": 1001
+          },
+          "timeUse": {
+            "type": "string",
+            "description": "用时（必填；格式 ^\\d{2}:\\d{2}:\\d{2}$ 即 HH:mm:ss，非法 → 400）",
+            "example": "00:15:30"
+          }
+        }
+      },
+      "SubmitSubjectDTO": {
+        "type": "object",
+        "required": [
+          "practiceId",
+          "subjectId",
+          "subjectType"
+        ],
+        "description": "submitSubject 单题提交判分请求体。",
+        "properties": {
+          "practiceId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "练习 id（必填）",
+            "example": 1001
+          },
+          "subjectId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 id（必填）",
+            "example": 11
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答（必填）",
+            "example": 1
+          },
+          "answerContent": {
+            "type": "string",
+            "description": "用户答案内容（单选/多选为标号逗号串，判断为 1/0，简答为文本）",
+            "example": "A"
+          }
+        }
+      },
       "TokenInfo": {
         "type": "object",
         "properties": {
@@ -5220,7 +6682,7 @@
           "tokenValue": {
             "type": "string",
             "description": "Token 值",
-            "example": "3f8a1c2d9b4e6f7a5c1d8e2f9b4a6c7d"
+            "example": "<token>"
           }
         }
       },
@@ -5414,7 +6876,7 @@
               "token": {
                 "type": "string",
                 "description": "登录 Token（原始值，直接用于 Authorization 请求头，无 Bearer 前缀）",
-                "example": "3f8a1c2d9b4e6f7a5c1d8e2f9b4a6c7d"
+                "example": "<token>"
               },
               "tokenInfo": {
                 "$ref": "#/components/schemas/TokenInfo"
@@ -5511,1420 +6973,6 @@
                 ]
               }
             }
-          }
-        }
-      },
-      "ResponseResultPageAuthUser": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "是否成功"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "description": "状态码"
-          },
-          "message": {
-            "type": "string",
-            "description": "消息"
-          },
-          "data": {
-            "$ref": "#/components/schemas/PageResultAuthUser"
-          }
-        }
-      },
-      "ResponseResultAuthUser": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "是否成功"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "description": "状态码"
-          },
-          "message": {
-            "type": "string",
-            "description": "消息"
-          },
-          "data": {
-            "$ref": "#/components/schemas/AdminAuthUser"
-          }
-        }
-      },
-      "SubjectCategoryDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "description": "分类 ID"
-          },
-          "categoryName": {
-            "type": "string",
-            "description": "分类名称"
-          },
-          "categoryType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "分类类型"
-          },
-          "imageUrl": {
-            "type": "string",
-            "description": "图标链接"
-          },
-          "parentId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "父级分类 ID"
-          },
-          "sort": {
-            "type": "integer",
-            "format": "int32",
-            "description": "排序值（升序，空值排最后）"
-          },
-          "children": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectCategoryDTO"
-            },
-            "description": "子分类列表（递归结构）"
-          }
-        }
-      },
-      "SubjectLabelDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "description": "标签 ID"
-          },
-          "labelName": {
-            "type": "string",
-            "description": "标签名称"
-          },
-          "sortNum": {
-            "type": "integer",
-            "format": "int32",
-            "description": "排序号"
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "所属分类 ID"
-          }
-        }
-      },
-      "SubjectAnswerDTO": {
-        "type": "object",
-        "properties": {
-          "optionType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "整数选项标识：1=A，2=B，3=C，4=D",
-            "example": 1
-          },
-          "optionContent": {
-            "type": "string",
-            "description": "选项内容",
-            "example": "数组+链表+红黑树"
-          },
-          "isCorrect": {
-            "type": "integer",
-            "format": "int32",
-            "description": "是否正确答案：1=正确，0=错误",
-            "example": 1
-          }
-        }
-      },
-      "SubjectInfoAddDTO": {
-        "type": "object",
-        "required": [
-          "subjectName",
-          "subjectDifficult",
-          "subjectType",
-          "subjectScore"
-        ],
-        "properties": {
-          "subjectName": {
-            "type": "string",
-            "description": "题目名称",
-            "example": "Java中HashMap的底层数据结构是什么"
-          },
-          "subjectDifficult": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目难度",
-            "example": 2
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型：1=单选，2=多选，3=判断，4=简答",
-            "example": 1
-          },
-          "subjectScore": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目分数",
-            "example": 5
-          },
-          "settleName": {
-            "type": "string",
-            "description": "出题人",
-            "example": "李老师"
-          },
-          "subjectParse": {
-            "type": "string",
-            "description": "题目解析",
-            "example": "HashMap底层采用数组+链表+红黑树实现..."
-          },
-          "subjectAnswer": {
-            "type": "string",
-            "description": "题目答案",
-            "example": "A"
-          },
-          "categoryIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "关联分类 ID 列表",
-            "example": [
-              1,
-              3
-            ]
-          },
-          "labelIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "关联标签 ID 列表",
-            "example": [
-              1,
-              2
-            ]
-          },
-          "optionList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectAnswerDTO"
-            },
-            "description": "选项列表"
-          }
-        }
-      },
-      "SubjectInfoDTO": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "description": "题目 ID"
-          },
-          "subjectName": {
-            "type": "string",
-            "description": "题目名称"
-          },
-          "subjectDifficult": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目难度"
-          },
-          "settleName": {
-            "type": "string",
-            "description": "出题人"
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
-          },
-          "subjectScore": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目分数"
-          },
-          "subjectParse": {
-            "type": "string",
-            "description": "题目解析"
-          },
-          "subjectAnswer": {
-            "type": "string",
-            "description": "题目答案"
-          },
-          "categoryIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "关联分类 ID 列表"
-          },
-          "labelIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "关联标签 ID 列表"
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "分类 ID"
-          },
-          "labelId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "标签 ID"
-          },
-          "labelName": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "标签名称列表"
-          },
-          "optionList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectAnswerDTO"
-            },
-            "description": "选项列表"
-          }
-        }
-      },
-      "SubjectPageQueryDTO": {
-        "type": "object",
-        "description": "getSubjectPage 请求体即本 DTO，6 字段全部参与筛选。",
-        "properties": {
-          "pageNo": {
-            "type": "integer",
-            "format": "int32",
-            "default": 1,
-            "description": "页码（默认 1）",
-            "example": 1
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32",
-            "default": 20,
-            "description": "每页条数（默认 20）",
-            "example": 20
-          },
-          "subjectDifficult": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目难度",
-            "example": 2
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "分类 ID",
-            "example": 1
-          },
-          "labelId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "标签 ID",
-            "example": 1
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型 1单选 2多选 3判断 4简答",
-            "example": 1
-          }
-        }
-      },
-      "PageResultSubjectInfo": {
-        "type": "object",
-        "required": [
-          "pageNo",
-          "pageSize",
-          "total",
-          "totalPages",
-          "list"
-        ],
-        "properties": {
-          "pageNo": {
-            "type": "integer",
-            "format": "int32",
-            "description": "当前页码"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32",
-            "description": "每页条数"
-          },
-          "total": {
-            "type": "integer",
-            "format": "int32",
-            "description": "总记录数"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32",
-            "description": "总页数"
-          },
-          "list": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectInfoDTO"
-            },
-            "description": "当前页数据列表"
-          }
-        }
-      },
-      "PageResultAuthUser": {
-        "type": "object",
-        "required": [
-          "pageNo",
-          "pageSize",
-          "total",
-          "totalPages",
-          "list"
-        ],
-        "properties": {
-          "pageNo": {
-            "type": "integer",
-            "format": "int32",
-            "description": "当前页码"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32",
-            "description": "每页条数"
-          },
-          "total": {
-            "type": "integer",
-            "format": "int32",
-            "description": "总记录数"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32",
-            "description": "总页数"
-          },
-          "list": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AdminAuthUser"
-            },
-            "description": "当前页用户列表"
-          }
-        }
-      },
-      "ResponseResultBoolean": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "是否成功"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "description": "状态码"
-          },
-          "message": {
-            "type": "string",
-            "description": "消息"
-          },
-          "data": {
-            "type": "boolean",
-            "description": "结果数据"
-          }
-        }
-      },
-      "ResponseResultString": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "是否成功"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "description": "状态码"
-          },
-          "message": {
-            "type": "string",
-            "description": "消息"
-          },
-          "data": {
-            "type": "string",
-            "description": "结果数据"
-          }
-        }
-      },
-      "ResponseResultSubjectCategoryList": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectCategoryDTO"
-            }
-          }
-        }
-      },
-      "ResponseResultSubjectLabelList": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectLabelDTO"
-            }
-          }
-        }
-      },
-      "ResponseResultSubjectInfo": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/SubjectInfoDTO"
-          }
-        }
-      },
-      "ResponseResultSubjectInfoList": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectInfoDTO"
-            }
-          }
-        }
-      },
-      "ResponseResultPageSubjectInfo": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/PageResultSubjectInfo"
-          }
-        }
-      },
-      "SubjectErrorResponse": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "是否成功"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "description": "错误码"
-          },
-          "message": {
-            "type": "string",
-            "description": "错误信息"
-          },
-          "data": {
-            "oneOf": [
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "description": "参数校验错误信息列表"
-              },
-              {
-                "type": "object",
-                "nullable": true,
-                "description": "业务异常时为 null"
-              }
-            ],
-            "description": "错误数据：参数校验失败时为字符串数组，其他错误时为 null"
-          }
-        }
-      },
-      "SubjectSearchQueryDTO": {
-        "type": "object",
-        "required": [
-          "keyWord"
-        ],
-        "description": "getSubjectPageBySearch 请求体：按关键词分页搜索题目，keyWord 必填。",
-        "properties": {
-          "pageNo": {
-            "type": "integer",
-            "format": "int32",
-            "default": 1,
-            "description": "页码（默认 1）",
-            "example": 1
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32",
-            "default": 20,
-            "description": "每页条数（默认 20）",
-            "example": 20
-          },
-          "keyWord": {
-            "type": "string",
-            "description": "搜索关键词（必填；空串返回空列表）",
-            "example": "Java"
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型 1单选 2多选 3判断 4简答",
-            "example": 1
-          },
-          "subjectDifficult": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目难度",
-            "example": 2
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "分类 ID",
-            "example": 1
-          },
-          "labelId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "标签 ID",
-            "example": 1
-          }
-        }
-      },
-      "SubjectSearchItem": {
-        "type": "object",
-        "description": "getSubjectPageBySearch 搜索列表项（不含答案解析，答案见题目详情接口）。",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "description": "题目 ID"
-          },
-          "subjectName": {
-            "type": "string",
-            "description": "题目名称"
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型 1单选 2多选 3判断 4简答"
-          },
-          "subjectDifficult": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目难度"
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "分类 ID"
-          },
-          "labelId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "标签 ID"
-          },
-          "labelName": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "标签名称列表"
-          },
-          "optionList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectAnswerDTO"
-            },
-            "description": "选项列表"
-          }
-        }
-      },
-      "ContributeListQueryDTO": {
-        "type": "object",
-        "description": "getContributeList 请求体：返回出题贡献榜前 N 名；body 可省略。",
-        "properties": {
-          "topN": {
-            "type": "integer",
-            "format": "int32",
-            "default": 10,
-            "description": "返回条数（默认 10，上限 20，超出按 20 截断）",
-            "example": 10
-          }
-        }
-      },
-      "ContributeItem": {
-        "type": "object",
-        "description": "出题贡献榜条目：按出题人统计题目数量，昵称经 auth 批量查询组装。",
-        "properties": {
-          "userName": {
-            "type": "string",
-            "description": "出题人用户名（subject_info.created_by）"
-          },
-          "nickName": {
-            "type": "string",
-            "description": "昵称（来自 auth 用户信息，缺失时降级为用户名）"
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
-            "description": "出题数量"
-          }
-        }
-      },
-      "UserIdentifierQueryDTO": {
-        "type": "object",
-        "required": [
-          "identifiers"
-        ],
-        "description": "auth 侧用户标识批量查询请求体：按用户名批量获取展示信息（内部跨服务查询）。",
-        "properties": {
-          "identifiers": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "用户标识列表（必填，上限 100 个）",
-            "example": [
-              "zhangsan",
-              "lisi"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "description": "标识类型（预留扩展，默认 userName）",
-            "example": "userName"
-          }
-        }
-      },
-      "IdentifierUserItem": {
-        "type": "object",
-        "description": "用户标识批量查询响应条目（仅展示信息）。",
-        "properties": {
-          "userName": {
-            "type": "string",
-            "description": "用户名"
-          },
-          "nickName": {
-            "type": "string",
-            "description": "昵称"
-          },
-          "avatar": {
-            "type": "string",
-            "description": "头像 URL"
-          }
-        }
-      },
-      "ResponseResultPageSubjectSearchItem": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "type": "object",
-            "required": [
-              "pageNo",
-              "pageSize",
-              "total",
-              "totalPages",
-              "list"
-            ],
-            "properties": {
-              "pageNo": {
-                "type": "integer",
-                "format": "int32",
-                "description": "当前页码"
-              },
-              "pageSize": {
-                "type": "integer",
-                "format": "int32",
-                "description": "每页条数"
-              },
-              "total": {
-                "type": "integer",
-                "format": "int32",
-                "description": "总记录数"
-              },
-              "totalPages": {
-                "type": "integer",
-                "format": "int32",
-                "description": "总页数"
-              },
-              "list": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/SubjectSearchItem"
-                },
-                "description": "当前页数据列表"
-              }
-            }
-          }
-        }
-      },
-      "ResponseResultSubjectContributeItemList": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ContributeItem"
-            }
-          }
-        }
-      },
-      "ResponseResultIdentifierUserItemList": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IdentifierUserItem"
-            }
-          }
-        }
-      },
-      "PracticeErrorResponse": {
-        "type": "object",
-        "required": [
-          "success",
-          "code",
-          "message",
-          "data"
-        ],
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "description": "是否成功"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "description": "错误码"
-          },
-          "message": {
-            "type": "string",
-            "description": "错误信息"
-          },
-          "data": {
-            "oneOf": [
-              {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "description": "参数校验错误信息列表"
-              },
-              {
-                "type": "object",
-                "nullable": true,
-                "description": "业务异常时为 null"
-              }
-            ],
-            "description": "错误数据：参数校验失败时为字符串数组，其他错误时为 null"
-          }
-        }
-      },
-      "PracticeSubjectItemVO": {
-        "type": "object",
-        "description": "套卷题列表 / 单题内容响应项 VO（不含答案：optionList 项已剥离 isCorrect；isAnswer/answerContent 为作答态回填）。",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "description": "题目 id"
-          },
-          "subjectName": {
-            "type": "string",
-            "description": "题目名称"
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
-          },
-          "subjectDifficult": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目难度"
-          },
-          "optionList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectAnswerDTO"
-            },
-            "description": "选项列表（withAnswer=false，isCorrect 已剥离）"
-          },
-          "categoryIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "分类 id 列表"
-          },
-          "labelIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "标签 id 列表"
-          },
-          "labelName": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "标签名称列表"
-          },
-          "isAnswer": {
-            "type": "boolean",
-            "description": "是否已作答"
-          },
-          "answerContent": {
-            "type": "string",
-            "description": "用户已作答内容"
-          }
-        }
-      },
-      "PreSetItemVO": {
-        "type": "object",
-        "description": "预设套卷列表项 VO。",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "description": "套题 id"
-          },
-          "setName": {
-            "type": "string",
-            "description": "套题名称"
-          },
-          "setType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "套题类型（预设恒为 2）"
-          },
-          "setHeat": {
-            "type": "integer",
-            "format": "int32",
-            "description": "热度"
-          },
-          "setDesc": {
-            "type": "string",
-            "description": "套题描述"
-          },
-          "primaryCategoryId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "大类 id"
-          },
-          "createdTime": {
-            "type": "string",
-            "description": "创建时间"
-          }
-        }
-      },
-      "RankItemVO": {
-        "type": "object",
-        "description": "综合练习榜项 VO。",
-        "properties": {
-          "userName": {
-            "type": "string",
-            "description": "用户名（practice_info.created_by）"
-          },
-          "nickName": {
-            "type": "string",
-            "description": "昵称（缺失降级为 userName）"
-          },
-          "avatar": {
-            "type": "string",
-            "description": "头像（缺失为 null）"
-          },
-          "practiceCount": {
-            "type": "integer",
-            "format": "int32",
-            "description": "完成练习数"
-          }
-        }
-      },
-      "InternalCategoryCountQueryDTO": {
-        "type": "object",
-        "required": [
-          "primaryCategoryIds"
-        ],
-        "description": "内部分类题量树请求体（仅内部 Feign 消费）。",
-        "properties": {
-          "primaryCategoryIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "大类（primary category）id 集（必填；空 → 400）",
-            "example": [
-              1
-            ]
-          }
-        }
-      },
-      "InternalJudgeQueryDTO": {
-        "type": "object",
-        "required": [
-          "subjectId",
-          "subjectType",
-          "answerContent"
-        ],
-        "description": "内部判分请求体（仅内部 Feign 消费）。",
-        "properties": {
-          "subjectId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "题目 id（必填）",
-            "example": 11
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型：1=单选，2=多选，3=判断，4=简答（必填）",
-            "example": 1
-          },
-          "answerContent": {
-            "type": "string",
-            "description": "用户答案内容（必填；单选/多选为标号逗号串，判断为 1/0）",
-            "example": "A"
-          }
-        }
-      },
-      "InternalRandomQueryDTO": {
-        "type": "object",
-        "required": [
-          "assembleIds"
-        ],
-        "description": "内部随机抽题请求体（仅内部 Feign 消费）：assembleIds 必填；typeCountMap 非空按题型配比逐型随机合并，空则全量随机（count 缺省取候选全量）。",
-        "properties": {
-          "assembleIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "装配 id 集（必填；元素形如 \"catId-labelId\"，其中 catId 为 subject_mapping.category_id，即分类[叶子] id，labelId 为标签 id）",
-            "example": [
-              "1-3"
-            ]
-          },
-          "excludeSubjectIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "排除题目 id 集（可选）",
-            "example": [
-              99
-            ]
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
-            "description": "全量随机时的抽题总数（可选；缺省取候选全量）",
-            "example": 20
-          },
-          "typeCountMap": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "integer"
-            },
-            "description": "题型配比 {subjectType: count}（可选；subjectType 1单选 2多选 3判断）",
-            "example": {
-              "1": 10,
-              "2": 6,
-              "3": 4
-            }
-          }
-        }
-      },
-      "InternalSubjectItemVO": {
-        "type": "object",
-        "description": "内部批量取题响应项 VO（仅内部 Feign 消费）：withAnswer=false 时 optionList 项 isCorrect、subjectAnswer、subjectParse 为 null。",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "description": "题目 id"
-          },
-          "subjectName": {
-            "type": "string",
-            "description": "题目名称"
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
-          },
-          "subjectDifficult": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目难度"
-          },
-          "optionList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SubjectAnswerDTO"
-            },
-            "description": "选项列表（withAnswer=false 时项内 isCorrect 为 null）"
-          },
-          "subjectAnswer": {
-            "type": "string",
-            "description": "正确答案（withAnswer=false 时为 null）"
-          },
-          "subjectParse": {
-            "type": "string",
-            "description": "题目解析（withAnswer=false 时为 null）"
-          },
-          "categoryIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "分类 id 列表"
-          },
-          "labelIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "标签 id 列表"
-          },
-          "labelName": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "标签名称列表"
-          }
-        }
-      },
-      "InternalSubjectsByIdsQueryDTO": {
-        "type": "object",
-        "required": [
-          "subjectIds"
-        ],
-        "description": "内部批量取题请求体（仅内部 Feign 消费）。",
-        "properties": {
-          "subjectIds": {
-            "type": "array",
-            "items": {
-              "type": "integer"
-            },
-            "description": "题目 id 集（必填；最多 500）",
-            "example": [
-              11,
-              12,
-              13
-            ]
-          },
-          "withAnswer": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否携带答案（缺省 false：剥离 isCorrect 与 subjectParse；true 保留并组 subjectAnswer）",
-            "example": false
-          }
-        }
-      },
-      "JudgeResultVO": {
-        "type": "object",
-        "description": "内部判分响应 VO（仅内部 Feign 消费）：字段与 practice 侧 SubjectJudgeResultVO 逐字一致（judgeable / isCorrect）。",
-        "properties": {
-          "judgeable": {
-            "type": "boolean",
-            "description": "是否可判分（简答题等主观题为 false）",
-            "example": true
-          },
-          "isCorrect": {
-            "type": "boolean",
-            "description": "判分结果是否正确",
-            "example": true
-          }
-        }
-      },
-      "PageResultUnCompleteItem": {
-        "type": "object",
-        "required": [
-          "pageNo",
-          "pageSize",
-          "total",
-          "totalPages",
-          "list"
-        ],
-        "properties": {
-          "pageNo": {
-            "type": "integer",
-            "format": "int32",
-            "description": "当前页码"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32",
-            "description": "每页条数"
-          },
-          "total": {
-            "type": "integer",
-            "format": "int32",
-            "description": "总记录数"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32",
-            "description": "总页数"
-          },
-          "list": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UnCompleteItemVO"
-            },
-            "description": "当前页未完成练习列表"
-          }
-        }
-      },
-      "AddPracticeDTO": {
-        "type": "object",
-        "required": [
-          "assembleIds"
-        ],
-        "properties": {
-          "assembleIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "装配 id 集（必填；元素形如 \"catId-labelId\"，其中 catId 为 subject_mapping.category_id，即分类[叶子] id，labelId 为标签 id）",
-            "example": [
-              "1-3"
-            ]
-          },
-          "practiceId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "续做练习 id（可选；非空且校验通过时直接返回该 id，不重复建草稿）",
-            "example": 1001
-          }
-        }
-      },
-      "SubmitPracticeDTO": {
-        "type": "object",
-        "required": [
-          "practiceId",
-          "timeUse"
-        ],
-        "description": "submit 交卷请求体：timeUse 格式校验在 domain 侧（不符合 HH:mm:ss 返回 400）。",
-        "properties": {
-          "practiceId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "练习 id（必填）",
-            "example": 1001
-          },
-          "timeUse": {
-            "type": "string",
-            "description": "用时（必填；格式 ^\\d{2}:\\d{2}:\\d{2}$ 即 HH:mm:ss，非法 → 400）",
-            "example": "00:15:30"
-          }
-        }
-      },
-      "SubmitSubjectDTO": {
-        "type": "object",
-        "required": [
-          "practiceId",
-          "subjectId",
-          "subjectType"
-        ],
-        "description": "submitSubject 单题提交判分请求体。",
-        "properties": {
-          "practiceId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "练习 id（必填）",
-            "example": 1001
-          },
-          "subjectId": {
-            "type": "integer",
-            "format": "int64",
-            "description": "题目 id（必填）",
-            "example": 11
-          },
-          "subjectType": {
-            "type": "integer",
-            "format": "int32",
-            "description": "题目类型：1=单选，2=多选，3=判断，4=简答（必填）",
-            "example": 1
-          },
-          "answerContent": {
-            "type": "string",
-            "description": "用户答案内容（单选/多选为标号逗号串，判断为 1/0，简答为文本）",
-            "example": "A"
           }
         }
       },
@@ -7211,6 +7259,33 @@
           }
         }
       },
+      "ResponseResultPageAuthUser": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "状态码"
+          },
+          "message": {
+            "type": "string",
+            "description": "消息"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultAuthUser"
+          }
+        }
+      },
       "ReportVO": {
         "type": "object",
         "description": "评估报告响应 VO（C6）：totalCount/correctCount/correctRate 与交卷口径一致（非简答）；skills 按 labelName 聚合。",
@@ -7236,6 +7311,33 @@
               "$ref": "#/components/schemas/SkillItemVO"
             },
             "description": "技能标签聚合"
+          }
+        }
+      },
+      "ResponseResultAuthUser": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "状态码"
+          },
+          "message": {
+            "type": "string",
+            "description": "消息"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AdminAuthUser"
           }
         }
       },
@@ -7290,6 +7392,46 @@
           }
         }
       },
+      "SubjectCategoryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "分类 ID"
+          },
+          "categoryName": {
+            "type": "string",
+            "description": "分类名称"
+          },
+          "categoryType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "分类类型"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "图标链接"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "父级分类 ID"
+          },
+          "sort": {
+            "type": "integer",
+            "format": "int32",
+            "description": "排序值（升序，空值排最后）"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectCategoryDTO"
+            },
+            "description": "子分类列表（递归结构）"
+          }
+        }
+      },
       "SubjectJudgeResultVO": {
         "type": "object",
         "description": "单题判分结果响应 VO（submitSubject）：字段与 subject 内部端点 JudgeResultVO 逐字一致。",
@@ -7303,6 +7445,30 @@
             "type": "boolean",
             "description": "判分结果是否正确",
             "example": true
+          }
+        }
+      },
+      "SubjectLabelDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "标签 ID"
+          },
+          "labelName": {
+            "type": "string",
+            "description": "标签名称"
+          },
+          "sortNum": {
+            "type": "integer",
+            "format": "int32",
+            "description": "排序号"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "所属分类 ID"
           }
         }
       },
@@ -7370,6 +7536,235 @@
           }
         }
       },
+      "SubjectAnswerDTO": {
+        "type": "object",
+        "properties": {
+          "optionType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "整数选项标识：1=A，2=B，3=C，4=D",
+            "example": 1
+          },
+          "optionContent": {
+            "type": "string",
+            "description": "选项内容",
+            "example": "数组+链表+红黑树"
+          },
+          "isCorrect": {
+            "type": "integer",
+            "format": "int32",
+            "description": "是否正确答案：1=正确，0=错误",
+            "example": 1
+          }
+        }
+      },
+      "SubjectInfoAddDTO": {
+        "type": "object",
+        "required": [
+          "subjectName",
+          "subjectDifficult",
+          "subjectType",
+          "subjectScore"
+        ],
+        "properties": {
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称",
+            "example": "Java中HashMap的底层数据结构是什么"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度",
+            "example": 2
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答",
+            "example": 1
+          },
+          "subjectScore": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目分数",
+            "example": 5
+          },
+          "settleName": {
+            "type": "string",
+            "description": "出题人",
+            "example": "李老师"
+          },
+          "subjectParse": {
+            "type": "string",
+            "description": "题目解析",
+            "example": "HashMap底层采用数组+链表+红黑树实现..."
+          },
+          "subjectAnswer": {
+            "type": "string",
+            "description": "题目答案",
+            "example": "A"
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "关联分类 ID 列表",
+            "example": [
+              1,
+              3
+            ]
+          },
+          "labelIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "关联标签 ID 列表",
+            "example": [
+              1,
+              2
+            ]
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表"
+          }
+        }
+      },
+      "SubjectInfoDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 ID"
+          },
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度"
+          },
+          "settleName": {
+            "type": "string",
+            "description": "出题人"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型：1=单选，2=多选，3=判断，4=简答"
+          },
+          "subjectScore": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目分数"
+          },
+          "subjectParse": {
+            "type": "string",
+            "description": "题目解析"
+          },
+          "subjectAnswer": {
+            "type": "string",
+            "description": "题目答案"
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "关联分类 ID 列表"
+          },
+          "labelIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "关联标签 ID 列表"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "分类 ID"
+          },
+          "labelId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "标签 ID"
+          },
+          "labelName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "标签名称列表"
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表"
+          }
+        }
+      },
+      "SubjectPageQueryDTO": {
+        "type": "object",
+        "description": "getSubjectPage 请求体即本 DTO：6 基础字段全部参与筛选；另含可选 primaryCategoryId（A8-P3 X2 向后兼容），缺省不生效。",
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "description": "页码（默认 1）",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "description": "每页条数（默认 20）",
+            "example": 20
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度",
+            "example": 2
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "分类 ID",
+            "example": 1
+          },
+          "labelId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "标签 ID",
+            "example": 1
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型 1单选 2多选 3判断 4简答",
+            "example": 1
+          },
+          "primaryCategoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "可选：一级分类过滤（大类自身+直接子分类，经 subject_mapping），缺省不生效",
+            "example": 1
+          }
+        }
+      },
       "PageResultPreSetItem": {
         "type": "object",
         "required": [
@@ -7409,6 +7804,167 @@
           }
         }
       },
+      "PageResultSubjectInfo": {
+        "type": "object",
+        "required": [
+          "pageNo",
+          "pageSize",
+          "total",
+          "totalPages",
+          "list"
+        ],
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectInfoDTO"
+            },
+            "description": "当前页数据列表"
+          }
+        }
+      },
+      "PageResultAuthUser": {
+        "type": "object",
+        "required": [
+          "pageNo",
+          "pageSize",
+          "total",
+          "totalPages",
+          "list"
+        ],
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdminAuthUser"
+            },
+            "description": "当前页用户列表"
+          }
+        }
+      },
+      "ResponseResultBoolean": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "状态码"
+          },
+          "message": {
+            "type": "string",
+            "description": "消息"
+          },
+          "data": {
+            "type": "boolean",
+            "description": "结果数据"
+          }
+        }
+      },
+      "ResponseResultString": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "状态码"
+          },
+          "message": {
+            "type": "string",
+            "description": "消息"
+          },
+          "data": {
+            "type": "string",
+            "description": "结果数据"
+          }
+        }
+      },
+      "ResponseResultSubjectCategoryList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectCategoryDTO"
+            }
+          }
+        }
+      },
       "ResponseResultSubjectJudgeResult": {
         "type": "object",
         "required": [
@@ -7433,6 +7989,33 @@
           }
         }
       },
+      "ResponseResultSubjectLabelList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectLabelDTO"
+            }
+          }
+        }
+      },
       "ResponseResultSubjectDetailItem": {
         "type": "object",
         "required": [
@@ -7454,6 +8037,236 @@
           },
           "data": {
             "$ref": "#/components/schemas/SubjectDetailItemVO"
+          }
+        }
+      },
+      "ResponseResultSubjectInfo": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SubjectInfoDTO"
+          }
+        }
+      },
+      "ResponseResultSubjectInfoList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectInfoDTO"
+            }
+          }
+        }
+      },
+      "ResponseResultPageSubjectInfo": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultSubjectInfo"
+          }
+        }
+      },
+      "SubjectErrorResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "错误信息"
+          },
+          "data": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "参数校验错误信息列表"
+              },
+              {
+                "type": "object",
+                "nullable": true,
+                "description": "业务异常时为 null"
+              }
+            ],
+            "description": "错误数据：参数校验失败时为字符串数组，其他错误时为 null"
+          }
+        }
+      },
+      "SubjectSearchQueryDTO": {
+        "type": "object",
+        "required": [
+          "keyWord"
+        ],
+        "description": "getSubjectPageBySearch 请求体：按关键词分页搜索题目，keyWord 必填。",
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "description": "页码（默认 1）",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "description": "每页条数（默认 20）",
+            "example": 20
+          },
+          "keyWord": {
+            "type": "string",
+            "description": "搜索关键词（必填；空串返回空列表）",
+            "example": "Java"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型 1单选 2多选 3判断 4简答",
+            "example": 1
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度",
+            "example": 2
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "分类 ID",
+            "example": 1
+          },
+          "labelId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "标签 ID",
+            "example": 1
+          }
+        }
+      },
+      "SubjectSearchItem": {
+        "type": "object",
+        "description": "getSubjectPageBySearch 搜索列表项（不含答案解析，答案见题目详情接口）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "题目 ID"
+          },
+          "subjectName": {
+            "type": "string",
+            "description": "题目名称"
+          },
+          "subjectType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目类型 1单选 2多选 3判断 4简答"
+          },
+          "subjectDifficult": {
+            "type": "integer",
+            "format": "int32",
+            "description": "题目难度"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "分类 ID"
+          },
+          "labelId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "标签 ID"
+          },
+          "labelName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "标签名称列表"
+          },
+          "optionList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectAnswerDTO"
+            },
+            "description": "选项列表"
+          }
+        }
+      },
+      "ContributeListQueryDTO": {
+        "type": "object",
+        "description": "getContributeList 请求体：返回出题贡献榜前 N 名；body 可省略。",
+        "properties": {
+          "topN": {
+            "type": "integer",
+            "format": "int32",
+            "default": 10,
+            "description": "返回条数（默认 10，上限 20，超出按 20 截断）",
+            "example": 10
           }
         }
       },
@@ -7499,6 +8312,25 @@
           }
         }
       },
+      "ContributeItem": {
+        "type": "object",
+        "description": "出题贡献榜条目：按出题人统计题目数量，昵称经 auth 批量查询组装。",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "出题人用户名（subject_info.created_by）"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称（来自 auth 用户信息，缺失时降级为用户名）"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "出题数量"
+          }
+        }
+      },
       "UnCompleteItemVO": {
         "type": "object",
         "description": "未完成练习列表项 VO（complete_status=0 且属于当前登录用户）。",
@@ -7533,6 +8365,31 @@
           "createdTime": {
             "type": "string",
             "description": "创建时间"
+          }
+        }
+      },
+      "UserIdentifierQueryDTO": {
+        "type": "object",
+        "required": [
+          "identifiers"
+        ],
+        "description": "auth 侧用户标识批量查询请求体：按用户名批量获取展示信息（内部跨服务查询）。",
+        "properties": {
+          "identifiers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "用户标识列表（必填，上限 100 个）；纯数字串同时按用户 id 匹配（并集去重），非数字行为不变",
+            "example": [
+              "zhangsan",
+              "lisi"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "标识类型（预留扩展，默认 userName）",
+            "example": "userName"
           }
         }
       },
@@ -7702,6 +8559,119 @@
           }
         }
       },
+      "IdentifierUserItem": {
+        "type": "object",
+        "description": "用户标识批量查询响应条目（展示信息与 auth_user 主键 id）。",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "auth_user 表主键（每个命中用户恒返回）；消费方可按 id 或 userName 建键解析昵称/头像"
+          },
+          "userName": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "昵称"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像 URL"
+          }
+        }
+      },
+      "ResponseResultPageSubjectSearchItem": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "pageNo",
+              "pageSize",
+              "total",
+              "totalPages",
+              "list"
+            ],
+            "properties": {
+              "pageNo": {
+                "type": "integer",
+                "format": "int32",
+                "description": "当前页码"
+              },
+              "pageSize": {
+                "type": "integer",
+                "format": "int32",
+                "description": "每页条数"
+              },
+              "total": {
+                "type": "integer",
+                "format": "int32",
+                "description": "总记录数"
+              },
+              "totalPages": {
+                "type": "integer",
+                "format": "int32",
+                "description": "总页数"
+              },
+              "list": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SubjectSearchItem"
+                },
+                "description": "当前页数据列表"
+              }
+            }
+          }
+        }
+      },
+      "ResponseResultSubjectContributeItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContributeItem"
+            }
+          }
+        }
+      },
       "ResponseResultCategoryCountNodeList": {
         "type": "object",
         "required": [
@@ -7728,6 +8698,768 @@
             }
           }
         }
-      }}
+      },
+      "ResponseResultIdentifierUserItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdentifierUserItem"
+            }
+          }
+        }
+      },
+      "CircleErrorResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "是否成功"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "错误码"
+          },
+          "message": {
+            "type": "string",
+            "description": "错误信息"
+          },
+          "data": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "参数校验错误信息列表"
+              },
+              {
+                "type": "object",
+                "nullable": true,
+                "description": "其他错误时为 null"
+              }
+            ],
+            "description": "错误数据：参数校验失败时为字符串数组，其他错误时为 null"
+          }
+        }
+      },
+      "CircleNodeVO": {
+        "type": "object",
+        "description": "圈子树节点（GET /circle/share/circle/list 响应载荷）：parent_id=-1 为大类根，子圈挂 children；叶子节点 children 因 non_null 序列化省略。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "圈子ID",
+            "example": 1
+          },
+          "circleName": {
+            "type": "string",
+            "description": "圈子名称",
+            "example": "Java进阶"
+          },
+          "icon": {
+            "type": "string",
+            "description": "圈子图片",
+            "example": "https://cdn.example.com/circle/java.png"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CircleNodeVO"
+            },
+            "description": "子圈子（叶子节点省略）"
+          }
+        }
+      },
+      "MomentSaveDTO": {
+        "type": "object",
+        "required": [
+          "circleId"
+        ],
+        "description": "发布动态请求体：仅子圈可发；content 与 picUrlList 至少一项（业务校验，非 400 参数校验）。",
+        "properties": {
+          "circleId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "圈子ID（必填，须为子圈）",
+            "example": 2
+          },
+          "content": {
+            "type": "string",
+            "description": "动态内容（与图片至少一项；经敏感词校验）",
+            "example": "分享一下今天刷题的心得"
+          },
+          "picUrlList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "动态图片列表（与内容至少一项）",
+            "example": [
+              "https://cdn.example.com/moment/1.png"
+            ]
+          }
+        }
+      },
+      "MomentPageQueryDTO": {
+        "type": "object",
+        "description": "动态分页查询请求体：pageNo/pageSize 继承 common PageInfo（默认 1/20，非法值 getter 兜底归一）。",
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "description": "页码（默认 1）",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "description": "每页条数（默认 20）",
+            "example": 10
+          },
+          "circleId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "圈子ID（可选，缺省查全部圈子）",
+            "example": 2
+          }
+        }
+      },
+      "MomentItemVO": {
+        "type": "object",
+        "description": "动态条目（POST /circle/share/moment/getMoments 响应载荷）：createdTime 为 epoch 毫秒数；昵称头像降级昵称=标识串、头像=null（省略）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "动态ID",
+            "example": 1001
+          },
+          "circleId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "圈子ID",
+            "example": 2
+          },
+          "content": {
+            "type": "string",
+            "description": "动态内容",
+            "example": "分享一下今天刷题的心得"
+          },
+          "picUrlList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "动态图片列表"
+          },
+          "replyCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "回复数",
+            "example": 2
+          },
+          "fromId": {
+            "type": "string",
+            "description": "动态创建人登录标识（与 CommentNodeVO.fromId 同源；前端「本人动态」精确判定）"
+          },
+          "nickName": {
+            "type": "string",
+            "description": "创建人昵称（降级=标识串）",
+            "example": "张三"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "创建人头像（降级=null 省略）",
+            "example": "https://cdn.example.com/avatar/1.png"
+          },
+          "createdTime": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建时间（epoch 毫秒数）",
+            "example": 1787980800000
+          }
+        }
+      },
+      "MomentRemoveDTO": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "description": "删除动态请求体：仅本人可删；查无/已删幂等 true。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "动态ID",
+            "example": 1001
+          }
+        }
+      },
+      "CommentSaveDTO": {
+        "type": "object",
+        "required": [
+          "momentId",
+          "replyType"
+        ],
+        "description": "发表评论/回复请求体：replyType=1 评论动态 / 2 回复评论（targetId 必填）；content 与 picUrlList 至少一项。",
+        "properties": {
+          "momentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "动态ID",
+            "example": 1001
+          },
+          "replyType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "回复类型 1评论 2回复",
+            "example": 1
+          },
+          "targetId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "回复目标评论 id（replyType=2 必填）",
+            "example": 2001
+          },
+          "content": {
+            "type": "string",
+            "description": "内容（与图片至少一项；经敏感词校验）",
+            "example": "写得很清楚，收藏了"
+          },
+          "picUrlList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "图片列表（与内容至少一项）"
+          }
+        }
+      },
+      "CommentListQueryDTO": {
+        "type": "object",
+        "required": [
+          "momentId"
+        ],
+        "description": "动态评论树查询请求体。",
+        "properties": {
+          "momentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "动态ID",
+            "example": 1001
+          }
+        }
+      },
+      "CommentNodeVO": {
+        "type": "object",
+        "description": "评论树节点（POST /circle/share/comment/list 响应载荷）：toId 语义 type1=动态作者、type2=被回复评论者（读时派生，与实体 to_id 的 DDL 语义不同属）；createdTime 为 yyyy-MM-dd HH:mm:ss 格式字符串；叶子节点 children 序列化为空数组 []。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "评论ID",
+            "example": 2001
+          },
+          "momentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "原始动态ID",
+            "example": 1001
+          },
+          "replyType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "回复类型 1评论 2回复",
+            "example": 1
+          },
+          "content": {
+            "type": "string",
+            "description": "内容",
+            "example": "写得很清楚，收藏了"
+          },
+          "picUrlList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "图片列表"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "父级id（type1=-1；type2=目标评论id）",
+            "example": -1
+          },
+          "fromId": {
+            "type": "string",
+            "description": "评论人（标识串）",
+            "example": "zhangsan"
+          },
+          "fromNickName": {
+            "type": "string",
+            "description": "评论人昵称（降级=标识串）",
+            "example": "张三"
+          },
+          "fromAvatar": {
+            "type": "string",
+            "description": "评论人头像（降级=null 省略）",
+            "example": "https://cdn.example.com/avatar/1.png"
+          },
+          "toId": {
+            "type": "string",
+            "description": "被回复人（读时派生人员标识）：type1=动态作者、type2=被回复评论者",
+            "example": "lisi"
+          },
+          "toNickName": {
+            "type": "string",
+            "description": "被回复人昵称（降级=标识串）",
+            "example": "李四"
+          },
+          "toAvatar": {
+            "type": "string",
+            "description": "被回复人头像（降级=null 省略）",
+            "example": "https://cdn.example.com/avatar/2.png"
+          },
+          "fromIsMomentAuthor": {
+            "type": "boolean",
+            "description": "评论者是否动态作者",
+            "example": false
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "创建时间（yyyy-MM-dd HH:mm:ss）",
+            "example": "2026-08-29 10:00:00"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentNodeVO"
+            },
+            "description": "子回复（叶子节点为空数组 []）"
+          }
+        }
+      },
+      "CommentRemoveDTO": {
+        "type": "object",
+        "required": [
+          "id",
+          "replyType"
+        ],
+        "description": "删除评论请求体：replyType 契约必填（实现按 id 查询为准，字段不参与删除逻辑）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "评论ID",
+            "example": 2001
+          },
+          "replyType": {
+            "type": "integer",
+            "format": "int32",
+            "description": "回复类型 1评论 2回复（契约必填）",
+            "example": 1
+          }
+        }
+      },
+      "MessagePageQueryDTO": {
+        "type": "object",
+        "description": "消息分页查询请求体：pageNo/pageSize 继承 common PageInfo（默认 1/20，非法值 getter 兜底归一）。",
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1,
+            "description": "页码（默认 1）",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "default": 20,
+            "description": "每页条数（默认 20）",
+            "example": 10
+          },
+          "isRead": {
+            "type": "integer",
+            "format": "int32",
+            "description": "是否已读 1 已读 / 2 未读（缺省查全部）",
+            "example": 2
+          }
+        }
+      },
+      "MessageVO": {
+        "type": "object",
+        "description": "消息条目（POST /circle/share/message/getMessages 响应载荷）：msgType 当前取值 COMMENT（评论动态）/ COMMENT_REPLY（回复评论）；msg 为中性文案（昵称前端拼 fromNickName）；createdTime 为 yyyy-MM-dd HH:mm:ss 格式字符串。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "消息ID",
+            "example": 3001
+          },
+          "msgType": {
+            "type": "string",
+            "description": "消息类型（COMMENT / COMMENT_REPLY）",
+            "example": "COMMENT"
+          },
+          "targetId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "关联动态 id",
+            "example": 1001
+          },
+          "msg": {
+            "type": "string",
+            "description": "中性文案（昵称前端拼）",
+            "example": "评论了你的动态"
+          },
+          "fromId": {
+            "type": "string",
+            "description": "来自人（标识串）",
+            "example": "zhangsan"
+          },
+          "fromNickName": {
+            "type": "string",
+            "description": "来自人昵称（降级=标识串）",
+            "example": "张三"
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "创建时间（yyyy-MM-dd HH:mm:ss）",
+            "example": "2026-08-29 10:00:00"
+          }
+        }
+      },
+      "SensitiveWordSaveDTO": {
+        "type": "object",
+        "required": [
+          "words",
+          "type"
+        ],
+        "description": "敏感词保存请求体（管理端）：type 1=黑名单 2=白名单，同词同类型幂等。",
+        "properties": {
+          "words": {
+            "type": "string",
+            "description": "敏感词内容",
+            "example": "示例敏感词"
+          },
+          "type": {
+            "type": "integer",
+            "format": "int32",
+            "description": "词库类型 1黑名单 2白名单",
+            "example": 1
+          }
+        }
+      },
+      "SensitiveWordRemoveDTO": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "description": "敏感词删除请求体（管理端，逻辑删，幂等）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "敏感词id",
+            "example": 1
+          }
+        }
+      },
+      "SensitiveWordItemVO": {
+        "type": "object",
+        "required": [
+          "id",
+          "words",
+          "type"
+        ],
+        "description": "敏感词词库条目（管理端只读列表；createdTime 存量行为 null，序列化下省略）。",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "敏感词id（remove 端点入参）",
+            "example": 1
+          },
+          "words": {
+            "type": "string",
+            "description": "词内容（复数，对齐表列/实体/save DTO）",
+            "example": "赌博"
+          },
+          "type": {
+            "type": "integer",
+            "description": "1=黑名单 2=白名单",
+            "example": 1
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "创建时间（yyyy-MM-dd HH:mm:ss；存量行 null）",
+            "example": "2026-08-30 12:00:00"
+          }
+        }
+      },
+      "ResponseResultSensitiveWordItemList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "description": "统一响应：data 为敏感词词库条目数组。",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensitiveWordItemVO"
+            }
+          }
+        }
+      },
+      "ResponseResultCircleNodeVOList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CircleNodeVO"
+            }
+          }
+        }
+      },
+      "ResponseResultCommentNodeVOList": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentNodeVO"
+            }
+          }
+        }
+      },
+      "ResponseResultInteger": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "integer",
+            "format": "int32",
+            "description": "结果数据（如未读消息数）"
+          }
+        }
+      },
+      "PageResultMomentItemVO": {
+        "type": "object",
+        "required": [
+          "pageNo",
+          "pageSize",
+          "total",
+          "totalPages",
+          "list"
+        ],
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MomentItemVO"
+            },
+            "description": "当前页动态列表"
+          }
+        }
+      },
+      "ResponseResultPageMomentItemVO": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultMomentItemVO"
+          }
+        }
+      },
+      "PageResultMessageVO": {
+        "type": "object",
+        "required": [
+          "pageNo",
+          "pageSize",
+          "total",
+          "totalPages",
+          "list"
+        ],
+        "properties": {
+          "pageNo": {
+            "type": "integer",
+            "format": "int32",
+            "description": "当前页码"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "description": "每页条数"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总记录数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "description": "总页数"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageVO"
+            },
+            "description": "当前页消息列表"
+          }
+        }
+      },
+      "ResponseResultPageMessageVO": {
+        "type": "object",
+        "required": [
+          "success",
+          "code",
+          "message",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultMessageVO"
+          }
+        }
+      }
+    }
   }
 }
