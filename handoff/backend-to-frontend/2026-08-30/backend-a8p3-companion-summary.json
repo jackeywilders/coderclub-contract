@@ -1,0 +1,25 @@
+{
+  "taskId": "A8-P3-COMPA",
+  "taskTitle": "阶段三配套小批次：X1 消费侧 VO 增补（IdentifierUserItemVO.id required + 4 副本同构 + circle/practice 双键别名）+ NotRoleException 映射同步（subject/practice 403）+ 源文档 id 登记与 info.description 快照同款",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-30/backend-a8p3-companion-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "8649eba",
+  "receiptCommitSha": "",
+  "pullRequestNumber": 16,
+  "contractSnapshotSha256": "DAAEECB7",
+  "sourceDoc": {
+    "path": "docs/api/coderclub-openapi.json",
+    "lfSha256Before": "736F65886FC60E758AF6AB2F1C306BF47259CBEFACF69AC94FA032C567753225",
+    "lfSha256After": "BF59FECD7DA3A97BBC86CA589AA2D0E21CCD450444A63CE82B8AD040E49382B4",
+    "pathCountBefore": 74,
+    "pathCountAfter": 74
+  },
+  "verificationResult": "passed (PR #16 CI build-and-test+sensitive-scan green, runs 33293974452/33295007263; full mvn reactor green; new cases: auth contract id assertion 46/46, AuthUserDirectoryTest 5 (id-key/userName-key/degrade/null-skip/collision-id-first), circle three-chain id-key resolution, practice rankList numeric-loginId real-nickname (proposal-1 acceptance), subject/practice 403 handler unit tests with @ResponseStatus assertion 102/102 & 29/29; whole-branch final review 1 Important fixed (test assertion) re-reviewed ADDRESSED; info.description byte-identical to snapshot DAAEECB7)",
+  "openFindings": [
+    "key-collision boundary (userName equals another user's id string) registered in proposal-1 sec.5, probability negligible; id-key priority currently insertion-order dependent (putIfAbsent), can be made order-independent later if needed",
+    "spec traceability gap registered: CircleContractTest mock-id item narrowed to domain-layer AuthUserDirectoryTest + three-chain cases (equivalent coverage)",
+    "IdentifierUserItem schema class-level description (仅展示信息) slightly stale (now returns id) — fix with PM snapshot micro-sync",
+    "defensive 403 has no natural trigger endpoints (N2), covered by direct handler unit tests + annotation-presence assertion"
+  ],
+  "verificationDate": "2026-08-30"
+}
