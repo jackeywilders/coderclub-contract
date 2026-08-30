@@ -4674,7 +4674,7 @@
           "用户管理"
         ],
         "summary": "按用户标识批量查询（内部）",
-        "description": "内部跨服务查询接口：按用户名批量获取昵称、头像等展示信息（门户出题贡献榜经 Feign 调用）；标识集合中纯数字串同时按用户 id 匹配（并集去重），非数字行为不变（A8-P3 X1，向后兼容）。",
+        "description": "内部跨服务查询接口：按用户名批量获取昵称、头像等展示信息（门户出题贡献榜经 Feign 调用）；标识集合中纯数字串同时按用户 id 匹配（并集去重），非数字行为不变（A8-P3 X1，向后兼容）。返回条目含 auth_user 主键 id（响应增字段，向后兼容）。",
         "security": [
           {
             "Authorization": []
@@ -8495,8 +8495,16 @@
       },
       "IdentifierUserItem": {
         "type": "object",
-        "description": "用户标识批量查询响应条目（仅展示信息）。",
+        "description": "用户标识批量查询响应条目（展示信息与 auth_user 主键 id）。",
+        "required": [
+          "id"
+        ],
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "auth_user 表主键（每个命中用户恒返回）；消费方可按 id 或 userName 建键解析昵称/头像"
+          },
           "userName": {
             "type": "string",
             "description": "用户名"
