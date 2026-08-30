@@ -2,26 +2,26 @@
   "schemaVersion": 2,
   "releaseStatus": "not-published",
   "finalReleaseStatus": "not-published",
-  "backendCommit": "d9eb64fb51c7",
+  "backendCommit": "8649eba468ac",
   "frontendCommit": "ab60c04",
-  "apiContractCommit": "d9eb64fb51c7",
-  "lastSyncedAt": "2026-08-30T04:30:00+08:00",
+  "apiContractCommit": "8649eba468ac",
+  "lastSyncedAt": "2026-08-30T14:57:21+08:00",
   "contractSnapshot": {
     "status": "accepted-for-development",
     "sourceRepository": "G:/Dev/backend/Club/CoderClub",
     "sourceBranch": "main",
     "sourcePath": "docs/api/coderclub-openapi.json",
-    "sourceCommit": "d9eb64fb51c7",
-    "sourceSha256": "736F65886FC60E758AF6AB2F1C306BF47259CBEFACF69AC94FA032C567753225",
+    "sourceCommit": "8649eba468ac",
+    "sourceSha256": "BF59FECD7DA3A97BBC86CA589AA2D0E21CCD450444A63CE82B8AD040E49382B4",
     "snapshotRepository": "G:/Dev/backend/Club/coderclub-contract",
     "snapshotPath": "api/coderclub-openapi.json",
-    "snapshotCommit": "24971d57",
-    "snapshotSha256": "DAAEECB79841F0EAC76E5031C1E34EC75C46BAA27151DEF99A26A5291F7B8170",
+    "snapshotCommit": "aa6cf5cb",
+    "snapshotSha256": "AE967C70FBF0CA69085D2429CB586B0A3C83BDAB9FB9F28D7A5A8B01F17E4F68",
     "openapi": "3.0.3",
     "pathCount": 74,
     "operationCount": 74,
     "semanticDifferenceCount": 11,
-    "semanticDifferenceSummary": "re-based to observed full diff (prior cumulative 38 absorbed by full-chain sync): 10 password/Token example values redacted (8 auth path examples + 2 schema examples TokenInfo/LoginResponse backfilled this sync as historical omission); 1 info.description governance amendment (10-module 74-path circle-inclusive text; source-side 63-wording fix authorized to companion implementation). A8-P3 content adopted from source: +11 circle endpoints +21 schemas, X1/X2 semantic registrations, servers +practice entry, tags +练习/题目内部/圈子; no path/method/security structure differences beyond additions.",
+    "semanticDifferenceSummary": "10 password/Token example values redacted (8 auth path examples + 2 schema examples TokenInfo/LoginResponse); 1 IdentifierUserItem class-level description governance amendment (showcase-info-only wording stale after id addition; source-side wording to be fixed in a later implementation round). Composition updated at A8-P3-COMPA micro-sync: prior info.description governance amendment eliminated by source-side 74-wording fix (B-Impl PR #16); IdentifierUserItem.id/required/endpoint-description adopted from source. No path/method/security structure differences beyond additions.",
     "historicalDeclaredSha256": "0057e69c4deb3e769e191fb319a16f00d4d0fe3eec0b0fc3c218c8e55e4ae20c",
     "historicalDeclaredSha256Status": "superseded-by-observed-snapshot"
   },
@@ -37,5 +37,5 @@
     "baselineEndpointCount": 43,
     "consumptionReceipt": "handoff/frontend-to-backend/2026-08-11/g1-03-frontend-consumption-receipt.md"
   },
-  "notes": "The PM-approved handoff snapshot is authoritative for subsequent cross-project development. The backend source and runtime implementation remain runtime authority. G1-03 was formally closed on 2026-08-12 after frontend baseline update (afba2be/fa908a1, 43 endpoints) and consumption validation; G1-04 was formally closed on 2026-08-13 after real-DB pagination recheck (dead-code cleanup fad2312, nine scenarios verified, receipt signed by 后端评审); Gate 1 is fully accepted (G1-01..G1-05). These closures do not publish the contract; releaseStatus and finalReleaseStatus remain not-published and M4/PM release acceptance remain required. A2 snapshot micro-sync on 2026-08-26: SubjectPageQueryDTO.description aligned to source (sourceCommit 6b2aedd/A8C6A460 -> snapshotSha256 8EBCDA53, semantic diffs 17 -> 18); state gate3-a2-impl-accepted. A8 phase-1 sync on 2026-08-27: +3 portal endpoints + 9 schemas (source ceaffe472eaaf/BA74B152 -> snapshot 4BFB3C72, 46 paths, semantic diffs 18 -> 21). A8 phase-2 sync on 2026-08-28: +17 practice/internal endpoints +46 schemas (source a57f6b8ae7142/9EC37C66 -> snapshot 2583B906, 63 paths, semantic diffs 21 -> 38); PR #14 merged 2cf74d05 (2026-08-27). A8 phase-3 sync on 2026-08-30 (PM acceptance of A8-P3-BE): +11 circle endpoints +21 schemas, X1/X2 semantic registrations, servers/tags debt absorbed (source d9eb64fb51c7/736F6588 -> snapshot 24971d57/DAAEECB7, 74 paths, semantic diffs re-based 38 -> 11 incl. backfill of 2 historically missed schema-example redactions TokenInfo/LoginResponse); CoderClub PR #15 merged 583b4bb (2026-08-29, B-Review authorized); info.description 74-wording on snapshot side, source-side fix dispatched via companion implementation task."
+  "notes": "The PM-approved handoff snapshot is authoritative for subsequent cross-project development. The backend source and runtime implementation remain runtime authority. G1-03 was formally closed on 2026-08-12 after frontend baseline update (afba2be/fa908a1, 43 endpoints) and consumption validation; G1-04 was formally closed on 2026-08-13 after real-DB pagination recheck (dead-code cleanup fad2312, nine scenarios verified, receipt signed by 后端评审); Gate 1 is fully accepted (G1-01..G1-05). These closures do not publish the contract; releaseStatus and finalReleaseStatus remain not-published and M4/PM release acceptance remain required. A2 snapshot micro-sync on 2026-08-26: SubjectPageQueryDTO.description aligned to source (sourceCommit 6b2aedd/A8C6A460 -> snapshotSha256 8EBCDA53, semantic diffs 17 -> 18); state gate3-a2-impl-accepted. A8 phase-1 sync on 2026-08-27: +3 portal endpoints + 9 schemas (source ceaffe472eaaf/BA74B152 -> snapshot 4BFB3C72, 46 paths, semantic diffs 18 -> 21). A8 phase-2 sync on 2026-08-28: +17 practice/internal endpoints +46 schemas (source a57f6b8ae7142/9EC37C66 -> snapshot 2583B906, 63 paths, semantic diffs 21 -> 38); PR #14 merged 2cf74d05 (2026-08-27). A8 phase-3 sync on 2026-08-30 (PM acceptance of A8-P3-BE): +11 circle endpoints +21 schemas, X1/X2 semantic registrations, servers/tags debt absorbed (source d9eb64fb51c7/736F6588 -> snapshot 24971d57/DAAEECB7, 74 paths, semantic diffs re-based 38 -> 11 incl. backfill of 2 historically missed schema-example redactions TokenInfo/LoginResponse); CoderClub PR #15 merged 583b4bb (2026-08-29). A8-P3 companion micro-sync on 2026-08-30 (PM acceptance of A8-P3-COMPA): IdentifierUserItemVO.id + required adopted, info.description 74-wording fix from source eliminated that governance amendment, IdentifierUserItem class-level description amended on snapshot side (source d9eb64f->8649eba468ac/BF59FECD via CoderClub PR #16 merge b15a735 -> snapshot aa6cf5cb/AE967C70, 74 paths, semantic diffs 11 with composition updated); openFindings x1-consumer-key-mismatch and notrole-mapping-gap closed."
 }
