@@ -4,27 +4,27 @@
   "projectPath": "G:/Dev/backend/Club/CoderClubFront",
   "worktree": "G:/Dev/backend/Club/coderclub-contract-codex-frontend",
   "branch": "codex/frontend-design",
-  "sourceCommit": "b47921c8353bba6e4044ffee5ab9d3320b2db8f7",
-  "sourceCommitNote": "A8-P3 消费落地提交（api-docs-baseline.json 更新至 74 端点，2026-08-30）；实施经前端 PR #17 合入 main（merge b9c22221）",
+  "sourceCommit": "7c21ecc1ba295a0fcf94495a17ae20d058c886de",
+  "sourceCommitNote": "A8-P3 D3 fromId 消费落地提交（api-docs-baseline.json 更新至 75 端点 74417dd8，2026-08-31）；实施经前端 PR #19 合入 main（merge d9f18bb）",
   "contract": {
-    "sourceCommit": "8649eba468ac97577acb2de5cfc0a5e30155488e",
+    "sourceCommit": "1fbf0ad83f4270c735b6de95b24db51538f4d1bc",
     "sourcePath": "api/coderclub-openapi.json",
-    "sourceSha256": "ae967c70fbf0ca69085d2429cb586b0a3c83bdab9fb9f28d7a5a8b01f17e4f68",
-    "sourceSha256DiskCrlf": "ae967c70fbf0ca69085d2429cb586b0a3c83bdab9fb9f28d7a5a8b01f17e4f68",
-    "sourceSha256DiskCrlfNote": "2026-08-30 F-Review 实测本地快照 287599 bytes，LF 存储，disk==LF（SHA 与 git 存储一致）",
-    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-30/frontend-circle-report.md",
-    "consumedSha256": "ae967c70fbf0ca69085d2429cb586b0a3c83bdab9fb9f28d7a5a8b01f17e4f68",
-    "consumedSha256DiskCrlf": "ae967c70fbf0ca69085d2429cb586b0a3c83bdab9fb9f28d7a5a8b01f17e4f68",
-    "historicalConsumedSha256": "2583b90679ed990db8bc11ba9eed0fccbf0af3dbedff8b84cda35159f0b05c01",
-    "historicalConsumedSha256Status": "superseded-by-a8-phase3-circle-2026-08-30 (74 endpoints, ae967c70fbf0)；历史链 0dae8d3a (43) → 4bfb3c72a445 (46, A8-P1) → 2583b90679ed (63, A8-P2)；A8-P3-FE 消费 AE967C70 后快照已微同步 6262F444 (75, SENSITIVE-WORDS-LIST list 端点)，本批未消费、待第二批",
+    "sourceSha256": "74417dd8ecdf835be33688bc14c1a4ca8e3d11bdd8f9559056ebe86ed0f85182",
+    "sourceSha256DiskCrlf": "74417dd8ecdf835be33688bc14c1a4ca8e3d11bdd8f9559056ebe86ed0f85182",
+    "sourceSha256DiskCrlfNote": "2026-08-31 F-Review 实测本地快照 291669 bytes，LF 存储，disk==LF（SHA 与 git 存储一致）",
+    "consumptionReceipt": "handoff/frontend-to-backend/2026-08-30/frontend-fromid-switch-report.md",
+    "consumedSha256": "74417dd8ecdf835be33688bc14c1a4ca8e3d11bdd8f9559056ebe86ed0f85182",
+    "consumedSha256DiskCrlf": "74417dd8ecdf835be33688bc14c1a4ca8e3d11bdd8f9559056ebe86ed0f85182",
+    "historicalConsumedSha256": "6262f44477a1a6887668f3514b506d6874edcc645516d471131a2d2a3a2cb439",
+    "historicalConsumedSha256Status": "superseded-by-a8-phase3-d3-fromid-2026-08-31 (75 endpoints, 74417dd8ecdf)；历史链 0dae8d3a (43) → 4bfb3c72a445 (46, A8-P1) → 2583b90679ed (63, A8-P2) → ae967c70fbf0 (74, A8-P3 第一批) → 6262f44477a1 (75, A8-P3 第二批)；当前快照 74417DD8（75，MomentItemVO.fromId 采纳）已消费",
     "openapi": "3.0.3",
-    "pathCount": 74,
-    "operationCount": 74,
-    "baselineEndpointCount": 74
+    "pathCount": 75,
+    "operationCount": 75,
+    "baselineEndpointCount": 75
   },
-  "lastCommit": "b9c22221",
-  "lastCommitNote": "A8-P3-FE 第一批实现（15 commits，impl head 63e1408）经前端 PR #17 合入 main（merge b9c22221，2026-08-30，F-Review 合入，merge message 含复核结论）；基线 63→74（specSha256 ae967c70…）；CI check=success run 33308557314",
-  "lastHandoff": "handoff/frontend-to-backend/2026-08-30/frontend-circle-report.md",
+  "lastCommit": "d9f18bb",
+  "lastCommitNote": "A8-P3-FE 第二批敏感词管理页（12 commits，impl head abf8f5a，PR #18 merge 7905579）+ D3 fromId 小批（5 commits，impl head 497f09e，PR #19 merge d9f18bb，2026-08-31，F-Review 合入）；基线 74→75（specSha256 74417dd8…）；CI check=success run 33328839853 + 33347239581",
+  "lastHandoff": "handoff/frontend-to-backend/2026-08-30/frontend-fromid-switch-report.md",
   "design": "designs/frontend/2026-08-07/api-integration-impact.md",
   "subjectRealApi": {
     "s1": "accepted 2026-08-18 (remove subject USE_MOCK, real requests; impl 2724af4/c068956/bbfa14c, frontend PR #6)",
@@ -36,16 +36,16 @@
   "a8Phases": {
     "phase1": "accepted 2026-08-27（门户壳/三栏首页/同页翻页/搜索页/门户登录/userinfo 对齐；impl a413b19→6909558 经前端 PR #12 合入 cf9d460b；基线 43→46 specSha256 4bfb3c72a445）；receipt PR #74/#75，F-Review signoff PR #76；see acceptance/frontend/2026-08-27/frontend-portalization-implementation-acceptance.md",
     "phase2": "accepted 2026-08-28（练习列表三面板/答题页/分析报告/门户练习榜 + 基线 46→63；impl 5c05279 22 commits 经前端 PR #15 合入 ed3c56a9；build/test 24/24/api:check/lint 绿 + CI SUCCESS run 33145503223；blob 4/4 逐字节一致）；receipt PR #89/#90，F-Review signoff PR #91；4 项联调确认于 PM 验收闭环（correctRate 0-100 从源头确认、简答 judgeable=false 语义、D1 树契约、vitest 延后）；see acceptance/frontend/2026-08-28/frontend-practice-implementation-acceptance.md",
-    "phase3": "accepted 2026-08-30（圈子主页 + 消息中心 T1-T5 + 基线 63→74；impl 63e1408 15 commits 经前端 PR #17 合入 b9c22221；build/test 45/45/api:check 74 No changes/lint 绿 + CI SUCCESS run 33308557314；云端网关联调 401 墙+发动态→评论→回复→双账号未读→读取即已读→删除级联）；receipt PR #112，F-Review signoff PR #115，PM 验收 PR #116（state gate3-a8-phase3-accepted）；D3 fromId 已获 PM 决策（后端补字段随下一排期，前端临时兜底接受）、D2 评估中；see acceptance/frontend/2026-08-30/frontend-circle-implementation-acceptance.md"
+    "phase3": "accepted 2026-08-30（圈子主页 + 消息中心 T1-T5 + 基线 63→74；impl 63e1408 15 commits 经前端 PR #17 合入 b9c22221；build/test 45/45/api:check 74 No changes/lint 绿 + CI SUCCESS run 33308557314；云端网关联调 401 墙+发动态→评论→回复→双账号未读→读取即已读→删除级联）；receipt PR #112，F-Review signoff PR #115，PM 验收 PR #116（state gate3-a8-phase3-accepted）；D3 fromId 已获 PM 决策（后端补字段随下一排期，前端临时兜底接受）、D2 评估中；see acceptance/frontend/2026-08-30/frontend-circle-implementation-acceptance.md｜批次二敏感词管理页 accepted 2026-08-30（T1-T7 + 基线 74→75/6262f444；impl abf8f5a 12 commits 经前端 PR #18 合入 7905579；build/test 52/52/api:check 75/lint 绿 + CI run 33328839853；云端联调全链含 403 非管理员）；receipt PR #123/#125，F-Review signoff PR #126，PM 验收（batch-2 经 lastAction 登记）；see acceptance/frontend/2026-08-30/frontend-sensitive-words-acceptance.md｜D3 fromId 小批 accepted（F-Review signed 2026-08-31，待 PM 验收）：canDeleteMoment 切换 fromId 精确匹配 + MomentItemVO 补 fromId（74417DD8/75）；impl 497f09e 5 commits 经前端 PR #19 合入 d9f18bb；build/test 53/53/api:check 75/lint 绿 + CI run 33347239581；含协调方裁定项（CommentSection isMyMoment 同口径）；receipt PR #128，F-Review signoff PR（见本文件批次）；see acceptance/frontend/2026-08-30/frontend-fromid-switch-acceptance.md"
   },
   "validation": {
     "node": "22.14.0",
     "npm": "10.9.2",
-    "npmRunApiCheck": "2026-08-30 passed: consumed SHA ae967c70fbf0ca69085d2429cb586b0a3c83bdab9fb9f28d7a5a8b01f17e4f68, 74 endpoints, no API contract changes detected（F-Review 于 feat/frontend-a8-p3-circle head 63e1408 独立复验；CI check=success run 33308557314）；本地快照 disk==LF==ae967c70…（287599 bytes）",
-    "npmTest": "2026-08-30 passed: 45 tests, 0 failures, 0 skipped（8 suites，含 circle 18 用例与 interceptor silent-on-200 3 用例；TZ=UTC 亦绿）",
-    "npmRunLint": "2026-08-30 passed（全量 --fix=false exit 0）",
-    "npmRunBuild": "2026-08-30 passed: vue-tsc --noEmit and vite build exit 0",
-    "frontendCi": "ci workflow paths 过滤仅覆盖 src/scripts/package 变更；PR #17（代码）PR CI SUCCESS run 33308557314（含 63e1408 最终修复后重跑）；docs 类 PR 无 checks 属设计如此（CI 不适用）；main push run 于 merge b9c22221 后自动触发（同套件）",
+    "npmRunApiCheck": "2026-08-31 passed: consumed SHA 74417dd8ecdf835be33688bc14c1a4ca8e3d11bdd8f9559056ebe86ed0f85182, 75 endpoints, no API contract changes detected（F-Review 于 feat/frontend-a8-p3-fromid-switch head 497f09e 独立复验；批二 2026-08-30 head abf8f5a 复验 6262f444/75）；本地快照 disk==LF==74417dd8…（291669 bytes）",
+    "npmTest": "2026-08-31 passed: 53 tests, 0 failures, 0 skipped（8 suites；fromId 小批 53/53、批二 52/52、批一 45/45，均为 F-Review 标准命令直跑）",
+    "npmRunLint": "2026-08-31 passed（全量 --fix=false exit 0；批二/批一同）",
+    "npmRunBuild": "2026-08-31 passed: vue-tsc --noEmit and vite build exit 0（批二/批一同；闭环 F-Impl 沙箱拦截项）",
+    "frontendCi": "ci workflow paths 过滤仅覆盖 src/scripts/package 变更；PR #17 run 33308557314、PR #18 run 33328839853、PR #19 run 33347239581 均 check=success（含最终修复后重跑）；docs 类 PR 无 checks 属设计如此（CI 不适用）",
     "defaultNpmEntry": "accepted by user confirmation from local CMD; node and npm default entry verified"
   },
   "acceptance": {
@@ -57,7 +57,9 @@
     "A2-addendum-2026-08-26": "closed: keyword dead param cleanup (impl d825a183, frontend PR #10, merge 601d778e, R2 confirmed); addendumCommitSha d825a183 in receipt section 9; PM A3 acceptance closed",
     "A8-P1-2026-08-27": "accepted: portalization phase 1 (impl a413b19→6909558, frontend PR #12 merge cf9d460b, baseline 43→46/4bfb3c72a445); receipt PR #74/#75, F-Review signoff PR #76; see acceptance/frontend/2026-08-27/frontend-portalization-implementation-acceptance.md",
     "A8-P2-2026-08-28": "accepted: practice T1-T4 + baseline 46→63/2583b90679ed (impl 5c05279, frontend PR #15 merge ed3c56a9); receipt PR #89/#90, F-Review signoff PR #91; 4 join-verification items closed at PM acceptance; see acceptance/frontend/2026-08-28/frontend-practice-implementation-acceptance.md",
-    "A8-P3-2026-08-30": "accepted: circle home + messages center T1-T5 + baseline 63→74/ae967c70fbf0 (impl 63e1408, frontend PR #17 merge b9c22221, F-Review authorized merge); receipt PR #112, F-Review signoff PR #115, PM acceptance PR #116 (state gate3-a8-phase3-accepted); D3 fromId decided (backend impl deferred to next round, temporary fallback accepted), D2 under evaluation; cloud gateway e2e evidence in receipt §5; see acceptance/frontend/2026-08-30/frontend-circle-implementation-acceptance.md"
+    "A8-P3-2026-08-30": "accepted: circle home + messages center T1-T5 + baseline 63→74/ae967c70fbf0 (impl 63e1408, frontend PR #17 merge b9c22221, F-Review authorized merge); receipt PR #112, F-Review signoff PR #115, PM acceptance PR #116 (state gate3-a8-phase3-accepted); D3 fromId decided (backend impl deferred to next round, temporary fallback accepted), D2 under evaluation; cloud gateway e2e evidence in receipt §5; see acceptance/frontend/2026-08-30/frontend-circle-implementation-acceptance.md",
+    "A8-P3-batch2-sensitive-2026-08-30": "accepted: admin sensitive-words manage page T1-T7 + baseline 74→75/6262f44477a1 (impl abf8f5a, frontend PR #18 merge 7905579, F-Review authorized merge; head 9374a5d → abf8f5a 最终审查 S1/N1/N2); receipt PR #123/#125, F-Review signoff PR #126, PM acceptance via lastAction (2026-08-30); cloud gateway e2e incl 403 non-admin; F-Impl sandbox gaps closed by F-Review local re-verification (52/52, build 0); see acceptance/frontend/2026-08-30/frontend-sensitive-words-acceptance.md",
+    "A8-P3-D3-fromid-switch-2026-08-31": "F-Review signed 2026-08-31, PM acceptance pending: canDeleteMoment switched to fromId exact match + MomentItemVO.fromId (74417dd8/75, baseline count unchanged); impl 497f09e (5 commits, PR #19 merge d9f18bb, F-Review authorized merge); receipt PR #128 (42e5f68b); incl coordination ruling (CommentSection isMyMoment same-semantics switch); F-Review local re-verification 53/53 + build 0 + CI run 33347239581; see acceptance/frontend/2026-08-30/frontend-fromid-switch-acceptance.md"
   },
   "openItems": [
     {
@@ -71,11 +73,12 @@
     },
     {
       "id": "moment-item-fromid-frontend-switch",
-      "status": "open",
+      "status": "closed",
       "date": "2026-08-30",
+      "closedDate": "2026-08-31",
       "source": "A8-P3-FE receipt §6 + pm/reviews/2026-08-30/moment-item-fromid-decision.md（D3）",
-      "description": "MomentItemVO 缺创建人标识 fromId，本批临时判定 nickName===昵称||===String(id)（误判面=昵称重复，仅影响删除入口显示，删除动作受后端「仅本人」400 兜底）。PM 已决策：后端补 fromId（与 CommentNodeVO.fromId 同源）随下一实现轮派发。",
-      "suggestedAction": "fromId 字段落地后前端一行切换精确匹配（canDeleteMoment），移除临时兜底；与 pm.json 联动跟踪"
+      "description": "MomentItemVO 曾缺创建人标识 fromId，前端以昵称/ID 临时兜底判定（误判面=昵称重复）。D3 闭环：后端补 fromId（与 CommentNodeVO.fromId 同源）已合入并采纳进快照 74417DD8；前端 canDeleteMoment 已切换 fromId 精确匹配（PR #19 merge d9f18bb），临时兜底移除。",
+      "suggestedAction": "closed 2026-08-31（fromId 前端切换小批 F-Review 签署，转 PM 验收）"
     },
     {
       "id": "messagevo-item-isread",
