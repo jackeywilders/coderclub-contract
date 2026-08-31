@@ -12,9 +12,9 @@
 | --- | --- |
 | 实现仓库 | jackeywilders/coderclub（后端） |
 | 分支 | `feat/backend-database-init-landing`（基于 `86a09e7`） |
-| 实现头 | `1f35e2b`（7 提交：spec + plan + L1 SQL + L2 实体 + L3 README + L5 JVM + 最终审查修复波） |
+| 实现头 | `7db8a33`（8 提交：spec + plan + L1 SQL + L2 实体 + L3 README + L5 JVM + 最终审查修复波 + **B-Review 对齐提交**——share_comment_reply 按 PM 裁决运行口径对齐权威 `478ed4a`，落地副本与权威 blob 逐字节一致 `8fcb38a`） |
 | PR | **#20**（feat/backend-database-init-landing → main） |
-| CI | build-and-test + sensitive-scan（head `1f35e2b`，双绿核验后转人工合入） |
+| CI | build-and-test + sensitive-scan（head `7db8a33`，run 33410679502 双绿） |
 | 合入状态 | **R1 达成**；R2 待人工合入（用户/B-Review 在 CI 全绿后执行） |
 
 ## 2. 任务明细（对照任务书 L1-L5）
