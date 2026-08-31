@@ -263,9 +263,9 @@ CREATE TABLE `share_comment_reply` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '评论ID',
   `moment_id` bigint NOT NULL COMMENT '原始动态ID',
   `reply_type` int NOT NULL COMMENT '回复类型 1评论 2回复',
-  `to_id` bigint NULL DEFAULT NULL COMMENT '评论目标id（type1=动态作者/type2=被回复评论者，读时派生人员语义）',
+  `to_id` bigint NULL DEFAULT NULL COMMENT '评论目标id（type1=动态id/type2=回复目标评论id；读时派生态作者人员语义）',
   `reply_id` bigint NULL DEFAULT NULL COMMENT '回复目标id',
-  `parent_id` bigint NULL DEFAULT NULL COMMENT '父评论id（0=顶层）',
+  `parent_id` bigint NULL DEFAULT NULL COMMENT '父评论id（-1=顶层，回复=父评论id）',
   `content` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '内容',
   `pic_urls` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片内容',
   `created_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
@@ -851,11 +851,11 @@ INSERT INTO `share_moment` (`id`, `circle_id`, `content`, `pic_urls`, `reply_cou
 (5, 13, '消息队列选型讨论', NULL, 0, '5', NOW(), 0);
 
 INSERT INTO `share_comment_reply` (`id`, `moment_id`, `reply_type`, `to_id`, `reply_id`, `parent_id`, `content`, `pic_urls`, `created_by`, `created_time`, `is_deleted`) VALUES
-(1, 1, 1, 2, NULL, 0, '讲得很清楚，学习了', NULL, '3', NOW(), 0),
-(2, 1, 2, 3, 1, 1, '同感，已收藏', NULL, '2', NOW(), 0),
-(3, 1, 2, 2, 1, 1, '感谢支持', NULL, '3', NOW(), 0),
-(4, 3, 1, 2, NULL, 0, '正好需要，感谢分享', NULL, '5', NOW(), 0),
-(5, 4, 1, 4, NULL, 0, '索引失效的场景可以再补充', NULL, '2', NOW(), 0);
+(1, 1, 1, 1, NULL, -1, '讲得很清楚，学习了', NULL, '3', NOW(), 0),
+(2, 1, 2, 1, 1, 1, '同感，已收藏', NULL, '2', NOW(), 0),
+(3, 1, 2, 1, 1, 1, '感谢支持', NULL, '3', NOW(), 0),
+(4, 3, 1, 3, NULL, -1, '正好需要，感谢分享', NULL, '5', NOW(), 0),
+(5, 4, 1, 4, NULL, -1, '索引失效的场景可以再补充', NULL, '2', NOW(), 0);
 
 INSERT INTO `share_message` (`id`, `from_id`, `to_id`, `content`, `is_read`, `created_by`, `created_time`, `is_deleted`) VALUES
 (1, '3', '2', '{"msgType":"COMMENT","msg":"评论了你的动态","targetId":1}', 1, 'system', NOW(), 0),
