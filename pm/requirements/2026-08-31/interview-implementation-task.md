@@ -12,6 +12,8 @@
 - 新建服务 `coder-club-interview`（接入既有 `G:/Dev/backend/Club/CoderClub` 多模块结构，nacos/gateway/feign/sa-token 体系）；建议分支 `feat/interview-service`。
 - **Apifox**：新服务模块「interview服务」须**由用户先行创建**（治理 2026-08-30 生效，MCP/客户端均无模块 API）；B-Impl 接单第一步提醒。
 - **数据表基准确认**：已按 `docs/database/2026-08-31-coder-club-init.sql` 全库重建 utf8mb4（用户已执行，无字符集迁移）；interview 3 表按该文件结构与字段实现（`avg_score/score decimal(5,2)`、`hit_keywords json`、审计列）。
+- **Nacos 配置模板前置（A1 模式）**：B-Impl 提供 `coder-club-interview-dev.properties` 配置模板（datasource/Redis/nacos discovery/sa-token/feign(auth,subject) url/interview 参数：抽题 N、三档文案、会话 TTL 2h），**真实值由用户在 Nacos 补齐**（A8-P3-BE 补 circle 配置先例）；凭据类（DB/Redis 密码）走既有 Jasypt 加密或用户注入，不落明文。
+- **部署 JVM 约束**（代码评估：interview 为轻量服务，无大内存依赖）：`-Xms128m -Xmx384m -XX:MaxMetaspaceSize=256m`（DFA 词库/Redis 会话为 KB 级，调小堆不影响正常运作；显式控制防默认堆超载——服务器 7.5G 内存 7 服务并发临界）。
 - 现有快照 `74417DD8`（75 路径）；本批登记后路径数 75 → **83**（interview 5 + 词库 3 = 8 端点；最终以实际登记为准）。
 
 ## 1. 任务明细
