@@ -1,0 +1,30 @@
+{
+  "taskId": "SUBJECT-SEARCH-MEILISEARCH",
+  "taskTitle": "subject 题目搜索升级 Meilisearch（S1-S5）：SDK+Client 配置 / subject_pool 索引与文档（扩展字段保全 4 筛选）/ getSubjectPageBySearch 改 Meili 查询（降级 LIKE）/ 写后同步 + admin 全量重建",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-31/backend-subject-search-meilisearch-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "73b98ea",
+  "receiptCommitSha": "2be6316",
+  "pullRequestNumber": 22,
+  "contractSnapshotSha256": "",
+  "sourceDoc": {
+    "path": "docs/api/coderclub-openapi.json",
+    "lfSha256Before": "26AEC009C4A823629DCC1D6EB5984773791BC3380407F846AAA7D4308F12CC90",
+    "lfSha256After": "26AEC009C4A823629DCC1D6EB5984773791BC3380407F846AAA7D4308F12CC90",
+    "pathCountBefore": 75,
+    "pathCountAfter": 75,
+    "note": "本批不登记端点（openapi 无变更）；/subject/search/admin/rebuild 新端点登记随 PM 验收批次微同步（与 interview 端点一并）"
+  },
+  "verificationResult": "passed (full mvn install+test exit 0; focused 124+ green — Meili discriminative (not-LIKE), empty short-circuit, degrade-to-LIKE, reorder-anchored, 3 write hooks, idempotent rebuild with index_not_found-only tolerance, endpoint 200/403/401; final review mergeable-after-fix: C1 update-hook re-read persisted entity (is_deleted preservation) + I1 category_ids array + M1/M2/M3, re-review 5/5 ADDRESSED)",
+  "openFindings": [
+    "full-rebuild N+1 lookups (per-entity brief/mapping/label queries) — batch optimization deferred",
+    "total is Meili estimatedTotalHits (maxTotalHits 1000 cap) vs exact SQL COUNT — not hit at current scale, registered",
+    "ordering now Meili relevance (was unspecified LIKE order) — behavior improvement, registered",
+    "new endpoint /subject/search/admin/rebuild not in openapi — registration deferred to PM micro-sync batch (per spec S5.3 ruling)",
+    "hit-count vs fetched-row drift theoretically possible (Meili estimate vs queryByIds rows) — immaterial at scale",
+    "write hooks do not ensureIndex — first write before any rebuild relies on Meili auto primary-key inference (works on current version); lazy ensureIndex deferred",
+    "add hook writes Meili inside transaction — commit failure could leave ghost doc (low probability, rebuild cleans)",
+    "delete hook builds stub doc (id+isDeleted=1 only) — functionally correct (is_deleted=0 filter never matches), doc content incomplete, registered"
+  ],
+  "verificationDate": "2026-08-31"
+}
