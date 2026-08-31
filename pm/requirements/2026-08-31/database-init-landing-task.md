@@ -25,6 +25,13 @@
 ### L4 质量门禁
 - 落地后 schema 文档与 SQL 一致性自检（表清单 26、字段、索引）；全仓 mvn + CI 双绿；回执双轨（含 `receiptCommitSha`）+ 四字段。
 
+### L5 部署 JVM 预算（代码研究定案，2026-08-31）
+- 各服务为轻量业务服务（无 ES/大缓存；DFA/Caffeine KB 级）——**显式 JVM 参数降开销且不影响正常运行**（默认堆 = 物理 1/4 ≈ 1.8G/服务 属浪费）：
+  - `gateway / auth / oss`：`-Xms128m -Xmx256m -XX:MaxMetaspaceSize=256m`
+  - `subject / practice / circle / interview`：`-Xms128m -Xmx384m -XX:MaxMetaspaceSize=256m`
+- 落点：`docker-compose.yml` 各服务 `JAVA_OPTS` 或启动脚本注入；**开发期按需启动（分批）**——服务器 7.5G 内存，7 服务全量并发 used ≈ 6.5G 偏临界，4 核 CPU 并发亦紧。
+- 新服务 interview 同约束（任务书已注）。
+
 ## 2. 约束
 
 - 以交接仓库 SQL 为**数据依据**（运行时库已由用户按该文件执行，保持对齐）；不改既有业务字段语义（仅注释/类型统一）。
