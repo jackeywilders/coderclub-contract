@@ -844,10 +844,10 @@ INSERT INTO `share_circle` (`id`, `parent_id`, `circle_name`, `icon`, `created_b
 -- share_moment / share_comment_reply / share_message（演示样例）
 -- ------------------------------------------------------------
 INSERT INTO `share_moment` (`id`, `circle_id`, `content`, `pic_urls`, `reply_count`, `created_by`, `created_time`, `is_deleted`) VALUES
-(1, 4, 'JVM 内存模型学习打卡', NULL, 1, '2', NOW(), 0),
+(1, 4, 'JVM 内存模型学习打卡', NULL, 3, '2', NOW(), 0),
 (2, 4, '垃圾回收算法分享', NULL, 0, '3', NOW(), 0),
-(3, 8, 'Vue 组件通信技巧', NULL, 0, '2', NOW(), 0),
-(4, 11, 'MySQL 索引优化笔记', NULL, 0, '4', NOW(), 0),
+(3, 8, 'Vue 组件通信技巧', NULL, 1, '2', NOW(), 0),
+(4, 11, 'MySQL 索引优化笔记', NULL, 1, '4', NOW(), 0),
 (5, 13, '消息队列选型讨论', NULL, 0, '5', NOW(), 0);
 
 INSERT INTO `share_comment_reply` (`id`, `moment_id`, `reply_type`, `to_id`, `reply_id`, `parent_id`, `content`, `pic_urls`, `created_by`, `created_time`, `is_deleted`) VALUES
