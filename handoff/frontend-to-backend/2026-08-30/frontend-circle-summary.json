@@ -12,7 +12,7 @@
   "contractChanged": false,
   "verificationResult": "passed",
   "verificationDate": "2026-08-30",
-  "receiptCommitSha": null,
-  "receiptCommitShas": [],
+  "receiptCommitSha": "af0c69f",
+  "receiptCommitShas": ["af0c69f"],
   "notes": "A8-P3-FE 第一批圈子模块一体交付（SDD：设计 40198e3 + 计划 5fce653/f9fa8f3 + 10 任务逐任务实现 + 任务级审查全通过 + 最终审查 3 项修复 63e1408）；契约快照 AE967C70（74 路径）零变更，基线 63→74 由 b47921c 同步；本地验证 build exit0 / test 45/45（TZ=UTC 亦绿）/ lint exit0 / api:check 74 No changes；PR #17 CI check=success。云端网关联调 2026-08-30 经本机网关 localhost:5000 实跑通过：401 登录墙 + 发动态→评论→回复→双账号未读（COMMENT/COMMENT_REPLY 目标正确，from==to 不落已验证）→读取即已读归零→删除级联；敏感词命中文案与任务书逐字一致；发现 moment/comment save 返回 boolean 而非 id（前端按刷新第一页消费，一致）。待联调确认项：MessageVO 无 isRead 条目标记（D2）、MomentItemVO fromId 提案（D3，已随 PR #111 合入交接 main）、oss/upload bucket/objectName 取值口径（真实图片上传链待 Minio 环境）、未读 tab 翻页即置已读属预期。D0：文案「圈子」替代任务书「鸡圈」（仅 UI 文案，路由/契约不变）。mergeCommitSha 与 receiptCommitSha 待 PR #17 合入、本回执合入后回填。"
 }
