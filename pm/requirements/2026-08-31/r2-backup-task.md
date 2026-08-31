@@ -15,7 +15,8 @@
 
 ### S2 工具与配置（rclone，S3 兼容）
 - 采用 **rclone**（S3 兼容 + 支持 R2 端点 + 并发/分片/压缩 + 官方维护）。
-- R2 remote 配置：`type=s3`、`endpoint=https://<ACCOUNT_ID>.r2.cloudflarestorage.com`、`access_key_id/secret_access_key`（**占位符，凭据由用户持有、不落盘/不入库/不入提交**）。
+- R2 remote 配置：`type=s3`、`endpoint=https://<ACCOUNT_ID>.r2.cloudflarestorage.com`、`access_key_id/secret_access_key`。
+- **凭据存放约定（规则 8，不落明文）**：R2 凭据走**服务器 rclone 配置的密码加密存储**（`rclone config` 输入时加密落盘）**或环境变量**（`RCLONE_CONFIG_R2_ACCESS_KEY_ID/SECRET_ACCESS_KEY`）；**不走 Nacos**（rclone 为客户端工具不读 Nacos）、不入库、不入提交；明文仅存在于用户配置输入瞬间。若未来改 Java 备份服务，凭据走 Nacos + Jasypt `ENC(...)`（与既有 Jasypt 模式一致）。
 - **强制 IPv4**：rclone/系统网络禁用 IPv6 解析（R2 实测 IPv6 不通）——配置层强制 IPv4。
 - **multipart 并发 + 压缩**：rclone 默认分片并发；备份产物已 gzip/tar.gz 压缩。
 

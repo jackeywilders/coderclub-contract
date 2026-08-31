@@ -18,7 +18,7 @@
 
 ### S1 Meilisearch 客户端
 - `coder-club-subject` 引入官方 SDK 依赖（`com.meilisearch.sdk:meilisearch-java`）；`@Configuration` 创建 `Client` Bean。
-- nacos 配置：`meilisearch.url`（http://<host>:7700，占位）、`meilisearch.key`（占位引用，用户持有真实值）；规则 8 占位符。
+- nacos 配置：`meilisearch.url`（http://<host>:7700，占位）、`meilisearch.key`（**master key 走 Jasypt `ENC(...)` 加密或环境变量注入，不落明文**——规则 8）；规则 8 占位符。
 
 ### S2 索引与文档
 - index 命名 `subject_pool`；文档字段：`subject_id / subject_name / subject_answer / subject_type / label_names / is_deleted`；`searchableAttributes` = subject_name/type；`filterableAttributes` = subject_type/label_names。
