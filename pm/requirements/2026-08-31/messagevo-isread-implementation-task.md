@@ -1,10 +1,10 @@
-# 任务书：MessageVO 补 isRead 实现（B-Impl，排期登记）
+# 任务书：MessageVO 补 isRead 实现（B-Impl）
 
 > 派发角色：协调 PM
 > 派发日期：2026-08-31
 > 执行角色：后端实现（B-Impl）
 > 提案（已 PM 确认）：`proposals/backend/2026-08-31/messagevo-isread-item-proposal.md`（PR #136，R2 main）；PM 决策：`pm/reviews/2026-08-31/messagevo-isread-item-decision.md`（PR #135，立项）+ `messagevo-isread-item-proposal-decision.md`（确认，本批）
-> **排期状态：并入后续批次派发**（阶段四 interview 排期或空档小批）——本任务书为排期登记与执行口径，开工时机随批次；不单独占排期
+> **派发状态：正式派发（第二批，与 subject-search/redis/r2 并行）**——2026-08-31 用户确认纳入阶段四排期一并解决；circle 域独立小改，仅依赖第一批（data 落地）实体基线即可开工；验收后快照微同步（isRead 字段采纳）与阶段四批次合并
 
 ## 1. 任务明细
 
