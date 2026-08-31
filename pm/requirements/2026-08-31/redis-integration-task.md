@@ -4,7 +4,7 @@
 > 派发日期：2026-08-31
 > 执行角色：后端实现（B-Impl）
 > 决策依据：grill 共识（2026-08-31）——Q8 全面 Redis 化（缓存/计数/排行/会话/锁）+ Q9 **表保留持久兜底**（Redis 作加速层，清空可重建）+ Caffeine/Redis 分工确认（纯读缓存 Caffeine 保留/可选 Redis；一致性数据 Redis 必须）
-> 现状核查（审查确认）：Redis 8.8.1（云端 82.156.114.247:6379）**仅承载 sa-token 登录态**；circle 树 Caffeine 本地缓存；**业务代码无 RedisTemplate 直接使用**；practice 排行为 MySQL 聚合；敏感词 DFA 内存 Trie + save/remove rebuild
+> 现状核查（审查确认）：Redis 8.8.1（云端，host 占位 `<redis-host>`）**仅承载 sa-token 登录态**；circle 树 Caffeine 本地缓存；**业务代码无 RedisTemplate 直接使用**；practice 排行为 MySQL 聚合；敏感词 DFA 内存 Trie + save/remove rebuild
 > 批次：阶段四配套（与 interview 后端/前端、subject 搜索升级、数据落地同批）
 
 ## 1. 任务明细
@@ -28,7 +28,7 @@
 - 由 interview 任务书 S5 承接（interviewId 会话 TTL 2h + 词库缓存 + 防重锁）——本任务书提供共享基建与锁封装。
 
 ### S5 质量门禁
-- Redis 单测/集成测试（本地/云端 Redis 可用：82.156.114.247:6379）；全仓 mvn + CI 双绿；回执双轨（含 `receiptCommitSha`）+ 四字段。
+- Redis 单测/集成测试（本地/云端 Redis 可用，地址按 nacos 配置下发、host 占位 `<redis-host>`）；全仓 mvn + CI 双绿；回执双轨（含 `receiptCommitSha`）+ 四字段。
 - 验证：未读计数/排行/词库失效的 Redis 读写一致性断言；Redis 清空后从库重建路径可验证。
 
 ## 2. 约束
