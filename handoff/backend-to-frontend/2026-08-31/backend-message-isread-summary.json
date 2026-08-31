@@ -1,0 +1,24 @@
+{
+  "taskId": "MESSAGEVO-ISREAD-D2",
+  "taskTitle": "MessageVO 补条目级 isRead（1=已读/2=未读，@JsonValue 数字序列化；读取时点状态透传；75 路径不变）",
+  "receiptPath": "handoff/backend-to-frontend/2026-08-31/backend-message-isread-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "f6c23a0",
+  "receiptCommitSha": "",
+  "pullRequestNumber": 21,
+  "contractSnapshotSha256": "",
+  "sourceDoc": {
+    "path": "docs/api/coderclub-openapi.json",
+    "lfSha256Before": "26AEC009C4A823629DCC1D6EB5984773791BC3380407F846AAA7D4308F12CC90",
+    "lfSha256After": "57C2D6EE12D071CD6799718D7F772DAE10587C5FD7B876443CDAB06CF29E91D4",
+    "pathCountBefore": 75,
+    "pathCountAfter": 75
+  },
+  "verificationResult": "passed (full mvn install+test exit 0; CircleContractTest 23/23 incl discriminative isRead=2 numeric assertion; ShareMessageDomainServiceImplTest 8/8 incl InOrder assembly-before-markRead timing; final review mergeable-after-fix, InOrder hardening + BO javadoc fix wave f6c23a0, re-review 2/2 ADDRESSED)",
+  "openFindings": [
+    "MessageIsReadEnum.of() silently maps out-of-domain values (0/3/negative) to UNREAD — spec keeps simple (DB domain 1/2), convention noted in javadoc; optional warn-log if dirty-value visibility needed (deferred)",
+    "MessageIsReadEnum.desc has no serialization path (@JsonValue takes over) — kept as semantic metadata (deferred)",
+    "sibling test getMessages_结构化展开_批量昵称_返回后按页内置已读 still uses bare verify for markReadByIds — timing contract covered by this batch's InOrder case (non-blocking observation)"
+  ],
+  "verificationDate": "2026-08-31"
+}
