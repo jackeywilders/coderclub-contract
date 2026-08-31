@@ -5446,6 +5446,7 @@
                         "msg": "评论了你的动态",
                         "fromId": "zhangsan",
                         "fromNickName": "张三",
+                        "isRead": 2,
                         "createdTime": "2026-08-29 10:00:00"
                       }
                     ]
@@ -9150,6 +9151,12 @@
             "type": "string",
             "description": "来自人昵称（降级=标识串）",
             "example": "张三"
+          },
+          "isRead": {
+            "type": "integer",
+            "format": "int32",
+            "description": "是否已读：1=已读 2=未读；读取时点（置已读前）状态——返回后按页内 ids 置已读，本次响应反映读前原值，与「读取即已读」兼容",
+            "example": 2
           },
           "createdTime": {
             "type": "string",
