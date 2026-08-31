@@ -4,9 +4,9 @@
   "taskTitle": "前端 fromId 判定切换小批（D3：本人动态判定切换 fromId 精确匹配，75 端点快照 74417dd8）",
   "receiptPath": "handoff/frontend-to-backend/2026-08-30/frontend-fromid-switch-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClubFront",
-  "sourceCommit": "ed12997aa9acd98bf4b96ff93509945ad1f6348e",
-  "implementationCommitSha": "ed12997",
-  "implementationCommitShas": ["f4c128b", "7c21ecc", "86fb5af", "ed12997"],
+  "sourceCommit": "497f09e8ba0c526c45e55a9dd23f9b679c1b4d37",
+  "implementationCommitSha": "497f09e",
+  "implementationCommitShas": ["f4c128b", "7c21ecc", "86fb5af", "ed12997", "497f09e"],
   "endpointCount": 75,
   "specSha256": "74417dd8ecdf835be33688bc14c1a4ca8e3d11bdd8f9559056ebe86ed0f85182",
   "contractSnapshotSha256": "74417dd8",
@@ -21,15 +21,21 @@
   "validation": {
     "apiCheck": "No changes (75 / 74417dd8)",
     "lint": "exit 0",
-    "vueTsc": "exit 0",
-    "unitTests": "53/53 pass",
+    "vueTsc": "exit 0 (after final-review fix 497f09e)",
+    "unitTests": "53/53 pass (after final-review fix 497f09e)",
     "rebaseTreeConsistency": "HEAD tree == pre-rebase tree (a859b77c)",
-    "ci": "PR #19 check=success (run 33330381997)"
+    "ci": "PR #19 check=success (run 33347239581, after 497f09e)"
   },
   "verificationDate": "2026-08-30",
   "r2Status": "pending-frontend-merge (PR #19 open, CI success; 待用户/F-Review 合入)",
   "receiptPr": 128,
   "receiptCommitSha": "42e5f68b",
   "receiptCommitShas": ["42e5f68b"],
-  "notes": "A8-P3-FE D3 fromId 小批：PM 决策 PR #114 确认 MomentItemVO fromId；后端 86a09e7；类型 src/types/circle.d.ts + 判定 src/utils/circle.ts + 调用 MomentCard.vue + 单测 circle.test.ts + 基线 specSha256 74417dd8（75 端点，main 基线 6262F444 端点数一致无冲突）。分支 rebase 至最新 main（含敏感词批 #18 合入，7905579），4/4 无冲突，rebase 后 tree=a859b77c 与 rebase 前逐位一致；origin/main..HEAD diff 仅 7 个 fromId 文件。本地门禁：api:check No changes / lint 0 / vue-tsc 0 / 等价全量单测 53/53 pass（npm test 原命令与 vite build 沙箱未现场执行，CI npm test+build 阶段绿兜底）；前端 PR #19 CI check=success。回执经 gh API 提交交接仓库 claude/frontend-proposals 分支（本地 git 写沙箱受限，通道降级为 API，见回执 §5 登记说明）。receiptCommitSha 待本回执合入后回填。"
+  "finalReviewFix": {
+    "commit": "497f09e",
+    "commitSha": "497f09e8ba0c526c45e55a9dd23f9b679c1b4d37",
+    "scope": "超出任务书声明（协调方裁定）：评论树 CommentSection.vue isMyMoment() 动态作者判定顺带切换为 fromId 精确匹配",
+    "message": "fix(circle): 评论树 isMyMoment 动态作者判定切换 fromId 精确匹配 (协调方裁定)"
+  },
+  "notes": "A8-P3-FE D3 fromId 小批：PM 决策 PR #114 确认 MomentItemVO fromId；后端 86a09e7；类型 src/types/circle.d.ts + 判定 src/utils/circle.ts + 调用 MomentCard.vue + 单测 circle.test.ts + 基线 specSha256 74417dd8（75 端点，main 基线 6262F444 端点数一致无冲突）。分支 rebase 至最新 main（含敏感词批 #18 合入，7905579），rebase 后 tree=a859b77c 与 rebase 前逐位一致；origin/main..HEAD diff 仅 7 个 fromId 文件。本地门禁：api:check No changes / lint 0 / vue-tsc 0 / 等价全量单测 53/53 pass（npm test 原命令与 vite build 沙箱未现场执行，CI npm test+build 阶段绿兜底）；前端 PR #19 CI check=success。回执经 gh API 提交交接仓库 claude/frontend-proposals 分支（本地 git 写沙箱受限，通道降级为 API，见回执 §5 登记说明）。最终审查补登（协调方裁定）：评论树 CommentSection.vue isMyMoment()「动态作者可删」判定顺带切换为 fromId 精确匹配（与 canDeleteMoment 同口径，props.moment.fromId === String(info.id)，消除同源昵称碰撞误判；超出任务书「评论树零改动」字面），新增提交 497f09e，vue-tsc exit 0 + 等价全量单测 53/53 pass，PR #19 CI 重跑 success。"
 }
