@@ -11,12 +11,12 @@
 
 - 前端项目 `G:/Dev/backend/Club/CoderClubFront`；角色分支 `claude/frontend-proposals`，建议实现分支 `feat/frontend-interview`。
 - 消费契约：后端 interview 端点登记后的快照（**75 → 83 路径**，PM 验收后微同步；本任务书按 8 端点契约实现，基线更新随后端合入后的快照）。
-- 管理端页面模式基准 = `SensitiveManage.vue`（操作卡 + 表格 + 对话框）；门户页面模式基准 = 既有门户风格（PortalLayout 登录墙内）。
+- 管理端页面模式基准 = `SensitiveManage.vue`（操作卡 + 表格 + 对话框；词库页复用 `CategorySelect` 与 `utils/sensitive.ts` 的 `formatCreatedTime`）；门户模式基准 = `CircleView.vue`（分类选择/列表）+ **`PractiseDetail.vue`（逐题作答即时反馈）** 组合复用（PortalLayout 登录墙内）。
 
 ## 1. 任务明细
 
 ### F1 门户：面试流程（`/interview` 路由，PortalLayout 登录墙内）
-- **开始面试**：分类选择（复用 subject 分类树，可选「全部」）→ `POST /interview/start` → 题面列表（`InterviewStartVO.questions`：题名 + 标签）
+- **开始面试**：分类选择（复用 subject 分类树/`CategorySelect`，可选「全部」）→ `POST /interview/start` → 题面列表（`InterviewStartVO.questions:[{questionId, subjectName, labelNames}]`，**`labelNames` 为字符串数组**）
 - **逐题作答**：简答输入框 → `POST /interview/submit` → 即时评分反馈（`score` 0-100 + `scoreText` 三档文案 + 命中关键词展示）
 - **结束**：`POST /interview/finish` → 汇总页（总分/平均分/`scoreText`/题数）
 - **历史**：`POST /interview/history` 分页列表 → `POST /interview/history/detail` 详情（每题题目/我的答案/评分/命中词）
@@ -29,7 +29,8 @@
 - 菜单：Sidebar 新增「面试词库」项（`v-if="hasAdminRole"`）
 
 ### F3 公共层
-- `src/api/interview.ts`（5 面试端点 + 3 词库端点消费）、`src/types/interview.d.ts`（契约类型）、`src/utils/interview.ts`（纯函数：分数段文案映射/命中词展示/列表解析等，配单测）
+- `src/api/interview.ts`（5 面试端点 + 3 词库端点消费）、`src/types/interview.d.ts`（契约类型）、`src/utils/interview.ts`（纯函数：**scoreText 三档边界 `<60 基础待加强 / 60-79 掌握良好 / ≥80 理解深入`**、命中词展示、列表解析等，配单测）
+- **`npm test` 脚本为显式文件枚举**：新增 `src/__tests__/interview.test.ts` 后必须加入 `package.json` test 脚本（否则新用例不执行、零回归声明失真）
 - `api:check` 基线更新（75 → **83**，specSha256 随后端快照登记后同步）
 
 ## 2. 质量门禁与验收证据

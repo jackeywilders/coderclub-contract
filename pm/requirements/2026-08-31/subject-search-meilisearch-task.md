@@ -22,10 +22,11 @@
 
 ### S2 索引与文档
 - index 命名 `subject_pool`；文档字段：`subject_id / subject_name / subject_answer / subject_type / label_names / is_deleted`；`searchableAttributes` = subject_name/type；`filterableAttributes` = subject_type/label_names。
+- **文档构建联查**：`subject_answer` 在 `subject_brief` 表（`SubjectBriefEntity`，按 subject_id 联查，注意实体 `subjectId` 为 Integer 需转 Long）；`label_names` 联 `subject_mapping→subject_label`（复用 `getLabelNamesFromMappingList` 组装先例）；文档携带 `is_deleted` 并在搜索时过滤（对齐现 SQL `is_deleted=0`）。
 - 遵循官方 Good practices：**先配置 settings 再 addDocuments**；构建索引映射（对齐既有 `SubjectSearchItemVO` 消费字段）。
 
 ### S3 改造搜索端点（前端无感）
-- `POST /subject/search`（`getSubjectPageBySearch`）：后端从 SQL LIKE 切换为 **Meilisearch 全文查询**（keyword 全文匹配 + subject_type/label filter + 分页），响应结构与既有 `PageResult<SubjectSearchItemVO>` 一致（含 labelName 组装、空串空页语义沿用）。
+- **改造既有端点 `POST /subject/getSubjectPageBySearch`（不更名）**：后端从 SQL LIKE 切换为 **Meilisearch 全文查询**（keyword 全文匹配 + subject_type/label filter + 分页），响应结构与既有 `PageResult<SubjectSearchItemVO>` 一致（含 labelName 组装、空串空页语义沿用）。
 - **契约不变**（方法/路径/参数/响应）；前端 SearchView 零改动。
 
 ### S4 索引一致性（写后同步 + 全量重建）
