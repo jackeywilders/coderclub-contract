@@ -20,7 +20,7 @@
 | 维度 | 技能 specl/plan（`docs/superpowers/**`） | 仓库 proposal（`proposals/**`） |
 | --- | --- | --- |
 | 解决什么 | 怎么做（实现细节、实施计划） | 应不应该改契约 / 跨项目影响 / 是否需 PM 确认 |
-| 放哪 | 所属代码仓库 `docs/superpowers/` | 交接仓库 `proposals/后端` 或 `proposals/前端` |
+| 放哪 | 所属代码仓库 `docs/superpowers/` | 交接仓库 `proposals/backend/` 或 `proposals/frontend/` |
 | Owner | 实现角色 | 评审角色 + PM 决策 |
 | 审批 | 无（实现内部） | PM 明确确认 |
 | 契约变更覆盖 | **不覆盖、不替代** | 必须（接口字段/路径/方法/鉴权/错误码/兼容性） |
