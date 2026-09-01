@@ -1,0 +1,28 @@
+{
+  "taskId": "R2-BACKUP",
+  "taskTitle": "R2 备份/归档实施（S1-S5）：Bash 备份脚本（db 远程 mysqldump→gzip→rclone copyto R2 / logs 日归档 / prune 本地保留 3 份 / --dry-run）+ backup.env.example 配置模板 + backup.cron 示例 + docs/ops/backup-restore-sop.md（rclone 配置 + IPv4 + 生命周期 + 恢复演练 + 告警）；cron 部署由管理员执行（交付边界裁定）",
+  "receiptPath": "handoff/backend-to-frontend/2026-09-01/backend-r2-backup-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "30b27a8",
+  "receiptCommitSha": "PENDING",
+  "pullRequestNumber": 26,
+  "contractSnapshotSha256": "",
+  "sourceDoc": {
+    "path": "docs/api/coderclub-openapi.json",
+    "lfSha256Before": "UNCHANGED",
+    "lfSha256After": "UNCHANGED",
+    "pathCountBefore": 75,
+    "pathCountAfter": 75,
+    "note": "本批纯运维脚本+文档，openapi 无任何变更（75 路径不变）"
+  },
+  "verificationResult": "passed (bash -n syntax OK via git-bash.exe + native bash.exe exit 0; --dry-run db/logs/prune all subcommands exercised locally with placeholder env; prune simulation 5-keep-3 deletes oldest 2 + empty-dir no arithmetic error after fix round 1 (|| true pipefail single-line total); no Java/pom changes so CI build-and-test fast-passed + sensitive-scan green (run 33530426827); per-task SDD reviews clean with 1 fix round (prune empty-dir count), re-review ADDRESSED)",
+  "openFindings": [
+    "cron deployment / real backup / restore drill executed by administrator per delivery-boundary ruling (SOP sections 3-9: rclone key config, script placement, crontab registration, R2 lifecycle rules, first restore drill)",
+    "dry-run db echo lands in .sql artifact file via shell redirection (run wrapper cannot see redirects; harmless — real execution redirects correctly)",
+    "mysqldump -p$MYSQL_PASSWORD visible briefly in process cmdline (env-var value, MySQL CLI inherent; MYSQL_PWD alternative deferred)",
+    "rclone size verification logs only, does not gate (brief-level design; fail-on-mismatch could be tightened later)",
+    "SOP minor tensions: GRANT sample grants SHOW VIEW/TRIGGER unconditionally vs prose 'as needed'; webhook example Content-Type text/plain vs declared application/json (marked as illustrative)",
+    "global :? validation makes prune/logs also require MYSQL_*/R2_BUCKET env (optional per-subcommand validation deferred)"
+  ],
+  "verificationDate": "2026-09-01"
+}
