@@ -3,7 +3,7 @@
   "state": "gate3-a8-phase3-accepted-snapshot-consumed",
   "projectPath": "G:/Dev/backend/Club/CoderClubFront",
   "worktree": "G:/Dev/backend/Club/coderclub-contract-codex-frontend",
-  "branch": "codex/frontend-design",
+  "branch": "review/frontend",
   "sourceCommit": "7c21ecc1ba295a0fcf94495a17ae20d058c886de",
   "sourceCommitNote": "A8-P3 D3 fromId 消费落地提交（api-docs-baseline.json 更新至 75 端点 74417dd8，2026-08-31）；实施经前端 PR #19 合入 main（merge d9f18bb）",
   "contract": {

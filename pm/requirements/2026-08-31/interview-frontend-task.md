@@ -9,7 +9,7 @@
 
 ## 前置基线
 
-- 前端项目 `G:/Dev/backend/Club/CoderClubFront`；角色分支 `claude/frontend-proposals`，建议实现分支 `feat/frontend-interview`。
+- 前端项目 `G:/Dev/backend/Club/CoderClubFront`；角色分支 `impl/frontend`，建议实现分支 `feat/frontend-interview`。
 - 消费契约：后端 interview 端点登记后的快照（**75 → 83 路径**，PM 验收后微同步；本任务书按 8 端点契约实现，基线更新随后端合入后的快照）。
 - 管理端页面模式基准 = `SensitiveManage.vue`（操作卡 + 表格 + 对话框；词库页复用 `CategorySelect` 与 `utils/sensitive.ts` 的 `formatCreatedTime`）；门户模式基准 = `CircleView.vue`（分类选择/列表）+ **`PractiseDetail.vue`（逐题作答即时反馈）** 组合复用（PortalLayout 登录墙内）。
 

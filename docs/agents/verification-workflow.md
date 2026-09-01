@@ -62,6 +62,8 @@
 
 执行回执保持 Markdown 正文（人可读的论证与原始输出），另附**同目录结构化摘要** `*-summary.json`（机器可核验的证据声明）。模板见 `handoff/backend-to-frontend/_template-task-receipt-summary.json`。
 
+**回执分支策略（2026-09-01 起，见 role-naming.md 分支治理规范）**：回执直接在各**角色稳定分支**（`pm`/`review/backend`/`impl/backend`/`review/frontend`/`impl/frontend`）上一次性提交并发 PR（governance-check 通过自动合入），**不再创建 `claude/backend-*-receipt`、`*-backfill` 等一次性回执分支**；此类历史一次性分支均已删除。
+
 摘要必填字段（workflow §4.1 校验）：`taskId`、`taskTitle`、`receiptPath`、`sourceProject`、`implementationCommitSha`、`receiptCommitSha`、`pullRequestNumber`、`contractSnapshotSha256`、`verificationResult`、`verificationDate`。
 
 ## 7. state 受控枚举
@@ -84,11 +86,11 @@
 
 | 角色 | 分支 | 同步动作 | 后续执行要求 |
 | --- | --- | --- | --- |
-| 协调 PM | `codex/pm-coordination` | 已合入（本协议即由 PM 起草） | 维护 state 受控枚举（§7）；验收按 §2 通知字段收证据，并核对 §6 回执文件已落交接仓库 |
-| 后端评审 | `codex/backend-contract` | `git merge origin/main` | 签署回执时按 §2 自检通知字段、按 §5 人链核验实施提交；回执须在交接仓库落文件（§6 双轨）；工作底稿 + main 合入流程不变 |
-| 后端实现 | `claude/backend-proposals` | `git merge origin/main` | 执行回执**双轨**：Markdown 正文 + 同目录 `*-summary.json`（模板 `handoff/backend-to-frontend/_template-task-receipt-summary.json`，字段见 §6）**提交到交接仓库 handoff 目录**；完成通知带 §2 四字段远端证据 |
-| 前端评审 | `codex/frontend-design` | `git merge origin/main` | 前端侧交接/验收回执同样适用 §2 通知字段与 §5 跨仓库人链核验（前端提交在 CoderClubFront）；前端回执同样须在交接仓库落文件（§6 双轨） |
-| 前端实现 | `claude/frontend-proposals` | `git merge origin/main` | 前端回执双轨约定沿用 §6 字段（模板随后端方向；如前端回执新增，按 §6 字段结构补 `*-summary.json` 并提交到交接仓库 handoff 目录） |
+| 协调 PM | `pm` | `git merge origin/main` | 维护 state 受控枚举（§7）；验收按 §2 通知字段收证据，并核对 §6 回执文件已落交接仓库 |
+| 后端评审 | `review/backend` | `git merge origin/main` | 签署回执时按 §2 自检通知字段、按 §5 人链核验实施提交；回执须在交接仓库落文件（§6 双轨）；工作底稿 + main 合入流程不变 |
+| 后端实现 | `impl/backend` | `git merge origin/main` | 执行回执**双轨**：Markdown 正文 + 同目录 `*-summary.json`（模板 `handoff/backend-to-frontend/_template-task-receipt-summary.json`，字段见 §6）**提交到交接仓库 handoff 目录**；完成通知带 §2 四字段远端证据 |
+| 前端评审 | `review/frontend` | `git merge origin/main` | 前端侧交接/验收回执同样适用 §2 通知字段与 §5 跨仓库人链核验（前端提交在 CoderClubFront）；前端回执同样须在交接仓库落文件（§6 双轨） |
+| 前端实现 | `impl/frontend` | `git merge origin/main` | 前端回执双轨约定沿用 §6 字段（模板随后端方向；如前端回执新增，按 §6 字段结构补 `*-summary.json` 并提交到交接仓库 handoff 目录） |
 
 **当前 M4 状态**：M4 01-06 全部验收关闭（`status/pm.json` `state = gate0-1-m4-all-accepted`）；下一步 Gate 4 发布门禁，`releaseStatus`/`finalReleaseStatus` 变更须用户明确授权。
 

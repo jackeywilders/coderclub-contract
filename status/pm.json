@@ -2,7 +2,7 @@
   "role": "pm",
   "state": "gate3-a8-phase3-accepted",
   "repository": "coderclub-contract",
-  "branch": "codex/pm-coordination",
+  "branch": "pm",
   "workspace": "G:/Dev/backend/Club/coderclub-contract-codex-pm",
   "reviewedRef": "origin/main",
   "reviewedCommit": "63ae06a59232fc77e8ef6871fe18195a0681b1dd",
