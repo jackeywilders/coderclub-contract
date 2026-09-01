@@ -1,0 +1,31 @@
+{
+  "taskId": "REDIS-INTEGRATION",
+  "taskTitle": "Redis 读写加速实施（S1-S5）：common Redis 基建（RedisKeyPrefixes/RedisUtil/RedisLockUtil/TransactionBoundRunner/RedisConfig Redisson 懒装配）/ Caffeine 三处全覆盖（circle 树+subject 分类树+题目详情）/ 未读 counter:unread / reply counter:reply / 敏感词 Redis 数据源+pub/sub 失效（rebuild 强制 DB 重载）/ 排行 rank:practice zset（giveUp 仅交卷回减）/ subject_liked 仅预留",
+  "receiptPath": "handoff/backend-to-frontend/2026-09-01/backend-redis-integration-report.md",
+  "sourceProject": "G:/Dev/backend/Club/CoderClub",
+  "implementationCommitSha": "c82983c",
+  "receiptCommitSha": "b029d96",
+  "pullRequestNumber": 23,
+  "contractSnapshotSha256": "",
+  "sourceDoc": {
+    "path": "docs/api/coderclub-openapi.json",
+    "lfSha256Before": "ADCCD073E0117CA017846157A84E0FA1603D44BC6E05593CA1F256755967B0A7",
+    "lfSha256After": "ADCCD073E0117CA017846157A84E0FA1603D44BC6E05593CA1F256755967B0A7",
+    "pathCountBefore": 75,
+    "pathCountAfter": 75,
+    "note": "本批 openapi 无变更（内部实现切换，无新端点）；如 PM 有合并 interview 端点批次则随验收微同步"
+  },
+  "verificationResult": "passed (full mvn install+test exit 0; 34-module reactor 674 tests green incl. 2 new assembly tests; per-task reviews clean with fix waves: FIX-C1 pub/sub message-loop (listener reloadLocal no-publish) + FIX-I1 load degrade-to-DB + I-1 giveUp decrement only-when-completed (human ruling) + FIX-C2 sensitive-word write-path force-DB-reload (integration-found); cloud integration verified with 2x FLUSHDB: unread/reply/rank write paths, miss backfill (unread/reply), rank DB rebuild, giveUp decrement, sensitive-word add/remove enforcement all PASS)",
+  "openFindings": [
+    "subject_liked reserved only (no endpoints/contract; DDL table + uniq_like unique index ready; key conventions documented, to be implemented by future like task under R1)",
+    "rank zset same-score ordering = member lexicographic vs SQL group-by desc unspecified order — acceptable, registered",
+    "subject detail cache 30s window (answer edit stale-briefly visible; task book ruled tolerable local copy)",
+    "Redisson programmatic assembly bypasses redisson-spring-boot-starter (Spring Boot 4 compat); lazy connect moves assembly errors from startup-fast-fail to first-lock runtime failure (inherent tradeoff)",
+    "real lock acquisition not triggered by any endpoint in this task (lock reserved for rebuild/interview); unit-tested via mock RLock, live verification deferred to interview task S5",
+    "miss-backfill x concurrent DECR narrow race (unread/reply): setIfAbsent prevents overwriting new INCR; Redis briefly diverges from DB until next write converges — spec-inherent",
+    "INCR/DECR and DB non-atomic concurrent window: counter layer and table eventually consistent (task-book dual-insurance semantics)",
+    "sensitive-word backfill failure leaves other instances on stale snapshot (eventual consistency, by design); idempotent save still full-DB reads (perf observation only)",
+    "new config circle.sensitive-word.pubsub.auto-start (default true) not documented in application.yaml/Nacos — suggest doc note"
+  ],
+  "verificationDate": "2026-09-01"
+}
