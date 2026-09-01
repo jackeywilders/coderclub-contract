@@ -3,7 +3,7 @@
   "taskTitle": "数据库数据依据落地（L1-L5）：26 表 SQL 落盘 + 实体 Long 化/注释统一 + 数据使用说明 README + L5 JVM 预算",
   "receiptPath": "handoff/backend-to-frontend/2026-08-31/backend-database-init-landing-report.md",
   "sourceProject": "G:/Dev/backend/Club/CoderClub",
-  "implementationCommitSha": "1f35e2b",
+  "implementationCommitSha": "7db8a33",
   "receiptCommitSha": "5e204ce",
   "pullRequestNumber": 20,
   "contractSnapshotSha256": "",
