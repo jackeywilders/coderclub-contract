@@ -17,7 +17,7 @@
 
 职责：维护交接仓库治理规则，汇总需求与决策，协调后端和前端交接，维护路线图、报告、验收记录及同步状态。
 
-允许写入：当前交接仓库内的全部治理路径，包括 `AGENTS.md`、`CLAUDE.md`、`docs/`、`api/`、`designs/`、`handoff/`、`proposals/`、`acceptance/`、`pm/` 和 `status/`。
+允许写入：当前交接仓库内的全部治理路径，包括 `AGENTS.md`、`CLAUDE.md`、`docs/`、`api/`、`designs/`、`handoff/`、`proposals/`、`acceptance/`、`pm/` 和 `status/`。**另获治理文件扩展权限（2026-09-01 起）**：三大仓库（交接 / 后端 `CoderClub` / 前端 `CoderClubFront`）的**治理文件**——`AGENTS.md`、`CLAUDE.md`、`CONTEXT.md`（仅治理相关节）、`docs/agents/**`、`docs/INDEX.md`——PM 可直接修改（经各仓分支 + PR 合入）。**不包括项目内容文件**：`README.md`、`DEPLOYMENT.md`、`docs/database/**`、`docs/api/coderclub-openapi.json`（运行时契约）、`docs/superpowers/**`（实现层技能产物）及源码 / 业务配置；`CONTEXT.md` 的架构 / 技术内容不在 PM 修改范围（归实现层）。
 
 禁止写入：后端项目和前端项目；不得未经来源核验或 PM 批准写入、替换 `api/` 契约快照；不得未经授权推送远端。
 
@@ -71,3 +71,4 @@
 7. 本机全局已配置 `prepare-commit-msg` 钩子（`git config --global core.hooksPath`），自动剥离 AI 工具追加的 `Co-Authored-By: Claude ...` 提交署名行，对所有仓库与提交工具生效（2026-08-15 起）；约定细节、副作用与回退方式见 `docs/agents/git-commit-conventions.md`。历史提交保留原样。
 8. 交接文档中的真实环境信息（IP/域名/端口/凭据值/测试账号密码/内部库名/namespace）一律以占位符呈现（语义化占位符，规范见 `docs/agents/sensitive-data-conventions.md`）；**提交消息与 PR 描述同样公开且受此约束**；真实值对照表由协调 PM 维护在私有位置，不得提交到本仓库或任何公开远端。2026-08-15 历史脱敏改写后旧提交哈希失效，追溯以协调 PM 私有对照表或改写前备份为准。
 9. **远程优先核验与完成通知**：核验任何"已完成/已签署/已合入"声称时，先按 `docs/agents/remote-channel-policy.md` 的通道策略访问远端（MCP/gh API 优先，git fetch 直连兜底，代理经会话内单命令注入；通道全断时按该策略排队登记、恢复补推），再按声称类型查远端对应层级（存在性 R1 = 远端分支/PR 可见；生效性 R2 = 已合入 `main`），禁止仅凭本地 worktree 判定；完成通知必须携带远端状态证据（实施提交 SHA、回执提交 SHA、PR 号、R2 状态）。执行回执采用双轨（Markdown 正文 + 同目录 `*-summary.json` 结构化摘要，模板见 `handoff/backend-to-frontend/_template-task-receipt-summary.json`）。细节与分级补救见 `docs/agents/verification-workflow.md`。
+10. **工具选择（2026-09-01 起）**：本仓库及后端 / 前端项目的 git / 文件 / 文本处理 / JSON 操作**默认使用 Git Bash**——调用必须用绝对路径 `D:\Program Files\Git\bin\bash.exe -lc "<命令>"`，**禁止裸 `bash`**（本机 `system32\bash.exe` 是 WSL 启动器，会被误解析）；运行项目自带 `.ps1` 启动脚本（`start-*.ps1`）与 Windows 系统级操作使用 pwsh；JSON 处理用 jq（已装 1.8.2，Git Bash 内可用），无 jq 时 `python3 -c "import json;..."` 兜底。完整工具选择决策表见全局 AGENTS（`G:\Dev\agent\agens rules\AGENT.md` §5a）。
