@@ -55,6 +55,17 @@
 3. **[建议修改] 2 项**：随下个迭代批次统一（dry-run 重定向 + MYSQL_PWD）。
 4. **第二批四线全部完成**：④isRead ✅ ①Meili ✅ ②Redis ✅ ③R2 ✅。剩余推进项：**interview 后端/前端**（同批三线），后端待 Nacos 配置模板真实值；前端待后端端点落地后微同步（75→83 + rebuild 端点）。
 
+## 7. 修复闭环补记（2026-09-03）
+
+R2-BACKUP 的 B-Review Code Review 意见（2 建议修改 + 2 仅供参考）已由 B-Impl 以 CoderClub **PR #28**（head `56b55d5`，1 commit 改 `scripts/backup/backup.sh`）全部处理并合入 main（merge `5e50ead6`，2026-09-03T04:39:24Z，R2 达成，CI 双绿 run 33535341606）：
+
+- **[建议修改]** db dry-run 重定向改 `/dev/null`（无残留空 .sql，实测 dry-run 前后 db/ 文件数不变）+ 回显 `MYSQL_PWD=***` 打码；
+- **[建议修改]** 凭据改 `MYSQL_PWD` 环境变量传递（避 `/proc/<pid>/cmdline` 可见）；
+- **[仅供参考]** logs 注释「仅当日」→ 对齐实现「打包目录全部内容（按日命名区分）」；
+- **[仅供参考]** rclone size 校验升级硬门禁（对象大小 0 Byte / 无法获取 Total size → fail，仅成功才 log OK）。
+
+B-Review 复核：4 项全部到位、无 [必须修复]；PR #28 已合入（R2 达成）。**R2-BACKUP 意见闭环，验收记录收口。**
+
 ---
 
 验收人：协调 PM，2026-09-01
