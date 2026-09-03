@@ -73,3 +73,9 @@
 9. **远程优先核验与完成通知**：核验任何"已完成/已签署/已合入"声称时，先按 `docs/agents/remote-channel-policy.md` 的通道策略访问远端（MCP/gh API 优先，git fetch 直连兜底，代理经会话内单命令注入；通道全断时按该策略排队登记、恢复补推），再按声称类型查远端对应层级（存在性 R1 = 远端分支/PR 可见；生效性 R2 = 已合入 `main`），禁止仅凭本地 worktree 判定；完成通知必须携带远端状态证据（实施提交 SHA、回执提交 SHA、PR 号、R2 状态）。执行回执采用双轨（Markdown 正文 + 同目录 `*-summary.json` 结构化摘要，模板见 `handoff/backend-to-frontend/_template-task-receipt-summary.json`）。细节与分级补救见 `docs/agents/verification-workflow.md`。
 10. **工具选择（2026-09-01 起）**：本仓库及后端 / 前端项目的 git / 文件 / 文本处理 / JSON 操作**默认使用 Git Bash**——调用必须用绝对路径 `D:\Program Files\Git\bin\bash.exe -lc "<命令>"`，**禁止裸 `bash`**（本机 `system32\bash.exe` 是 WSL 启动器，会被误解析）；运行项目自带 `.ps1` 启动脚本（`start-*.ps1`）与 Windows 系统级操作使用 pwsh；JSON 处理用 jq（已装 1.8.2，Git Bash 内可用），无 jq 时 `python3 -c "import json;..."` 兜底。完整工具选择决策表见全局 AGENTS（`G:\Dev\agent\agens rules\AGENT.md` §5a）。
 11. **记忆系统使用（2026-09-02 起）**：各角色会话按 `docs/agents/mnemon/` 方案（总领 + 各自角色方案）使用 Mnemon 记忆。要点：项目级权威事实由协调 PM 播种与维护（交接仓 `.mnemon`，唯一项目记忆根）；各角色个人偏好 / 模块经验由对应角色会话写入；Runtime（USER.md/MEMORY.md 每轮投影）、Documents（完整档案）、Memory Space `default`（跨任务结论，条目带 `[角色-模块]` 前缀逻辑分区）。**禁止向任何记忆层写入密钥 / Token / 私钥 / 凭据、临时进度、原始日志、未验证猜测**。完整规则见总领方案 `docs/agents/mnemon/2026-09-02-memory-integration-master.md`。
+12. **复用优先（避免重复造轮子，2026-09-03 起）**：在**架构设计/调整、功能设计、代码编写、部署运维**四类场景中，禁止一上来就自研工具 / 实现，须按下述序列决策：
+    1. **先查项目内复用**：本交接仓 / 后端 / 前端项目是否已有可复用代码、工具、脚本、组件、依赖（如 `scripts/`、`docs/ops/`、既有 SOP、`coder-club-common`）。
+    2. **再查权威源与最佳实践**：项目内无现成可用时，检索官方文档 / 官方库（Maven Central / npm / 官方 GitHub）、可信最佳实践（成熟项目 / 公认模式）；候选须**匹配本项目资源开销约束**（轻量优先——Meilisearch 替 ES、最小依赖先例）。
+    3. **轻量 vs 重量分档**：轻量纯代码 / 依赖复用（单函数、成熟 util、既有依赖族内常规新增）可直接采用并在汇报 / 回执中说明；**引入新框架 / 中间件 / 服务 / 新依赖方向属重量级**——须停步向协调人汇报，列出候选（身份 / 版本 / 官方来源、解决什么、替代评估、资源开销影响、使用范围），由协调人决定是否使用。
+    4. **无好方案才自研**：权威源无匹配方案时才自研，且用最小实现（YAGNI），不重复造成熟轮子。
+    > 注：本规则与规则 9 / 10 / 11、全局「来源不明先校验」协同执行（查权威源自然含校验）；存量已引入工具（rclone / Minio / Meilisearch 等）属既有决策，规则管未来新场景、不回溯。
